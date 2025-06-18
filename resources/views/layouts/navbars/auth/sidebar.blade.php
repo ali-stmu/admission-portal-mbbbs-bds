@@ -79,8 +79,9 @@
                     href="{{ route('user-management') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center
-                        {{ in_array(request()->route()->getName(),['user-management']) ? 'text-white' : 'text-dark' }}"></i>
+                        <i style="font-size: 1rem;"
+                            class="fas fa-lg fa-list-ul ps-2 pe-2 text-center
+                        {{ in_array(request()->route()->getName(), ['user-management']) ? 'text-white' : 'text-dark' }}"></i>
                     </div>
                     <span class="nav-link-text ms-1">User Management</span>
                 </a>
@@ -125,7 +126,8 @@
                         <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1"
                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>credit-card</title>
-                            <g id="Basic-Elements" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Basic-Elements" stroke="none" stroke-width="1" fill="none"
+                                fill-rule="evenodd">
                                 <g id="Rounded-Icons" transform="translate(-2169.000000, -745.000000)" fill="#FFFFFF"
                                     fill-rule="nonzero">
                                     <g id="Icons-with-opacity" transform="translate(1716.000000, 291.000000)">
@@ -153,7 +155,8 @@
                         <svg width="12px" height="12px" viewBox="0 0 40 40" version="1.1"
                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>settings</title>
-                            <g id="Basic-Elements" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Basic-Elements" stroke="none" stroke-width="1" fill="none"
+                                fill-rule="evenodd">
                                 <g id="Rounded-Icons" transform="translate(-2020.000000, -442.000000)" fill="#FFFFFF"
                                     fill-rule="nonzero">
                                     <g id="Icons-with-opacity" transform="translate(1716.000000, 291.000000)">
@@ -185,7 +188,8 @@
                         <svg width="12px" height="12px" viewBox="0 0 46 42" version="1.1"
                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>customer-support</title>
-                            <g id="Basic-Elements" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Basic-Elements" stroke="none" stroke-width="1" fill="none"
+                                fill-rule="evenodd">
                                 <g id="Rounded-Icons" transform="translate(-1717.000000, -291.000000)" fill="#FFFFFF"
                                     fill-rule="nonzero">
                                     <g id="Icons-with-opacity" transform="translate(1716.000000, 291.000000)">
@@ -215,7 +219,8 @@
                         <svg width="12px" height="12px" viewBox="0 0 40 44" version="1.1"
                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>document</title>
-                            <g id="Basic-Elements" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Basic-Elements" stroke="none" stroke-width="1" fill="none"
+                                fill-rule="evenodd">
                                 <g id="Rounded-Icons" transform="translate(-1870.000000, -591.000000)" fill="#FFFFFF"
                                     fill-rule="nonzero">
                                     <g id="Icons-with-opacity" transform="translate(1716.000000, 291.000000)">
@@ -242,7 +247,8 @@
                         <svg width="12px" height="20px" viewBox="0 0 40 40" version="1.1"
                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <title>spaceship</title>
-                            <g id="Basic-Elements" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Basic-Elements" stroke="none" stroke-width="1" fill="none"
+                                fill-rule="evenodd">
                                 <g id="Rounded-Icons" transform="translate(-1720.000000, -592.000000)" fill="#FFFFFF"
                                     fill-rule="nonzero">
                                     <g id="Icons-with-opacity" transform="translate(1716.000000, 291.000000)">
@@ -270,12 +276,13 @@
             </li>
             <li class="nav-link mb-0">
                 <a href="https://www.creative-tim.com/product/soft-ui-dashboard-pro-laravel-livewire"
-                    class="btn btn-primary btn-md active px-5 text-white" target="_blank" role="button" aria-pressed="true">
+                    class="btn btn-primary btn-md active px-5 text-white" target="_blank" role="button"
+                    aria-pressed="true">
                     Upgrade to PRO</a>
             </li>
         </ul>
     </div>
-    <div class="sidenav-footer mx-3 mt-3 pt-3">
+    {{-- <div class="sidenav-footer mx-3 mt-3 pt-3">
         <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
             <div class="full-background" style="background-image: url('../assets/img/curved-images/white-curved.jpeg')">
             </div>
@@ -293,5 +300,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </aside>
