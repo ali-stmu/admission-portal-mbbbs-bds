@@ -23,68 +23,104 @@
                     </div>
 
                     <div class="card-body">
-                        <form wire:submit="register" action="#" method="POST" role="form text-left">
-                            <!-- Name Field -->
+                        <form wire:submit.prevent="register" x-data="{ nationality: '' }">
+
+                            <!-- Full Name -->
                             <div class="mb-3">
                                 <label for="name" class="form-label">{{ __('Full Name') }}</label>
                                 <div class="@error('name') border border-danger rounded-3 @enderror">
                                     <input wire:model.live="name" id="name" type="text" class="form-control"
-                                        placeholder="Your name" aria-label="Name">
+                                        placeholder="Your name">
                                 </div>
                                 @error('name')
                                     <div class="text-danger text-sm mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Email Field -->
+                            <!-- Email -->
                             <div class="mb-3">
                                 <label for="email" class="form-label">{{ __('Email') }}</label>
                                 <div class="@error('email') border border-danger rounded-3 @enderror">
                                     <input wire:model.live="email" id="email" type="email" class="form-control"
-                                        placeholder="your@email.com" aria-label="Email">
+                                        placeholder="your@email.com">
                                 </div>
                                 @error('email')
                                     <div class="text-danger text-sm mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Password Field -->
+                            <!-- Nationality -->
+                            <div class="mb-3">
+                                <label for="nationality" class="form-label">{{ __('Nationality') }}</label>
+                                <select wire:model.live="nationality" x-model="nationality" id="nationality"
+                                    class="form-select">
+                                    <option value="">{{ __('Select Nationality') }}</option>
+                                    <option value="local">Local</option>
+                                    <option value="foreign">Foreign</option>
+                                    <option value="special_foreign">Special Foreign</option>
+                                </select>
+                                @error('nationality')
+                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- CNIC (Only if Local) -->
+                            <div class="mb-3" x-show="nationality === 'local'" x-cloak>
+                                <label for="cnic" class="form-label">{{ __('CNIC') }}</label>
+                                <input wire:model.live="cnic" id="cnic" type="text" class="form-control"
+                                    placeholder="e.g., 35201-1234567-8">
+                                @error('cnic')
+                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Passport (Only if Foreign or Special Foreign) -->
+                            <div class="mb-3" x-show="nationality === 'foreign' || nationality === 'special_foreign'"
+                                x-cloak>
+                                <label for="passport" class="form-label">{{ __('Passport Number') }}</label>
+                                <input wire:model.live="cnic" id="passport" type="text" class="form-control"
+                                    placeholder="Passport No.">
+                                @error('passport')
+                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Password -->
                             <div class="mb-3">
                                 <label for="password" class="form-label">{{ __('Password') }}</label>
                                 <div class="@error('password') border border-danger rounded-3 @enderror">
                                     <input wire:model.live="password" id="password" type="password"
-                                        class="form-control" placeholder="Create password" aria-label="Password">
+                                        class="form-control" placeholder="Password">
                                 </div>
                                 @error('password')
                                     <div class="text-danger text-sm mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Terms Checkbox -->
+                            <!-- Terms -->
                             <div class="form-check form-check-info text-start mb-4">
-                                <input class="form-check-input" type="checkbox" id="termsCheck" checked required>
+                                <input class="form-check-input" type="checkbox" id="termsCheck" required>
                                 <label class="form-check-label" for="termsCheck">
-                                    {{ __('I agree to the') }}
-                                    <a href="#"
+                                    {{ __('I agree to the') }} <a href="#"
                                         class="text-dark font-weight-bolder">{{ __('Terms and Conditions') }}</a>
                                 </label>
                             </div>
 
-                            <!-- Submit Button -->
+                            <!-- Submit -->
                             <div class="text-center">
                                 <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2 py-2">
                                     {{ __('Sign Up') }}
                                 </button>
                             </div>
 
-                            <!-- Login Link -->
+                            <!-- Already Registered -->
                             <p class="text-sm mt-3 mb-0 text-center">
                                 {{ __('Already have an account?') }}
-                                <a href="{{ route('login') }}" class="text-dark font-weight-bolder ms-1">
-                                    {{ __('Sign In') }}
-                                </a>
+                                <a href="{{ route('login') }}"
+                                    class="text-dark font-weight-bolder ms-1">{{ __('Sign In') }}</a>
                             </p>
                         </form>
+
                     </div>
                 </div>
             </div>
