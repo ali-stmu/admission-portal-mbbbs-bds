@@ -41,15 +41,22 @@ Route::get('/login/forgot-password', ForgotPassword::class)->name('forgot-passwo
 
 Route::get('/reset-password/{id}',ResetPassword::class)->name('reset-password')->middleware('signed');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'role:admin,student'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
-    Route::get('/billing', Billing::class)->name('billing');
     Route::get('/profile', Profile::class)->name('profile');
-    Route::get('/tables', Tables::class)->name('tables');
     Route::get('/static-sign-in', StaticSignIn::class)->name('sign-in');
     Route::get('/static-sign-up', StaticSignUp::class)->name('static-sign-up');
     Route::get('/rtl', Rtl::class)->name('rtl');
     Route::get('/laravel-user-profile', UserProfile::class)->name('user-profile');
+});
+
+// Admin-only routes
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/billing', Billing::class)->name('billing');
     Route::get('/laravel-user-management', UserManagement::class)->name('user-management');
 });
 
+// Student-only routes
+Route::middleware(['auth', 'role:student'])->group(function () {
+    Route::get('/tables', Tables::class)->name('tables');
+});
