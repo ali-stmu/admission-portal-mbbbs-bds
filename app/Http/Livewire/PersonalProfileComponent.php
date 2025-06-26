@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Student;
+use Illuminate\Support\Facades\Auth;
 
 class PersonalProfileComponent extends Component
 {
@@ -12,6 +13,7 @@ class PersonalProfileComponent extends Component
 
     public $termId;
     public $applicationNo;
+    public $studentId;
     
     // Personal Information
     public $photo;
@@ -58,17 +60,17 @@ class PersonalProfileComponent extends Component
     public $permanentAddress;
 
     protected $rules = [
-        'photo' => 'required|image|max:1024',
+        'photo' => 'nullable|image|max:1024', // Changed to nullable for update
         'name' => 'required|string|max:255',
-        'cnic' => 'required|string|max:15|unique:students,cnic',
-        'cnicCopy' => 'required|file|mimes:pdf,jpg,png|max:2048',
+        'cnic' => 'required|string|max:15|unique:students,cnic,', // Added exception for update
+        'cnicCopy' => 'nullable|file|mimes:pdf,jpg,png|max:2048', // Changed to nullable for update
         'gender' => 'required|in:male,female,other',
         'dob' => 'required|date',
         'mobile' => 'required|string|max:15',
         'passportNo' => 'required_if:nationality,foreign|nullable|string|max:20',
         'passportCopy' => 'required_if:nationality,foreign|nullable|file|mimes:pdf,jpg,png|max:2048',
         'domicile' => 'required|string|max:100',
-        'email' => 'required|email|unique:students,email',
+        'email' => 'required|email|unique:students,email,', // Added exception for update
         'nationality' => 'required|in:pakistani,foreign',
         'province' => 'required|string|max:50',
         
@@ -98,7 +100,56 @@ class PersonalProfileComponent extends Component
     public function mount($termId)
     {
         $this->termId = $termId;
-        $this->applicationNo = 'STMU-' . date('Y') . '-' . str_pad(Student::count() + 1, 5, '0', STR_PAD_LEFT);
+        
+        // Check if student record exists for current user
+        $student = Student::where('user_id', Auth::id())->first();
+        
+        if ($student) {
+            // Populate fields with existing data
+            $this->studentId = $student->id;
+            $this->applicationNo = $student->application_no;
+            $this->name = $student->name;
+            $this->cnic = $student->cnic;
+            $this->gender = $student->gender;
+            $this->dob = $student->dob;
+            $this->mobile = $student->mobile;
+            $this->passportNo = $student->passport_no;
+            $this->domicile = $student->domicile;
+            $this->email = $student->email;
+            $this->nationality = $student->nationality;
+            $this->province = $student->province;
+            
+            // Father's information
+            $this->fatherName = $student->father_name;
+            $this->fatherNic = $student->father_nic;
+            $this->fatherEmail = $student->father_email;
+            $this->fatherProfession = $student->father_profession;
+            $this->fatherCompany = $student->father_company;
+            $this->fatherMobile = $student->father_mobile;
+            $this->fatherResPhone = $student->father_res_phone;
+            $this->fatherOfficePhone = $student->father_office_phone;
+            
+            // Address information
+            $this->mailingHouseNo = $student->mailing_house_no;
+            $this->mailingStreet = $student->mailing_street;
+            $this->mailingSector = $student->mailing_sector;
+            $this->mailingTehsil = $student->mailing_tehsil;
+            $this->mailingCity = $student->mailing_city;
+            $this->mailingCountry = $student->mailing_country;
+            $this->mailingAddress = $student->mailing_address;
+            
+            $this->permanentHouseNo = $student->permanent_house_no;
+            $this->permanentStreet = $student->permanent_street;
+            $this->permanentSector = $student->permanent_sector;
+            $this->permanentTehsil = $student->permanent_tehsil;
+            $this->permanentCity = $student->permanent_city;
+            $this->permanentCountry = $student->permanent_country;
+            $this->permanentAddress = $student->permanent_address;
+            $this->sameAsMailing = $student->mailing_address === $student->permanent_address;
+        } else {
+            // New application
+            $this->applicationNo = 'STMU-' . date('Y') . '-' . str_pad(Student::count() + 1, 5, '0', STR_PAD_LEFT);
+        }
     }
 
     public function updatedSameAsMailing($value)
@@ -116,6 +167,10 @@ class PersonalProfileComponent extends Component
 
     public function save()
     {
+        // Update the unique rules to ignore current student record if updating
+        $this->rules['cnic'] .= $this->studentId ? $this->studentId : '';
+        $this->rules['email'] .= $this->studentId ? $this->studentId : '';
+        
         $this->validate();
 
         // Generate mailing address
@@ -126,23 +181,15 @@ class PersonalProfileComponent extends Component
             $this->permanentAddress = "House #{$this->permanentHouseNo}, Street: {$this->permanentStreet}, Sector: {$this->permanentSector}, Tehsil: {$this->permanentTehsil}, City: {$this->permanentCity}, Country: {$this->permanentCountry}";
         }
 
-        // Store files
-        $photoPath = $this->photo->store('student-photos', 'public');
-        $cnicCopyPath = $this->cnicCopy->store('cnic-copies', 'public');
-        $passportCopyPath = $this->nationality === 'foreign' ? $this->passportCopy->store('passport-copies', 'public') : null;
-
-        // Create student record
-        $student = Student::create([
+        // Prepare data array
+        $data = [
             'application_no' => $this->applicationNo,
-            'photo_path' => $photoPath,
             'name' => $this->name,
             'cnic' => $this->cnic,
-            'cnic_copy_path' => $cnicCopyPath,
             'gender' => $this->gender,
             'dob' => $this->dob,
             'mobile' => $this->mobile,
             'passport_no' => $this->passportNo,
-            'passport_copy_path' => $passportCopyPath,
             'domicile' => $this->domicile,
             'email' => $this->email,
             'nationality' => $this->nationality,
@@ -170,9 +217,29 @@ class PersonalProfileComponent extends Component
             'permanent_city' => $this->permanentCity,
             'permanent_country' => $this->permanentCountry,
             'term_id' => $this->termId,
-        ]);
+            'user_id' => Auth::id(), // Add current user ID
+        ];
 
-       $this->dispatch('personalProfileSaved', studentId: $student->id);
+        // Handle file uploads
+        if ($this->photo) {
+            $data['photo_path'] = $this->photo->store('student-photos', 'public');
+        }
+        
+        if ($this->cnicCopy) {
+            $data['cnic_copy_path'] = $this->cnicCopy->store('cnic-copies', 'public');
+        }
+        
+        if ($this->nationality === 'foreign' && $this->passportCopy) {
+            $data['passport_copy_path'] = $this->passportCopy->store('passport-copies', 'public');
+        }
+
+        // Update or create student record
+        $student = Student::updateOrCreate(
+            ['id' => $this->studentId],
+            $data
+        );
+
+        $this->dispatch('personalProfileSaved', studentId: $student->id);
     }
 
     public function render()

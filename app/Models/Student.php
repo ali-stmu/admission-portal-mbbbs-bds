@@ -10,6 +10,7 @@ class Student extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'application_no',
         'photo_path',
         'name',
@@ -71,5 +72,9 @@ class Student extends Model
     public function paymentInformation()
     {
         return $this->hasOne(PaymentInformation::class);
+    }
+     public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
