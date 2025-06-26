@@ -168,7 +168,7 @@
             </div>
 
             <div class="d-flex justify-content-between">
-                <button type="button" class="btn btn-secondary" wire:click="$emit('previousStep')">
+                <button type="button" class="btn btn-secondary" wire:click="$dispatch('previousStep')">
                     <i class="fas fa-arrow-left me-2"></i> Back
                 </button>
                 <button type="submit" class="btn btn-primary">
