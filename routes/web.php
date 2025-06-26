@@ -59,4 +59,5 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 // Student-only routes
 Route::middleware(['auth', 'role:student'])->group(function () {
     Route::get('/tables', Tables::class)->name('tables');
+     Route::get('/admission', \App\Http\Livewire\AdmissionFormComponent::class)->name('admission.form');
 });
