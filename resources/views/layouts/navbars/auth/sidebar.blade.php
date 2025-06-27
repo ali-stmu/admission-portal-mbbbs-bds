@@ -5,22 +5,13 @@
             aria-hidden="true" id="iconSidenav"></i>
         <a class="align-items-center d-flex m-0 navbar-brand text-wrap" href="{{ route('dashboard') }}">
             <img src="../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="...">
-            <span class="ms-3 font-weight-bold">Soft UI Dashboard Laravel Livewire</span>
+            <span class="ms-3 font-weight-bold">Admission Portal MBBS-BDS</span>
         </a>
     </div>
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
-            <li class="nav-item pb-2">
-                <a class="nav-link {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}"
-                    href="{{ route('dashboard') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="bi bi-speedometer2 text-dark"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Dashboard</span>
-                </a>
-            </li>
+
 
             <li class="nav-item">
                 <a class="nav-link {{ Route::currentRouteName() == 'user-profile' ? 'active' : '' }}"
@@ -48,16 +39,6 @@
 
             @if (auth()->user()->role === 'student')
                 <li class="nav-item">
-                    <a class="nav-link {{ Route::currentRouteName() == 'tables' ? 'active' : '' }}"
-                        href="{{ route('tables') }}">
-                        <div
-                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="bi bi-table text-dark"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Tables</span>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link {{ Route::currentRouteName() == 'admission.form' ? 'active' : '' }}"
                         href="{{ route('admission.form') }}">
                         <div
@@ -82,16 +63,7 @@
                 </li>
             @endif
 
-            <li class="nav-item">
-                <a class="nav-link {{ Route::currentRouteName() == 'rtl' ? 'active' : '' }}"
-                    href="{{ route('rtl') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="bi bi-layout-text-sidebar-reverse text-dark"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">RTL</span>
-                </a>
-            </li>
+
 
 
             <!-- Rest of your sidebar items -->
