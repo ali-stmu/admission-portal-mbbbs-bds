@@ -33,9 +33,15 @@
                 @enderror
             </div>
 
-            <button wire:click="proceed" class="btn btn-primary">
+            <button wire:click="proceed" class="btn btn-primary" @if ($hasSubmittedApplication) disabled @endif>
                 Proceed to Application <i class="fas fa-arrow-right ms-2"></i>
             </button>
+
+            @if ($hasSubmittedApplication)
+                <div class="alert alert-info mt-3">
+                    You have already submitted an application. Editing is not allowed after submission.
+                </div>
+            @endif
         @endif
     </div>
 </div>

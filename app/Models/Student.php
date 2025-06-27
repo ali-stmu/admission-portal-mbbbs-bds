@@ -47,7 +47,8 @@ class Student extends Model
         'permanent_tehsil',
         'permanent_city',
         'permanent_country',
-        'term_id'
+        'term_id',
+        'is_submitted'
     ];
 
     protected $casts = [
