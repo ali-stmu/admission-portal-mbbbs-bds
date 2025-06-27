@@ -53,6 +53,16 @@ class AdmissionFormComponent extends Component
         $this->studentId = $studentId;
         $this->currentStep = 6;
     }
+    public function mount()
+{
+    // If there's a studentId in session, check if already submitted
+    if ($this->studentId) {
+        $student = Student::find($this->studentId);
+        if ($student && $student->is_submitted) {
+            $this->currentStep = 6; // Skip to completion if already submitted
+        }
+    }
+}
 
     public function previousStep()
     {

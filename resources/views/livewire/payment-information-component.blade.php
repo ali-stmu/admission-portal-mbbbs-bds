@@ -48,6 +48,16 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+
+                    @if ($paymentMode === 'voucher')
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-primary" wire:click="downloadChallan">
+                                <i class="fas fa-download me-2"></i> Download Challan
+                            </button>
+                            <small class="text-muted d-block mt-1">Please download the challan, pay at the bank, and
+                                upload the receipt</small>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="col-md-6">
