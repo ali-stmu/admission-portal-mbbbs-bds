@@ -83,52 +83,54 @@
                         @enderror
                     </div>
 
-                    <!-- Marks Section -->
-                    <div class="marks-container">
-                        <!-- Maximum Marks -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Maximum Marks</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-chart-line"></i></span>
-                                <input type="number"
-                                    class="form-control @error('matricRecords.maximum_marks') is-invalid @enderror"
-                                    wire:model="matricRecords.maximum_marks"
-                                    wire:change="calculatePercentage('matric')">
+                    <!-- Marks Section - Only shown when result is declared -->
+                    @if ($matricRecords['result_status'] === 'declared')
+                        <div class="marks-container">
+                            <!-- Maximum Marks -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Maximum Marks</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-chart-line"></i></span>
+                                    <input type="number"
+                                        class="form-control @error('matricRecords.maximum_marks') is-invalid @enderror"
+                                        wire:model="matricRecords.maximum_marks"
+                                        wire:change="calculatePercentage('matric')">
+                                </div>
+                                @error('matricRecords.maximum_marks')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
-                            @error('matricRecords.maximum_marks')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
 
-                        <!-- Obtained Marks -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Obtained Marks</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-star"></i></span>
-                                <input type="number"
-                                    class="form-control @error('matricRecords.obtained_marks') is-invalid @enderror"
-                                    wire:model="matricRecords.obtained_marks"
-                                    wire:change="calculatePercentage('matric')">
+                            <!-- Obtained Marks -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Obtained Marks</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-star"></i></span>
+                                    <input type="number"
+                                        class="form-control @error('matricRecords.obtained_marks') is-invalid @enderror"
+                                        wire:model="matricRecords.obtained_marks"
+                                        wire:change="calculatePercentage('matric')">
+                                </div>
+                                @error('matricRecords.obtained_marks')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
-                            @error('matricRecords.obtained_marks')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
 
-                        <!-- Percentage -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Percentage</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-percentage"></i></span>
-                                <input type="text"
-                                    class="form-control @error('matricRecords.percentage') is-invalid @enderror"
-                                    wire:model="matricRecords.percentage" readonly>
+                            <!-- Percentage -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Percentage</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-percentage"></i></span>
+                                    <input type="text"
+                                        class="form-control @error('matricRecords.percentage') is-invalid @enderror"
+                                        wire:model="matricRecords.percentage" readonly>
+                                </div>
+                                @error('matricRecords.percentage')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
-                            @error('matricRecords.percentage')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
 
@@ -211,52 +213,54 @@
                         @enderror
                     </div>
 
-                    <!-- Marks Section -->
-                    <div class="marks-container">
-                        <!-- Maximum Marks -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Maximum Marks</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-chart-line"></i></span>
-                                <input type="number"
-                                    class="form-control @error('intermediateRecords.maximum_marks') is-invalid @enderror"
-                                    wire:model="intermediateRecords.maximum_marks"
-                                    wire:change="calculatePercentage('intermediate')">
+                    <!-- Marks Section - Only shown when result is declared -->
+                    @if ($intermediateRecords['result_status'] === 'declared')
+                        <div class="marks-container">
+                            <!-- Maximum Marks -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Maximum Marks</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-chart-line"></i></span>
+                                    <input type="number"
+                                        class="form-control @error('intermediateRecords.maximum_marks') is-invalid @enderror"
+                                        wire:model="intermediateRecords.maximum_marks"
+                                        wire:change="calculatePercentage('intermediate')">
+                                </div>
+                                @error('intermediateRecords.maximum_marks')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
-                            @error('intermediateRecords.maximum_marks')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
 
-                        <!-- Obtained Marks -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Obtained Marks</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-star"></i></span>
-                                <input type="number"
-                                    class="form-control @error('intermediateRecords.obtained_marks') is-invalid @enderror"
-                                    wire:model="intermediateRecords.obtained_marks"
-                                    wire:change="calculatePercentage('intermediate')">
+                            <!-- Obtained Marks -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Obtained Marks</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-star"></i></span>
+                                    <input type="number"
+                                        class="form-control @error('intermediateRecords.obtained_marks') is-invalid @enderror"
+                                        wire:model="intermediateRecords.obtained_marks"
+                                        wire:change="calculatePercentage('intermediate')">
+                                </div>
+                                @error('intermediateRecords.obtained_marks')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
-                            @error('intermediateRecords.obtained_marks')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
-                        </div>
 
-                        <!-- Percentage -->
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Percentage</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-percentage"></i></span>
-                                <input type="text"
-                                    class="form-control @error('intermediateRecords.percentage') is-invalid @enderror"
-                                    wire:model="intermediateRecords.percentage" readonly>
+                            <!-- Percentage -->
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Percentage</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-percentage"></i></span>
+                                    <input type="text"
+                                        class="form-control @error('intermediateRecords.percentage') is-invalid @enderror"
+                                        wire:model="intermediateRecords.percentage" readonly>
+                                </div>
+                                @error('intermediateRecords.percentage')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
-                            @error('intermediateRecords.percentage')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
 

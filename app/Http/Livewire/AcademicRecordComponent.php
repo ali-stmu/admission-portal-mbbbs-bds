@@ -14,9 +14,9 @@ class AcademicRecordComponent extends Component
         'board' => '',
         'year' => '',
         'result_status' => 'declared',
-        'maximum_marks' => '',
-        'obtained_marks' => '',
-        'percentage' => '',
+        'maximum_marks' => null,
+        'obtained_marks' => null,
+        'percentage' => null,
     ];
     
     public $intermediateRecords = [
@@ -24,30 +24,43 @@ class AcademicRecordComponent extends Component
         'board' => '',
         'year' => '',
         'result_status' => 'declared',
-        'maximum_marks' => '',
-        'obtained_marks' => '',
-        'percentage' => '',
+        'maximum_marks' => null,
+        'obtained_marks' => null,
+        'percentage' => null,
     ];
 
     protected function rules()
     {
-        return [
+        $rules = [
             'matricRecords.school' => 'required|string|max:255',
             'matricRecords.board' => 'required|string|max:100',
             'matricRecords.year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'matricRecords.result_status' => 'required|in:declared,awaited',
-            'matricRecords.maximum_marks' => 'required|integer|min:1',
-            'matricRecords.obtained_marks' => 'required|integer|min:0|lte:matricRecords.maximum_marks',
-            'matricRecords.percentage' => 'required|numeric|min:0|max:100',
             
             'intermediateRecords.school_college' => 'required|string|max:255',
             'intermediateRecords.board' => 'required|string|max:100',
             'intermediateRecords.year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'intermediateRecords.result_status' => 'required|in:declared,awaited',
-            'intermediateRecords.maximum_marks' => 'required|integer|min:1',
-            'intermediateRecords.obtained_marks' => 'required|integer|min:0|lte:intermediateRecords.maximum_marks',
-            'intermediateRecords.percentage' => 'required|numeric|min:0|max:100',
         ];
+
+        // Only require marks if result is declared
+        if ($this->matricRecords['result_status'] === 'declared') {
+            $rules = array_merge($rules, [
+                'matricRecords.maximum_marks' => 'required|integer|min:1',
+                'matricRecords.obtained_marks' => 'required|integer|min:0|lte:matricRecords.maximum_marks',
+                'matricRecords.percentage' => 'required|numeric|min:0|max:100',
+            ]);
+        }
+
+        if ($this->intermediateRecords['result_status'] === 'declared') {
+            $rules = array_merge($rules, [
+                'intermediateRecords.maximum_marks' => 'required|integer|min:1',
+                'intermediateRecords.obtained_marks' => 'required|integer|min:0|lte:intermediateRecords.maximum_marks',
+                'intermediateRecords.percentage' => 'required|numeric|min:0|max:100',
+            ]);
+        }
+
+        return $rules;
     }
 
     public function mount($studentId)
@@ -103,7 +116,20 @@ class AcademicRecordComponent extends Component
 
     public function save()
     {
-        $this->validate($this->rules());
+        $this->validate();
+
+        // Set default values to 0 if declared but fields are null
+        if ($this->matricRecords['result_status'] === 'declared') {
+            $this->matricRecords['maximum_marks'] = $this->matricRecords['maximum_marks'] ?? 0;
+            $this->matricRecords['obtained_marks'] = $this->matricRecords['obtained_marks'] ?? 0;
+            $this->matricRecords['percentage'] = $this->matricRecords['percentage'] ?? 0;
+        }
+
+        if ($this->intermediateRecords['result_status'] === 'declared') {
+            $this->intermediateRecords['maximum_marks'] = $this->intermediateRecords['maximum_marks'] ?? 0;
+            $this->intermediateRecords['obtained_marks'] = $this->intermediateRecords['obtained_marks'] ?? 0;
+            $this->intermediateRecords['percentage'] = $this->intermediateRecords['percentage'] ?? 0;
+        }
 
         // Update or create matric records
         AcademicRecord::updateOrCreate(
@@ -116,9 +142,9 @@ class AcademicRecordComponent extends Component
                 'board' => $this->matricRecords['board'],
                 'year' => $this->matricRecords['year'],
                 'result_status' => $this->matricRecords['result_status'],
-                'maximum_marks' => $this->matricRecords['maximum_marks'],
-                'obtained_marks' => $this->matricRecords['obtained_marks'],
-                'percentage' => $this->matricRecords['percentage'],
+                'maximum_marks' => $this->matricRecords['result_status'] === 'declared' ? $this->matricRecords['maximum_marks'] : 0,
+                'obtained_marks' => $this->matricRecords['result_status'] === 'declared' ? $this->matricRecords['obtained_marks'] : 0,
+                'percentage' => $this->matricRecords['result_status'] === 'declared' ? $this->matricRecords['percentage'] : 0,
             ]
         );
 
@@ -133,14 +159,15 @@ class AcademicRecordComponent extends Component
                 'board' => $this->intermediateRecords['board'],
                 'year' => $this->intermediateRecords['year'],
                 'result_status' => $this->intermediateRecords['result_status'],
-                'maximum_marks' => $this->intermediateRecords['maximum_marks'],
-                'obtained_marks' => $this->intermediateRecords['obtained_marks'],
-                'percentage' => $this->intermediateRecords['percentage'],
+                'maximum_marks' => $this->intermediateRecords['result_status'] === 'declared' ? $this->intermediateRecords['maximum_marks'] : 0,
+                'obtained_marks' => $this->intermediateRecords['result_status'] === 'declared' ? $this->intermediateRecords['obtained_marks'] : 0,
+                'percentage' => $this->intermediateRecords['result_status'] === 'declared' ? $this->intermediateRecords['percentage'] : 0,
             ]
         );
 
         $this->dispatch('academicRecordsSaved', studentId: $this->studentId);
     }
+
 
     public function render()
     {
