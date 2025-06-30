@@ -63,6 +63,17 @@
             border-top: 1px solid #000;
             margin: 2px 0;
         }
+
+        .currency-symbol {
+            font-weight: bold;
+        }
+
+        .foreign-note {
+            font-size: 8px;
+            color: #666;
+            text-align: center;
+            margin-top: 3px;
+        }
     </style>
 </head>
 
@@ -115,7 +126,8 @@
                     <tr>
                         <td>Drawn on Bank / Branch:</td>
                         <td></td>
-                        <td colspan="2">Amount Rs {{ $data['totalAmount'] }}</td>
+                        <td colspan="2">Amount <span class="currency-symbol">{{ $data['currency'] }}</span>
+                            {{ $data['totalAmount'] }}</td>
                     </tr>
                     <tr>
                         <td>Location:</td>
@@ -125,6 +137,16 @@
                         <td>In Words</td>
                         <td colspan="3">{{ $data['amountInWords'] }}</td>
                     </tr>
+                    @if ($data['isInternational'] && isset($data['bankDetails']['swiftCode']))
+                        <tr>
+                            <td>SWIFT Code:</td>
+                            <td colspan="3">{{ $data['bankDetails']['swiftCode'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>IBAN:</td>
+                            <td colspan="3">{{ $data['bankDetails']['iban'] }}</td>
+                        </tr>
+                    @endif
                     <tr>
                         <td>Depositors CNIC:
                             Depositors Signature: :</td>
@@ -167,8 +189,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">Particulars </td>
-                        <td>Amount (PKR)</td>
-                        <td>Total (PKR)</td>
+                        <td>Amount ({{ $data['currency'] }})</td>
+                        <td>Total ({{ $data['currency'] }})</td>
                     </tr>
                     <tr>
                         <td colspan="2">Tution Fee </td>
@@ -227,7 +249,13 @@
                     </tr>
                     <tr>
                         <td colspan="2">Remarks </td>
-                        <td colspan="2">None</td>
+                        <td colspan="2">
+                            @if (isset($data['foreignNote']))
+                                {{ $data['foreignNote'] }}
+                            @else
+                                None
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="4">
@@ -245,6 +273,7 @@
                             This is a computer-generated document and does not require any signature.
                         </td>
                     </tr>
+
                     <tr>
                         <td colspan="4">
                             <hr>
@@ -300,7 +329,8 @@
                     <tr>
                         <td>Drawn on Bank / Branch:</td>
                         <td></td>
-                        <td colspan="2">Amount Rs {{ $data['totalAmount'] }}</td>
+                        <td colspan="2">Amount <span class="currency-symbol">{{ $data['currency'] }}</span>
+                            {{ $data['totalAmount'] }}</td>
                     </tr>
                     <tr>
                         <td>Location:</td>
@@ -310,6 +340,16 @@
                         <td>In Words</td>
                         <td colspan="3">{{ $data['amountInWords'] }}</td>
                     </tr>
+                    @if ($data['isInternational'] && isset($data['bankDetails']['swiftCode']))
+                        <tr>
+                            <td>SWIFT Code:</td>
+                            <td colspan="3">{{ $data['bankDetails']['swiftCode'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>IBAN:</td>
+                            <td colspan="3">{{ $data['bankDetails']['iban'] }}</td>
+                        </tr>
+                    @endif
                     <tr>
                         <td>Depositors CNIC:
                             Depositors Signature: :</td>
@@ -352,8 +392,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">Particulars </td>
-                        <td>Amount (PKR)</td>
-                        <td>Total (PKR)</td>
+                        <td>Amount ({{ $data['currency'] }})</td>
+                        <td>Total ({{ $data['currency'] }})</td>
                     </tr>
                     <tr>
                         <td colspan="2">Tution Fee </td>
@@ -412,7 +452,13 @@
                     </tr>
                     <tr>
                         <td colspan="2">Remarks </td>
-                        <td colspan="2">None</td>
+                        <td colspan="2">
+                            @if (isset($data['foreignNote']))
+                                {{ $data['foreignNote'] }}
+                            @else
+                                None
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="4">
@@ -430,6 +476,7 @@
                             This is a computer-generated document and does not require any signature.
                         </td>
                     </tr>
+
                     <tr>
                         <td colspan="4">
                             <hr>
@@ -485,7 +532,8 @@
                     <tr>
                         <td>Drawn on Bank / Branch:</td>
                         <td></td>
-                        <td colspan="2">Amount Rs {{ $data['totalAmount'] }}</td>
+                        <td colspan="2">Amount <span class="currency-symbol">{{ $data['currency'] }}</span>
+                            {{ $data['totalAmount'] }}</td>
                     </tr>
                     <tr>
                         <td>Location:</td>
@@ -495,6 +543,16 @@
                         <td>In Words</td>
                         <td colspan="3">{{ $data['amountInWords'] }}</td>
                     </tr>
+                    @if ($data['isInternational'] && isset($data['bankDetails']['swiftCode']))
+                        <tr>
+                            <td>SWIFT Code:</td>
+                            <td colspan="3">{{ $data['bankDetails']['swiftCode'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>IBAN:</td>
+                            <td colspan="3">{{ $data['bankDetails']['iban'] }}</td>
+                        </tr>
+                    @endif
                     <tr>
                         <td>Depositors CNIC:
                             Depositors Signature: :</td>
@@ -537,8 +595,8 @@
                     </tr>
                     <tr>
                         <td colspan="2">Particulars </td>
-                        <td>Amount (PKR)</td>
-                        <td>Total (PKR)</td>
+                        <td>Amount ({{ $data['currency'] }})</td>
+                        <td>Total ({{ $data['currency'] }})</td>
                     </tr>
                     <tr>
                         <td colspan="2">Tution Fee </td>
@@ -597,7 +655,13 @@
                     </tr>
                     <tr>
                         <td colspan="2">Remarks </td>
-                        <td colspan="2">None</td>
+                        <td colspan="2">
+                            @if (isset($data['foreignNote']))
+                                {{ $data['foreignNote'] }}
+                            @else
+                                None
+                            @endif
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="4">
@@ -615,6 +679,7 @@
                             This is a computer-generated document and does not require any signature.
                         </td>
                     </tr>
+
                     <tr>
                         <td colspan="4">
                             <hr>

@@ -8,6 +8,7 @@ use App\Models\PaymentInformation;
 use App\Models\Student;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class PaymentInformationComponent extends Component
 {
@@ -21,6 +22,8 @@ class PaymentInformationComponent extends Component
     public $paymentProof;
     public $transactionId;
     public $paymentDetails;
+    public $isInternational = false;
+    public $exchangeRate = 280; // You can fetch this from an API or database
 
     protected $rules = [
         'program' => 'required|in:mbbs,bds,both',
@@ -37,6 +40,10 @@ class PaymentInformationComponent extends Component
         $this->studentId = $studentId;
         $this->paymentDate = now()->format('Y-m-d');
         $this->updatedProgram($this->program);
+
+        // Get authenticated user and set isInternational flag
+        $user = auth()->user();
+        $this->isInternational = $user && $user->nationality !== 'local';
     }
 
     public function updatedProgram($value)
@@ -51,11 +58,28 @@ class PaymentInformationComponent extends Component
 public function downloadChallan()
 {
     $student = Student::findOrFail($this->studentId);
+    $user = auth()->user();
     
     // Convert images to base64 with proper encoding
     $uniLogo = $this->getEncodedImage(public_path('images/uni-logo.png'));
     $bankLogo = $this->getEncodedImage(public_path('images/bank-logo.png'));
 
+    $this->isInternational = $user->nationality !== 'local';
+    $currency = $this->isInternational ? 'USD' : 'PKR';
+    
+    // Determine amount based on program and nationality
+    if ($this->isInternational) {
+        $amount = 100; // Fixed $100 for international students
+    } else {
+        // Local student amounts
+        if ($this->program === 'mbbs' || $this->program === 'bds') {
+            $amount = 6000;
+        } elseif ($this->program === 'both') {
+            $amount = 8000;
+        }
+    }
+    log::debug($this->isInternational);
+    
     $data = [
         'uniLogo' => $uniLogo,
         'bankLogo' => $bankLogo,
@@ -64,12 +88,25 @@ public function downloadChallan()
         'date' => now()->format('d-m-Y'),
         'dueDate' => now()->addDays(7)->format('d-m-Y'),
         'AccountTitle' => $this->cleanString('Shifa Tameer-e-Millat University'),
-        'bankAccountNumber' => '1234567890123',
-        'totalAmount' => $this->amount,
-        'amountInWords' => $this->cleanString($this->numberToWords($this->amount) . ' Rupees Only'),
+        'bankAccountNumber' => $this->isInternational ? '70120216' : '50007902906303',
+        'totalAmount' => $amount,
+        'currency' => $currency,
+        'amountInWords' => $this->cleanString($this->numberToWords($amount) . ($this->isInternational ? ' Dollars Only' : ' Rupees Only')),
         'studentName' => $this->cleanString($student->name),
         'programName' => $this->cleanString($this->getProgramName()),
-        'pyear' => $this->cleanString('1st Year'),
+        'pyear' => $this->cleanString('2025'),
+        'isInternational' => $this->isInternational,
+        'bankDetails' => $this->isInternational ? [
+            'bankName' => 'Al Baraka Bank (Pakistan) Ltd',
+            'swiftCode' => 'AIINPKKA',
+            'iban' => 'PK52AIIN0000281073951036',
+            'intermediaryBank' => 'Mashreq Bank',
+            'intermediarySwift' => 'MSHQUS33'
+        ] : [
+            'bankName' => 'HABIB BANK LTD',
+            'accountTitle' => 'SHIFA TAMEER-MILLAT UNIVERSITY',
+            'accountNumber' => '50007902906303'
+        ]
     ];
 
     $pdf = Pdf::loadView('challan', ['data' => $data])
@@ -80,6 +117,52 @@ public function downloadChallan()
     return response()->streamDownload(function() use ($pdf) {
         echo $pdf->stream();
     }, 'payment_challan.pdf');
+}
+
+
+public function downloadPkrChallan()
+{
+    $student = Student::findOrFail($this->studentId);
+    $user = $student->user;
+    
+    // Convert images to base64 with proper encoding
+    $uniLogo = $this->getEncodedImage(public_path('images/uni-logo.png'));
+    $bankLogo = $this->getEncodedImage(public_path('images/bank-logo.png'));
+
+    $amount = 100 * $this->exchangeRate; // Convert $100 to PKR
+    
+    $data = [
+        'uniLogo' => $uniLogo,
+        'bankLogo' => $bankLogo,
+        'collegeName' => $this->cleanString('Shifa College of Medicine'),
+        'voucherID' => 'STMU-' . time(),
+        'date' => now()->format('d-m-Y'),
+        'dueDate' => now()->addDays(7)->format('d-m-Y'),
+        'AccountTitle' => $this->cleanString('Shifa Tameer-e-Millat University'),
+        'bankAccountNumber' => '50007902906303',
+        'totalAmount' => $amount,
+        'currency' => 'PKR',
+        'amountInWords' => $this->cleanString($this->numberToWords($amount) . ' Rupees Only'),
+        'studentName' => $this->cleanString($student->name),
+        'programName' => $this->cleanString($this->getProgramName()),
+        'pyear' => $this->cleanString('1st Year'),
+        'isInternational' => false,
+        'bankDetails' => [
+            'bankName' => 'HABIB BANK LTD',
+            'accountTitle' => 'SHIFA TAMEER-MILLAT UNIVERSITY',
+            'accountNumber' => '50007902906303'
+        ],
+        'foreignNote' => 'Equivalent to USD 100 at exchange rate: 1 USD = ' . $this->exchangeRate . ' PKR'
+    ];
+
+    $pdf = Pdf::loadView('challan', ['data' => $data])
+              ->setOption('defaultFont', 'dejavu sans')
+              ->setOption('isHtml5ParserEnabled', true)
+              ->setOption('isRemoteEnabled', true);
+              
+    return response()->streamDownload(function() use ($pdf) {
+        echo $pdf->stream();
+    }, 'payment_challan_pkr.pdf');
 }
 
     private function getProgramName()

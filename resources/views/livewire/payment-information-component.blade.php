@@ -45,7 +45,9 @@
                             <label class="btn btn-outline-primary text-start py-3" for="programMbbs">
                                 <i class="fas fa-user-md me-2"></i>
                                 <strong>MBBS Only</strong>
-                                <span class="badge bg-primary float-end">Rs. 6,000</span>
+                                <span class="badge bg-primary float-end">
+                                    {{ $isInternational ? '$100' : 'Rs. 6,000' }}
+                                </span>
                             </label>
 
                             <input type="radio" class="btn-check" name="program" id="programBds" wire:model="program"
@@ -53,7 +55,9 @@
                             <label class="btn btn-outline-primary text-start py-3" for="programBds">
                                 <i class="fas fa-tooth me-2"></i>
                                 <strong>BDS Only</strong>
-                                <span class="badge bg-primary float-end">Rs. 6,000</span>
+                                <span class="badge bg-primary float-end">
+                                    {{ $isInternational ? '$100' : 'Rs. 6,000' }}
+                                </span>
                             </label>
 
                             <input type="radio" class="btn-check" name="program" id="programBoth" wire:model="program"
@@ -61,13 +65,16 @@
                             <label class="btn btn-outline-primary text-start py-3" for="programBoth">
                                 <i class="fas fa-clipboard-list me-2"></i>
                                 <strong>Both MBBS & BDS</strong>
-                                <span class="badge bg-primary float-end">Rs. 8,000</span>
+                                <span class="badge bg-primary float-end">
+                                    {{ $isInternational ? '$100' : 'Rs. 8,000' }}
+                                </span>
                             </label>
                         </div>
                         @error('program')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
+
 
                     <!-- Amount Display -->
                     <div class="mb-4">
@@ -77,13 +84,22 @@
                         </label>
                         <div class="input-group">
                             <span class="input-group-text bg-white">
-                                <i class="fas fa-rupee-sign text-primary"></i>
+                                <i
+                                    class="{{ $isInternational ? 'fas fa-dollar-sign' : 'fas fa-rupee-sign' }} text-primary"></i>
                             </span>
                             <input type="text"
                                 class="form-control @error('amount') is-invalid @enderror py-3 fw-bold"
                                 wire:model="amount" readonly style="background-color: #f8f9fa; min-width: 120px;">
-                            <span class="input-group-text bg-white" style="min-width: 60px;">PKR</span>
+                            <span class="input-group-text bg-white" style="min-width: 60px;">
+                                {{ $isInternational ? 'USD' : 'PKR' }}
+                            </span>
                         </div>
+                        @if ($isInternational)
+                            <div class="text-muted mt-2">
+                                Approx. PKR {{ number_format(100 * $exchangeRate, 2) }}
+                                (Exchange rate: 1 USD = {{ $exchangeRate }} PKR)
+                            </div>
+                        @endif
                         @error('amount')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -117,24 +133,58 @@
                                     <i class="fas fa-globe me-2"></i> Online
                                 </label>
                             </div>
-                            <div class="col-6">
+                            {{-- <div class="col-6">
                                 <input type="radio" class="btn-check" name="paymentMode" id="paymentForeign"
                                     wire:model="paymentMode" value="foreign">
                                 <label class="btn btn-outline-primary w-100 py-3" for="paymentForeign">
                                     <i class="fas fa-exchange-alt me-2"></i> Foreign
                                 </label>
-                            </div>
+                            </div> --}}
                         </div>
                         @error('paymentMode')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    @if ($paymentMode === 'voucher')
+                    @if ($paymentMode === 'voucher' && $isInternational == false)
                         <div class="mb-4 animate__animated animate__fadeIn">
                             <button type="button" class="btn btn-primary w-100 py-3" wire:click="downloadChallan">
                                 <i class="fas fa-download me-2"></i> Download Challan Form
                             </button>
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Please download the challan, pay at the bank, and upload the receipt below
+                            </div>
+                        </div>
+                    @endif
+                    @if ($paymentMode === 'voucher' && $isInternational == true)
+                        <div class="mb-4 animate__animated animate__fadeIn">
+                            @if ($isInternational)
+                                <div class="alert alert-warning mb-3">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    International students can pay either $100 or equivalent PKR
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-primary w-100 py-3"
+                                            wire:click="downloadChallan">
+                                            <i class="fas fa-download me-2"></i> Download Dollar Challan ($100)
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-outline-primary w-100 py-3"
+                                            wire:click="downloadPkrChallan">
+                                            <i class="fas fa-download me-2"></i> Download PKR Challan
+                                            ({{ number_format(100 * $exchangeRate) }})
+                                        </button>
+                                    </div>
+                                </div>
+                            @else
+                                <button type="button" class="btn btn-primary w-100 py-3"
+                                    wire:click="downloadChallan">
+                                    <i class="fas fa-download me-2"></i> Download Challan Form
+                                </button>
+                            @endif
                             <div class="alert alert-info mt-3">
                                 <i class="fas fa-info-circle me-2"></i>
                                 Please download the challan, pay at the bank, and upload the receipt below

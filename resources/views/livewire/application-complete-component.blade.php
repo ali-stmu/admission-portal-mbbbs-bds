@@ -43,14 +43,14 @@
                             @endif
                         </ol>
 
-                        <div class="mt-4">
-                            <button class="btn btn-primary me-2">
+                        {{-- <div class="mt-4">
+                            <button wire:click="printApplication" class="btn btn-primary me-2">
                                 <i class="fas fa-print me-2"></i> Print Application
                             </button>
-                            <button class="btn btn-outline-secondary">
+                            <button wire:click="downloadPdf" class="btn btn-outline-secondary">
                                 <i class="fas fa-download me-2"></i> Download PDF
                             </button>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
