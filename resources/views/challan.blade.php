@@ -18,18 +18,24 @@
         .container {
             width: 100%;
             padding: 0;
+            display: flex;
+            flex-wrap: nowrap;
+            page-break-inside: avoid;
         }
 
         .row {
             display: flex;
             width: 100%;
+            page-break-inside: avoid;
         }
 
         .col-md-4 {
-            width: 32%;
+            width: 33.33%;
             float: left;
-            padding: 0 5px;
+            padding: 0 2px;
             box-sizing: border-box;
+            page-break-inside: avoid;
+            break-inside: avoid;
         }
 
         .col-md-4 table {
@@ -37,12 +43,15 @@
             font-size: 9.5px;
             border-collapse: collapse;
             table-layout: fixed;
+            page-break-inside: avoid;
         }
 
         .col-md-4 td {
             border: 1px solid black;
             padding: 1px;
             word-wrap: break-word;
+            overflow: hidden;
+            page-break-inside: avoid;
         }
 
         .col-md-4 td.bank-logo,
@@ -74,6 +83,32 @@
             text-align: center;
             margin-top: 3px;
         }
+
+        /* Force each column to stay together */
+        .col-md-4 {
+            page-break-inside: avoid;
+            break-inside: avoid-column;
+        }
+
+        /* Ensure tables don't break across pages */
+        table {
+            page-break-inside: avoid;
+        }
+
+        /* Adjust cell heights to prevent overflow */
+        td {
+            height: 12px;
+            min-height: 12px;
+            max-height: 12px;
+            overflow: hidden;
+        }
+
+        /* Specific adjustments for content cells */
+        .content-cell {
+            height: auto;
+            min-height: 12px;
+            max-height: 24px;
+        }
     </style>
 </head>
 
@@ -84,13 +119,14 @@
             <div class="col-md-4">
                 <table>
                     <tr>
-                        <td class="bank-logo"><img style="max-width: 70px;" src="{{ $data['uniLogo'] }}" alt="Uni Logo">
+                        <td class="bank-logo"><img style="max-width: 70px; height: auto;" src="{{ $data['uniLogo'] }}"
+                                alt="Uni Logo">
                         </td>
                         <td colspan="2" class="university-logo" style="text-align: center;">Specialized Fee Challan Form
                             Shifa Tameer-e-Millat University
                             {{ $data['collegeName'] }}
                             (Deposit Slip Dept. Copy)</td>
-                        <td class="bank-logo"><img style="max-width: 70px;" src="{{ $data['bankLogo'] }}"
+                        <td class="bank-logo"><img style="max-width: 70px; height: auto;" src="{{ $data['bankLogo'] }}"
                                 alt="Bank Logo"></td>
                     </tr>
                     <tr>
@@ -107,7 +143,7 @@
                     </tr>
                     <tr>
                         <td>Credit to: </td>
-                        <td colspan="3"> <b>{{ $data['AccountTitle'] }}</b></td>
+                        <td colspan="3" class="content-cell"> <b>{{ $data['AccountTitle'] }}</b></td>
                     </tr>
                     <tr>
                         <td>Collection Account#: </td>
@@ -135,7 +171,7 @@
                     </tr>
                     <tr>
                         <td>In Words</td>
-                        <td colspan="3">{{ $data['amountInWords'] }}</td>
+                        <td colspan="3" class="content-cell">{{ $data['amountInWords'] }}</td>
                     </tr>
                     @if ($data['isInternational'] && isset($data['bankDetails']['swiftCode']))
                         <tr>
@@ -144,7 +180,7 @@
                         </tr>
                         <tr>
                             <td>IBAN:</td>
-                            <td colspan="3">{{ $data['bankDetails']['iban'] }}</td>
+                            <td colspan="3" class="content-cell">{{ $data['bankDetails']['iban'] }}</td>
                         </tr>
                     @endif
                     <tr>
@@ -174,11 +210,11 @@
                     </tr>
                     <tr>
                         <td>Student Name: </td>
-                        <td colspan="3"> <b>{{ $data['studentName'] }}</b></td>
+                        <td colspan="3" class="content-cell"> <b>{{ $data['studentName'] }}</b></td>
                     </tr>
                     <tr>
                         <td>Program: </td>
-                        <td> <b>{{ $data['programName'] }}</b></td>
+                        <td class="content-cell"> <b>{{ $data['programName'] }}</b></td>
                         <td>Semester/Year: </td>
                         <td> <b>{{ $data['pyear'] }}</b></td>
                     </tr>
@@ -249,7 +285,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">Remarks </td>
-                        <td colspan="2">
+                        <td colspan="2" class="content-cell">
                             @if (isset($data['foreignNote']))
                                 {{ $data['foreignNote'] }}
                             @else
@@ -263,7 +299,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4" style="text-align: center;">
+                        <td colspan="4" style="text-align: center; font-size: 8px;">
                             Please deposit this challan to any branch of the bank within the due date.
                             <br />
                             After the due date, an additional fine will be charged as per the university policy.
@@ -286,14 +322,14 @@
             <div class="col-md-4">
                 <table>
                     <tr>
-                        <td class="bank-logo"><img style="max-width: 70px;" src="{{ $data['uniLogo'] }}"
+                        <td class="bank-logo"><img style="max-width: 70px; height: auto;" src="{{ $data['uniLogo'] }}"
                                 alt="Bank Logo"></td>
                         <td colspan="2" class="university-logo" style="text-align: center;">Specialized Fee Challan
                             Form
                             Shifa Tameer-e-Millat University
                             {{ $data['collegeName'] }}
                             (Deposit Slip Student Copy)</td>
-                        <td class="bank-logo"><img style="max-width: 70px;" src="{{ $data['bankLogo'] }}"
+                        <td class="bank-logo"><img style="max-width: 70px; height: auto;" src="{{ $data['bankLogo'] }}"
                                 alt="Bank Logo"></td>
                     </tr>
                     <tr>
@@ -310,7 +346,7 @@
                     </tr>
                     <tr>
                         <td>Credit to: </td>
-                        <td colspan="3"> <b>{{ $data['AccountTitle'] }}</b></td>
+                        <td colspan="3" class="content-cell"> <b>{{ $data['AccountTitle'] }}</b></td>
                     </tr>
                     <tr>
                         <td>Collection Account#: </td>
@@ -338,7 +374,7 @@
                     </tr>
                     <tr>
                         <td>In Words</td>
-                        <td colspan="3">{{ $data['amountInWords'] }}</td>
+                        <td colspan="3" class="content-cell">{{ $data['amountInWords'] }}</td>
                     </tr>
                     @if ($data['isInternational'] && isset($data['bankDetails']['swiftCode']))
                         <tr>
@@ -347,7 +383,7 @@
                         </tr>
                         <tr>
                             <td>IBAN:</td>
-                            <td colspan="3">{{ $data['bankDetails']['iban'] }}</td>
+                            <td colspan="3" class="content-cell">{{ $data['bankDetails']['iban'] }}</td>
                         </tr>
                     @endif
                     <tr>
@@ -377,11 +413,11 @@
                     </tr>
                     <tr>
                         <td>Student Name: </td>
-                        <td colspan="3"> <b>{{ $data['studentName'] }}</b></td>
+                        <td colspan="3" class="content-cell"> <b>{{ $data['studentName'] }}</b></td>
                     </tr>
                     <tr>
                         <td>Program: </td>
-                        <td> <b>{{ $data['programName'] }}</b></td>
+                        <td class="content-cell"> <b>{{ $data['programName'] }}</b></td>
                         <td>Semester/Year: </td>
                         <td> <b>{{ $data['pyear'] }}</b></td>
                     </tr>
@@ -452,7 +488,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">Remarks </td>
-                        <td colspan="2">
+                        <td colspan="2" class="content-cell">
                             @if (isset($data['foreignNote']))
                                 {{ $data['foreignNote'] }}
                             @else
@@ -466,7 +502,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4" style="text-align: center;">
+                        <td colspan="4" style="text-align: center; font-size: 8px;">
                             Please deposit this challan to any branch of the bank within the due date.
                             <br />
                             After the due date, an additional fine will be charged as per the university policy.
@@ -489,15 +525,15 @@
             <div class="col-md-4">
                 <table>
                     <tr>
-                        <td class="bank-logo"><img style="max-width: 70px;" src="{{ $data['uniLogo'] }}"
-                                alt="Bank Logo"></td>
+                        <td class="bank-logo"><img style="max-width: 70px; height: auto;"
+                                src="{{ $data['uniLogo'] }}" alt="Bank Logo"></td>
                         <td colspan="2" class="university-logo" style="text-align: center;">Specialized Fee
                             Challan Form
                             Shifa Tameer-e-Millat University
                             {{ $data['collegeName'] }}
                             (Deposit Slip Bank Copy)</td>
-                        <td class="bank-logo"><img style="max-width: 70px;" src="{{ $data['bankLogo'] }}"
-                                alt="Bank Logo"></td>
+                        <td class="bank-logo"><img style="max-width: 70px; height: auto;"
+                                src="{{ $data['bankLogo'] }}" alt="Bank Logo"></td>
                     </tr>
                     <tr>
                         <td> <b>Ch./Receipt/Slip No:</b></td>
@@ -513,7 +549,7 @@
                     </tr>
                     <tr>
                         <td>Credit to: </td>
-                        <td colspan="3"> <b>{{ $data['AccountTitle'] }}</b></td>
+                        <td colspan="3" class="content-cell"> <b>{{ $data['AccountTitle'] }}</b></td>
                     </tr>
                     <tr>
                         <td>Collection Account#: </td>
@@ -541,7 +577,7 @@
                     </tr>
                     <tr>
                         <td>In Words</td>
-                        <td colspan="3">{{ $data['amountInWords'] }}</td>
+                        <td colspan="3" class="content-cell">{{ $data['amountInWords'] }}</td>
                     </tr>
                     @if ($data['isInternational'] && isset($data['bankDetails']['swiftCode']))
                         <tr>
@@ -550,7 +586,7 @@
                         </tr>
                         <tr>
                             <td>IBAN:</td>
-                            <td colspan="3">{{ $data['bankDetails']['iban'] }}</td>
+                            <td colspan="3" class="content-cell">{{ $data['bankDetails']['iban'] }}</td>
                         </tr>
                     @endif
                     <tr>
@@ -580,11 +616,11 @@
                     </tr>
                     <tr>
                         <td>Student Name: </td>
-                        <td colspan="3"> <b>{{ $data['studentName'] }}</b></td>
+                        <td colspan="3" class="content-cell"> <b>{{ $data['studentName'] }}</b></td>
                     </tr>
                     <tr>
                         <td>Program: </td>
-                        <td> <b>{{ $data['programName'] }}</b></td>
+                        <td class="content-cell"> <b>{{ $data['programName'] }}</b></td>
                         <td>Semester/Year: </td>
                         <td> <b>{{ $data['pyear'] }}</b></td>
                     </tr>
@@ -655,7 +691,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">Remarks </td>
-                        <td colspan="2">
+                        <td colspan="2" class="content-cell">
                             @if (isset($data['foreignNote']))
                                 {{ $data['foreignNote'] }}
                             @else
@@ -669,7 +705,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="4" style="text-align: center;">
+                        <td colspan="4" style="text-align: center; font-size: 8px;">
                             Please deposit this challan to any branch of the bank within the due date.
                             <br />
                             After the due date, an additional fine will be charged as per the university policy.

@@ -121,7 +121,7 @@
                                 </div>
                             </div>
 
-                            <div class="alert alert-info">
+                            <div class="alert alert">
                                 <i class="fas fa-info-circle me-2"></i>
                                 International students will pay a fixed fee of $100 regardless of program selection
                             </div>
@@ -241,6 +241,11 @@
                     <div class="mb-4 animate__animated animate__fadeIn" x-show="selectedPaymentMode === 'voucher'">
                         <button type="button" class="btn btn-primary w-100 py-3" wire:click="downloadChallan">
                             <i class="fas fa-download me-2"></i> Download Challan Form
+                        </button>
+                        <button type="button" class="btn btn-outline-primary w-100 py-3"
+                            wire:click="downloadPkrChallan">
+                            <i class="fas fa-download me-2"></i> Download PKR Challan
+                            ({{ number_format(100 * $exchangeRate) }})
                         </button>
                         <div class="alert alert-info mt-3">
                             <i class="fas fa-info-circle me-2"></i>

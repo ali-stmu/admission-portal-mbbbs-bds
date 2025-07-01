@@ -72,8 +72,15 @@ class PaymentInformationComponent extends Component
         $student = Student::findOrFail($this->studentId);
         $user = auth()->user();
         
-        $uniLogo = $this->getEncodedImage(public_path('images/uni-logo.png'));
-        $bankLogo = $this->getEncodedImage(public_path('images/bank-logo.png'));
+        $uniLogo = $this->getEncodedImage(public_path('assets/img/ShifaLogo.png'));
+
+$bankLogoPath = $this->isInternational
+    ? public_path('assets/img/2560px-Al_Baraka_logo.png')
+    : public_path('assets/img/HBL-logo.jpg');
+
+$bankLogo = $this->getEncodedImage($bankLogoPath);
+
+
 
         $currency = $this->isInternational ? 'USD' : 'PKR';
         $amount = $this->isInternational ? 100 : $this->amount;
@@ -122,8 +129,15 @@ class PaymentInformationComponent extends Component
         $student = Student::findOrFail($this->studentId);
         $amount = 100 * $this->exchangeRate;
         
-        $uniLogo = $this->getEncodedImage(public_path('images/uni-logo.png'));
-        $bankLogo = $this->getEncodedImage(public_path('images/bank-logo.png'));
+        $uniLogo = $this->getEncodedImage(public_path('assets/img/ShifaLogo.png'));
+
+$bankLogoPath = $this->isInternational
+    ? public_path('assets/img/2560px-Al_Baraka_logo.png')
+    : public_path('assets/img/HBL-logo.jpg');
+
+$bankLogo = $this->getEncodedImage($bankLogoPath);
+
+
 
         $data = [
             'uniLogo' => $uniLogo,
