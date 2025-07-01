@@ -34,43 +34,142 @@
             <div class="row g-4">
                 <div class="col-md-6">
                     <!-- Program Selection -->
+                    <!-- Replace the existing Program Selection section with this code -->
                     <div class="mb-4">
                         <label class="form-label fw-bold d-block mb-3">
                             <i class="fas fa-graduation-cap me-2 text-primary"></i>
                             Select Program
                         </label>
-                        <div class="btn-group-vertical w-100" role="group">
-                            <input type="radio" class="btn-check" name="program" id="programMbbs" wire:model="program"
-                                value="mbbs">
-                            <label class="btn btn-outline-primary text-start py-3" for="programMbbs">
-                                <i class="fas fa-user-md me-2"></i>
-                                <strong>MBBS Only</strong>
-                                <span class="badge bg-primary float-end">
-                                    {{ $isInternational ? '$100' : 'Rs. 6,000' }}
-                                </span>
-                            </label>
 
-                            <input type="radio" class="btn-check" name="program" id="programBds" wire:model="program"
-                                value="bds">
-                            <label class="btn btn-outline-primary text-start py-3" for="programBds">
-                                <i class="fas fa-tooth me-2"></i>
-                                <strong>BDS Only</strong>
-                                <span class="badge bg-primary float-end">
-                                    {{ $isInternational ? '$100' : 'Rs. 6,000' }}
-                                </span>
-                            </label>
+                        @if ($isInternational)
+                            <!-- International Student Options (all 9 options) -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold text-muted mb-3">Local Programs (select one)</h6>
+                                <div class="btn-group-vertical w-100" role="group">
+                                    <input type="radio" class="btn-check" name="localProgram" id="localMbbs"
+                                        wire:model="localProgram" value="mbbs">
+                                    <label class="btn btn-outline-primary text-start py-3" for="localMbbs">
+                                        <i class="fas fa-user-md me-2"></i>
+                                        <strong>Local MBBS</strong>
+                                    </label>
 
-                            <input type="radio" class="btn-check" name="program" id="programBoth" wire:model="program"
-                                value="both">
-                            <label class="btn btn-outline-primary text-start py-3" for="programBoth">
-                                <i class="fas fa-clipboard-list me-2"></i>
-                                <strong>Both MBBS & BDS</strong>
-                                <span class="badge bg-primary float-end">
-                                    {{ $isInternational ? '$100' : 'Rs. 8,000' }}
-                                </span>
-                            </label>
-                        </div>
+                                    <input type="radio" class="btn-check" name="localProgram" id="localBds"
+                                        wire:model="localProgram" value="bds">
+                                    <label class="btn btn-outline-primary text-start py-3" for="localBds">
+                                        <i class="fas fa-tooth me-2"></i>
+                                        <strong>Local BDS</strong>
+                                    </label>
+
+                                    <input type="radio" class="btn-check" name="localProgram" id="localBoth"
+                                        wire:model="localProgram" value="both">
+                                    <label class="btn btn-outline-primary text-start py-3" for="localBoth">
+                                        <i class="fas fa-clipboard-list me-2"></i>
+                                        <strong>Local Both MBBS & BDS</strong>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h6 class="fw-bold text-muted mb-3">International Programs (select one)</h6>
+                                <div class="btn-group-vertical w-100" role="group">
+                                    <input type="radio" class="btn-check" name="intlProgram" id="intlMbbs"
+                                        wire:model="intlProgram" value="intl_mbbs">
+                                    <label class="btn btn-outline-primary text-start py-3" for="intlMbbs">
+                                        <i class="fas fa-user-md me-2"></i>
+                                        <strong>International MBBS</strong>
+                                    </label>
+
+                                    <input type="radio" class="btn-check" name="intlProgram" id="intlBds"
+                                        wire:model="intlProgram" value="intl_bds">
+                                    <label class="btn btn-outline-primary text-start py-3" for="intlBds">
+                                        <i class="fas fa-tooth me-2"></i>
+                                        <strong>International BDS</strong>
+                                    </label>
+
+                                    <input type="radio" class="btn-check" name="intlProgram" id="intlBoth"
+                                        wire:model="intlProgram" value="intl_both">
+                                    <label class="btn btn-outline-primary text-start py-3" for="intlBoth">
+                                        <i class="fas fa-clipboard-list me-2"></i>
+                                        <strong>International Both MBBS & BDS</strong>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <h6 class="fw-bold text-muted mb-3">Special Programs (select one)</h6>
+                                <div class="btn-group-vertical w-100" role="group">
+                                    <input type="radio" class="btn-check" name="specialProgram" id="specialMbbs"
+                                        wire:model="specialProgram" value="special_mbbs">
+                                    <label class="btn btn-outline-primary text-start py-3" for="specialMbbs">
+                                        <i class="fas fa-user-md me-2"></i>
+                                        <strong>Special MBBS</strong>
+                                    </label>
+
+                                    <input type="radio" class="btn-check" name="specialProgram" id="specialBds"
+                                        wire:model="specialProgram" value="special_bds">
+                                    <label class="btn btn-outline-primary text-start py-3" for="specialBds">
+                                        <i class="fas fa-tooth me-2"></i>
+                                        <strong>Special BDS</strong>
+                                    </label>
+
+                                    <input type="radio" class="btn-check" name="specialProgram" id="specialBoth"
+                                        wire:model="specialProgram" value="special_both">
+                                    <label class="btn btn-outline-primary text-start py-3" for="specialBoth">
+                                        <i class="fas fa-clipboard-list me-2"></i>
+                                        <strong>Special Both MBBS & BDS</strong>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                International students will pay a fixed fee of $100 regardless of program selection
+                            </div>
+                        @else
+                            <!-- Local Student Options (only 3 options) -->
+                            <div class="btn-group-vertical w-100" role="group">
+                                <input type="radio" class="btn-check" name="program" id="programMbbs"
+                                    wire:model="program" value="mbbs">
+                                <label class="btn btn-outline-primary text-start py-3" for="programMbbs">
+                                    <i class="fas fa-user-md me-2"></i>
+                                    <strong>MBBS Only</strong>
+                                    <span class="badge bg-primary float-end">
+                                        Rs. 6,000
+                                    </span>
+                                </label>
+
+                                <input type="radio" class="btn-check" name="program" id="programBds"
+                                    wire:model="program" value="bds">
+                                <label class="btn btn-outline-primary text-start py-3" for="programBds">
+                                    <i class="fas fa-tooth me-2"></i>
+                                    <strong>BDS Only</strong>
+                                    <span class="badge bg-primary float-end">
+                                        Rs. 6,000
+                                    </span>
+                                </label>
+
+                                <input type="radio" class="btn-check" name="program" id="programBoth"
+                                    wire:model="program" value="both">
+                                <label class="btn btn-outline-primary text-start py-3" for="programBoth">
+                                    <i class="fas fa-clipboard-list me-2"></i>
+                                    <strong>Both MBBS & BDS</strong>
+                                    <span class="badge bg-primary float-end">
+                                        Rs. 8,000
+                                    </span>
+                                </label>
+                            </div>
+                        @endif
+
                         @error('program')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                        @error('localProgram')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                        @error('intlProgram')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                        @error('specialProgram')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
@@ -133,13 +232,6 @@
                                     <i class="fas fa-globe me-2"></i> Online
                                 </label>
                             </div>
-                            {{-- <div class="col-6">
-                                <input type="radio" class="btn-check" name="paymentMode" id="paymentForeign"
-                                    wire:model="paymentMode" value="foreign">
-                                <label class="btn btn-outline-primary w-100 py-3" for="paymentForeign">
-                                    <i class="fas fa-exchange-alt me-2"></i> Foreign
-                                </label>
-                            </div> --}}
                         </div>
                         @error('paymentMode')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
