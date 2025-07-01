@@ -51,13 +51,13 @@
 
                             <!-- Nationality -->
                             <div class="mb-3">
-                                <label for="nationality" class="form-label">{{ __('Nationality') }}</label>
+                                <label for="nationality" class="form-label">{{ __('Category') }}</label>
                                 <select wire:model.live="nationality" x-model="nationality" id="nationality"
                                     class="form-select">
-                                    <option value="">{{ __('Select Nationality') }}</option>
+                                    <option value="">{{ __('Select Category') }}</option>
                                     <option value="local">Local</option>
                                     <option value="foreign">Foreign</option>
-                                    <option value="special_foreign">Special Foreign</option>
+
                                 </select>
                                 @error('nationality')
                                     <div class="text-danger text-sm mt-1">{{ $message }}</div>
