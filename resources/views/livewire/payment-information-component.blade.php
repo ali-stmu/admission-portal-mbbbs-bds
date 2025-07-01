@@ -5,36 +5,36 @@
             Payment Information
         </h4>
     </div>
-    <div class="card-body p-4">
+    <div class="card-body p-4" x-data="{ selectedPaymentMode: '{{ $paymentMode }}' }">
+        <!-- Fee Structure -->
         <div class="alert alert-info d-flex align-items-start">
             <i class="fas fa-info-circle fa-2x me-3 mt-1"></i>
             <div>
                 <h5 class="alert-heading mb-3">Fee Structure</h5>
                 <ul class="mb-0 list-unstyled">
                     <li class="mb-2 d-flex">
-                        <span class="badge bg-primary rounded-pill me-3"
-                            style="width: 24px; height: 24px; line-height: 24px;">1</span>
+                        <span class="badge bg-primary rounded-pill me-3">1</span>
                         <span>Rs. 6,000 for applying to a single program (MBBS or BDS)</span>
                     </li>
                     <li class="mb-2 d-flex">
-                        <span class="badge bg-primary rounded-pill me-3"
-                            style="width: 24px; height: 24px; line-height: 24px;">2</span>
+                        <span class="badge bg-primary rounded-pill me-3">2</span>
                         <span>Rs. 8,000 for applying to both programs (MBBS and BDS)</span>
                     </li>
                     <li class="d-flex">
-                        <span class="badge bg-primary rounded-pill me-3"
-                            style="width: 24px; height: 24px; line-height: 24px;">3</span>
+                        <span class="badge bg-primary rounded-pill me-3">3</span>
                         <span>One-time application fee of USD 100 for international students</span>
                     </li>
                 </ul>
             </div>
         </div>
 
+        <!-- Form Starts -->
         <form wire:submit.prevent="save">
             <div class="row g-4">
                 <div class="col-md-6">
-                    <!-- Program Selection -->
-                    <!-- Replace the existing Program Selection section with this code -->
+                    <!-- Program Selection Section -->
+                    <!-- Keep your program selection code here -->
+                    <!-- ... (Skipped for brevity - keep your existing program selection section unchanged) -->
                     <div class="mb-4">
                         <label class="form-label fw-bold d-block mb-3">
                             <i class="fas fa-graduation-cap me-2 text-primary"></i>
@@ -173,9 +173,7 @@
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
-
-
-                    <!-- Amount Display -->
+                    <!-- Amount Payable -->
                     <div class="mb-4">
                         <label class="form-label fw-bold">
                             <i class="fas fa-money-bill-wave me-2 text-primary"></i>
@@ -188,8 +186,8 @@
                             </span>
                             <input type="text"
                                 class="form-control @error('amount') is-invalid @enderror py-3 fw-bold"
-                                wire:model="amount" readonly style="background-color: #f8f9fa; min-width: 120px;">
-                            <span class="input-group-text bg-white" style="min-width: 60px;">
+                                wire:model="amount" readonly style="background-color: #f8f9fa;">
+                            <span class="input-group-text bg-white">
                                 {{ $isInternational ? 'USD' : 'PKR' }}
                             </span>
                         </div>
@@ -213,78 +211,63 @@
                         <div class="row g-2">
                             <div class="col-6">
                                 <input type="radio" class="btn-check" name="paymentMode" id="paymentVoucher"
-                                    wire:model="paymentMode" value="voucher">
+                                    wire:model="paymentMode" value="voucher"
+                                    @click="selectedPaymentMode = 'voucher'">
                                 <label class="btn btn-outline-primary w-100 py-3" for="paymentVoucher">
                                     <i class="fas fa-file-invoice me-2"></i> Voucher
                                 </label>
                             </div>
                             <div class="col-6">
                                 <input type="radio" class="btn-check" name="paymentMode" id="paymentAtm"
-                                    wire:model="paymentMode" value="atm">
+                                    wire:model="paymentMode" value="atm" @click="selectedPaymentMode = 'atm'">
                                 <label class="btn btn-outline-primary w-100 py-3" for="paymentAtm">
-                                    <i class="fas fa-money-check-alt me-2"></i> ATM
+                                    <i class="fas fa-money-check-alt me-2"></i> ATM/Online
                                 </label>
                             </div>
-                            <div class="col-6">
+                            {{-- <div class="col-6">
                                 <input type="radio" class="btn-check" name="paymentMode" id="paymentOnline"
-                                    wire:model="paymentMode" value="online">
+                                    wire:model="paymentMode" value="online" @click="selectedPaymentMode = 'online'">
                                 <label class="btn btn-outline-primary w-100 py-3" for="paymentOnline">
                                     <i class="fas fa-globe me-2"></i> Online
                                 </label>
-                            </div>
+                            </div> --}}
                         </div>
                         @error('paymentMode')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    @if ($paymentMode === 'voucher' && $isInternational == false)
-                        <div class="mb-4 animate__animated animate__fadeIn">
-                            <button type="button" class="btn btn-primary w-100 py-3" wire:click="downloadChallan">
-                                <i class="fas fa-download me-2"></i> Download Challan Form
-                            </button>
-                            <div class="alert alert-info mt-3">
-                                <i class="fas fa-info-circle me-2"></i>
-                                Please download the challan, pay at the bank, and upload the receipt below
-                            </div>
+                    <!-- Voucher Section -->
+                    <div class="mb-4 animate__animated animate__fadeIn" x-show="selectedPaymentMode === 'voucher'">
+                        <button type="button" class="btn btn-primary w-100 py-3" wire:click="downloadChallan">
+                            <i class="fas fa-download me-2"></i> Download Challan Form
+                        </button>
+                        <div class="alert alert-info mt-3">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Please download the challan, pay at the bank, and upload the receipt below
                         </div>
-                    @endif
-                    @if ($paymentMode === 'voucher' && $isInternational == true)
+                    </div>
+
+                    <!-- ATM / Online Transaction ID -->
+                    <template x-if="selectedPaymentMode === 'atm' || selectedPaymentMode === 'online'">
                         <div class="mb-4 animate__animated animate__fadeIn">
-                            @if ($isInternational)
-                                <div class="alert alert-warning mb-3">
-                                    <i class="fas fa-info-circle me-2"></i>
-                                    International students can pay either $100 or equivalent PKR
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-md-6">
-                                        <button type="button" class="btn btn-primary w-100 py-3"
-                                            wire:click="downloadChallan">
-                                            <i class="fas fa-download me-2"></i> Download Dollar Challan ($100)
-                                        </button>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <button type="button" class="btn btn-outline-primary w-100 py-3"
-                                            wire:click="downloadPkrChallan">
-                                            <i class="fas fa-download me-2"></i> Download PKR Challan
-                                            ({{ number_format(100 * $exchangeRate) }})
-                                        </button>
-                                    </div>
-                                </div>
-                            @else
-                                <button type="button" class="btn btn-primary w-100 py-3"
-                                    wire:click="downloadChallan">
-                                    <i class="fas fa-download me-2"></i> Download Challan Form
-                                </button>
-                            @endif
-                            <div class="alert alert-info mt-3">
-                                <i class="fas fa-info-circle me-2"></i>
-                                Please download the challan, pay at the bank, and upload the receipt below
+                            <label class="form-label fw-bold">Transaction ID/Reference</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white">
+                                    <i class="fas fa-hashtag text-primary"></i>
+                                </span>
+                                <input type="text"
+                                    class="form-control @error('transactionId') is-invalid @enderror py-3"
+                                    wire:model="transactionId" placeholder="Enter transaction reference">
                             </div>
+                            @error('transactionId')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
-                    @endif
+                    </template>
                 </div>
 
+                <!-- Right Column -->
                 <div class="col-md-6">
                     <div class="payment-details-container bg-light p-4 rounded h-100">
                         <h5 class="mb-4 text-primary">
@@ -308,7 +291,7 @@
                             @enderror
                         </div>
 
-                        <!-- Payment Proof Upload -->
+                        <!-- Upload Proof -->
                         <div class="mb-4">
                             <label class="form-label fw-bold">Upload Payment Proof</label>
                             <div class="file-upload-wrapper">
@@ -324,35 +307,6 @@
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
-
-                        <!-- Conditional Fields -->
-                        @if ($paymentMode === 'foreign' || $paymentMode === 'online' || $paymentMode === 'atm')
-                            <div class="mb-4 animate__animated animate__fadeIn">
-                                <label class="form-label fw-bold">Transaction ID/Reference</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-white">
-                                        <i class="fas fa-hashtag text-primary"></i>
-                                    </span>
-                                    <input type="text"
-                                        class="form-control @error('transactionId') is-invalid @enderror py-3"
-                                        wire:model="transactionId" placeholder="Enter transaction reference">
-                                </div>
-                                @error('transactionId')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        @endif
-
-                        @if ($paymentMode === 'foreign')
-                            <div class="mb-3 animate__animated animate__fadeIn">
-                                <label class="form-label fw-bold">Payment Details</label>
-                                <textarea class="form-control @error('paymentDetails') is-invalid @enderror py-3" wire:model="paymentDetails"
-                                    rows="3" placeholder="Additional payment details"></textarea>
-                                @error('paymentDetails')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        @endif
                     </div>
                 </div>
             </div>
@@ -369,6 +323,8 @@
             </div>
         </form>
     </div>
+
+    <!-- Styling -->
     <style>
         .card {
             border-radius: 0.5rem;
