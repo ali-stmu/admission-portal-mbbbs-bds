@@ -441,7 +441,7 @@
 
             <!-- Form Actions -->
             <div class="d-flex justify-content-between mt-5">
-                <button type="button" class="btn btn-outline-secondary" wire:click="$emit('goToPreviousStep')">
+                <button type="button" class="btn btn-outline-secondary" wire:click="$dispatch('previousStep')">
                     <i class="fas fa-arrow-left me-2"></i> Back
                 </button>
                 <button type="submit" class="btn btn-primary px-4">
