@@ -60,17 +60,17 @@ class PersonalProfileComponent extends Component
     public $permanentAddress;
 
     protected $rules = [
-        'photo' => 'nullable|image|max:1024', // Changed to nullable for update
-        'name' => 'required|string|max:255',
-        'cnic' => 'required|string|max:15|unique:students,cnic,', // Added exception for update
+        'photo' => 'required|image|max:1024', // Changed to nullable for update
+        'name' => 'nullable|string|max:255',
+        'cnic' => 'nullable|string|max:15|unique:students,cnic,', // Added exception for update
         'cnicCopy' => 'nullable|file|mimes:pdf,jpg,png|max:2048', // Changed to nullable for update
         'gender' => 'required|in:male,female,other',
         'dob' => 'required|date',
         'mobile' => 'required|string|max:15',
         'passportNo' => 'required_if:nationality,foreign|nullable|string|max:20',
         'passportCopy' => 'required_if:nationality,foreign|nullable|file|mimes:pdf,jpg,png|max:2048',
-        'domicile' => 'required|string|max:100',
-        'email' => 'required|email|unique:students,email,', // Added exception for update
+        'domicile' => 'nullable|string|max:100',
+        'email' => 'nullable|email|unique:students,email,', // Added exception for update
         'nationality' => 'required|in:pakistani,foreign',
         'province' => 'required|string|max:50',
         
@@ -97,60 +97,66 @@ class PersonalProfileComponent extends Component
         'permanentCountry' => 'required_if:sameAsMailing,false|nullable|string|max:50',
     ];
 
-    public function mount($termId)
-    {
-        $this->termId = $termId;
+public function mount($termId)
+{
+    $this->termId = $termId;
+    
+    // Get the authenticated user
+    $user = Auth::user();
+    
+    // Check if student record exists for current user
+    $student = Student::where('user_id', $user->id)->first();
+    
+    if ($student) {
+        // Populate fields with existing data
+        $this->studentId = $student->id;
+        $this->applicationNo = $student->application_no;
+        $this->name = $student->name;
+        $this->cnic = $student->cnic;
+        $this->gender = $student->gender;
+        $this->dob = $student->dob;
+        $this->mobile = $student->mobile;
+        $this->passportNo = $student->passport_no;
+        $this->domicile = $student->domicile;
+        $this->email = $student->email;
+        $this->nationality = $student->nationality;
+        $this->province = $student->province;
         
-        // Check if student record exists for current user
-        $student = Student::where('user_id', Auth::id())->first();
+        // Father's information
+        $this->fatherName = $student->father_name;
+        $this->fatherNic = $student->father_nic;
+        $this->fatherEmail = $student->father_email;
+        $this->fatherProfession = $student->father_profession;
+        $this->fatherCompany = $student->father_company;
+        $this->fatherMobile = $student->father_mobile;
+        $this->fatherResPhone = $student->father_res_phone;
+        $this->fatherOfficePhone = $student->father_office_phone;
         
-        if ($student) {
-            // Populate fields with existing data
-            $this->studentId = $student->id;
-            $this->applicationNo = $student->application_no;
-            $this->name = $student->name;
-            $this->cnic = $student->cnic;
-            $this->gender = $student->gender;
-            $this->dob = $student->dob;
-            $this->mobile = $student->mobile;
-            $this->passportNo = $student->passport_no;
-            $this->domicile = $student->domicile;
-            $this->email = $student->email;
-            $this->nationality = $student->nationality;
-            $this->province = $student->province;
-            
-            // Father's information
-            $this->fatherName = $student->father_name;
-            $this->fatherNic = $student->father_nic;
-            $this->fatherEmail = $student->father_email;
-            $this->fatherProfession = $student->father_profession;
-            $this->fatherCompany = $student->father_company;
-            $this->fatherMobile = $student->father_mobile;
-            $this->fatherResPhone = $student->father_res_phone;
-            $this->fatherOfficePhone = $student->father_office_phone;
-            
-            // Address information
-            $this->mailingHouseNo = $student->mailing_house_no;
-            $this->mailingStreet = $student->mailing_street;
-            $this->mailingSector = $student->mailing_sector;
-            $this->mailingTehsil = $student->mailing_tehsil;
-            $this->mailingCity = $student->mailing_city;
-            $this->mailingCountry = $student->mailing_country;
-            $this->mailingAddress = $student->mailing_address;
-            
-            $this->permanentHouseNo = $student->permanent_house_no;
-            $this->permanentStreet = $student->permanent_street;
-            $this->permanentSector = $student->permanent_sector;
-            $this->permanentTehsil = $student->permanent_tehsil;
-            $this->permanentCity = $student->permanent_city;
-            $this->permanentCountry = $student->permanent_country;
-            $this->permanentAddress = $student->permanent_address;
-            $this->sameAsMailing = $student->mailing_address === $student->permanent_address;
-        } else {
-            // New application
-            $this->applicationNo = 'STMU-' . date('Y') . '-' . str_pad(Student::count() + 1, 5, '0', STR_PAD_LEFT);
-        }
+        // Address information
+        $this->mailingHouseNo = $student->mailing_house_no;
+        $this->mailingStreet = $student->mailing_street;
+        $this->mailingSector = $student->mailing_sector;
+        $this->mailingTehsil = $student->mailing_tehsil;
+        $this->mailingCity = $student->mailing_city;
+        $this->mailingCountry = $student->mailing_country;
+        $this->mailingAddress = $student->mailing_address;
+        
+        $this->permanentHouseNo = $student->permanent_house_no;
+        $this->permanentStreet = $student->permanent_street;
+        $this->permanentSector = $student->permanent_sector;
+        $this->permanentTehsil = $student->permanent_tehsil;
+        $this->permanentCity = $student->permanent_city;
+        $this->permanentCountry = $student->permanent_country;
+        $this->permanentAddress = $student->permanent_address;
+        $this->sameAsMailing = $student->mailing_address === $student->permanent_address;
+    } else {
+        // New application - pre-fill name and email from user
+        $this->name = $user->name;
+        $this->email = $user->email;
+        $this->cnic = $user->cnic; 
+        $this->applicationNo = 'STMU-' . date('Y') . '-' . str_pad(Student::count() + 1, 5, '0', STR_PAD_LEFT);
     }
+}
 
     public function updatedSameAsMailing($value)
     {

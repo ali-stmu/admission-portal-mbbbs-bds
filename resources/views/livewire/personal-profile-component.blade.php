@@ -33,7 +33,7 @@
                                 @endif
                             </div>
                             <input type="file" class="form-control visually-hidden" id="photoUpload"
-                                wire:model="photo">
+                                wire:model="photo" accept="image/*">
                             <label for="photoUpload"
                                 class="btn btn-sm btn-outline-primary position-absolute bottom-0 start-0">
                                 <i class="fas fa-camera me-1"></i> Upload
@@ -54,19 +54,21 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                    wire:model="name" placeholder="Your full name" required>
+                                    wire:model="name" placeholder="Your full name" required readonly>
                             </div>
                             @error('name')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 
+
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">CNIC <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                                 <input type="text" class="form-control @error('cnic') is-invalid @enderror"
-                                    wire:model="cnic" placeholder="XXXXX-XXXXXXX-X" required>
+                                    wire:model="cnic" placeholder="XXXXX-XXXXXXX-X" required
+                                    {{ $studentId ? '' : 'readonly' }}> <!-- Only readonly for new records -->
                             </div>
                             @error('cnic')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -126,7 +128,7 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                 <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                    wire:model="email" placeholder="your@email.com" required>
+                                    wire:model="email" placeholder="your@email.com" required readonly>
                             </div>
                             @error('email')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -194,7 +196,7 @@
                         @endif
 
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Domicile <span class="text-danger">*</span></label>
+                            <label class="form-label fw-semibold">Domicile </label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                                 <input type="text" class="form-control @error('domicile') is-invalid @enderror"
