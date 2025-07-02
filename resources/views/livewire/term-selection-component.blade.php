@@ -24,8 +24,14 @@
             border-color: var(--bs-primary);
         }
     </style>
+
     <div class="card-header bg-primary text-white rounded-top">
         <h4 class="mb-0">Select Admission Term</h4>
+    </div>
+    <div class="text-end mb-3 me-3">
+        <a href="{{ asset('assets/img/booklet.pdf') }}" target="_blank" class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-file-pdf me-1"></i> View Admission Booklet
+        </a>
     </div>
     <div class="card-body p-4">
         @if ($terms->isEmpty())
