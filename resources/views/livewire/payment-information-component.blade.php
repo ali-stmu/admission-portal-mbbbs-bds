@@ -70,27 +70,27 @@
                             </div>
 
                             <div class="mb-4">
-                                <h6 class="fw-bold text-muted mb-3">International Programs (select one)</h6>
+                                <h6 class="fw-bold text-muted mb-3">FOREIGN Programs (select one)</h6>
                                 <div class="btn-group-vertical w-100" role="group">
                                     <input type="radio" class="btn-check" name="intlProgram" id="intlMbbs"
                                         wire:model="intlProgram" value="intl_mbbs">
                                     <label class="btn btn-outline-primary text-start py-3" for="intlMbbs">
                                         <i class="fas fa-user-md me-2"></i>
-                                        <strong>International MBBS</strong>
+                                        <strong>FOREIGN MBBS</strong>
                                     </label>
 
                                     <input type="radio" class="btn-check" name="intlProgram" id="intlBds"
                                         wire:model="intlProgram" value="intl_bds">
                                     <label class="btn btn-outline-primary text-start py-3" for="intlBds">
                                         <i class="fas fa-tooth me-2"></i>
-                                        <strong>International BDS</strong>
+                                        <strong>FOREIGN BDS</strong>
                                     </label>
 
                                     <input type="radio" class="btn-check" name="intlProgram" id="intlBoth"
                                         wire:model="intlProgram" value="intl_both">
                                     <label class="btn btn-outline-primary text-start py-3" for="intlBoth">
                                         <i class="fas fa-clipboard-list me-2"></i>
-                                        <strong>International Both MBBS & BDS</strong>
+                                        <strong>FOREIGN Both MBBS & BDS</strong>
                                     </label>
                                 </div>
                             </div>
@@ -102,21 +102,21 @@
                                         wire:model="specialProgram" value="special_mbbs">
                                     <label class="btn btn-outline-primary text-start py-3" for="specialMbbs">
                                         <i class="fas fa-user-md me-2"></i>
-                                        <strong>Special MBBS</strong>
+                                        <strong>Special FOREIGN MBBS</strong>
                                     </label>
 
                                     <input type="radio" class="btn-check" name="specialProgram" id="specialBds"
                                         wire:model="specialProgram" value="special_bds">
                                     <label class="btn btn-outline-primary text-start py-3" for="specialBds">
                                         <i class="fas fa-tooth me-2"></i>
-                                        <strong>Special BDS</strong>
+                                        <strong>Special FOREIGN BDS</strong>
                                     </label>
 
                                     <input type="radio" class="btn-check" name="specialProgram" id="specialBoth"
                                         wire:model="specialProgram" value="special_both">
                                     <label class="btn btn-outline-primary text-start py-3" for="specialBoth">
                                         <i class="fas fa-clipboard-list me-2"></i>
-                                        <strong>Special Both MBBS & BDS</strong>
+                                        <strong>Special FOREIGN Both MBBS & BDS</strong>
                                     </label>
                                 </div>
                             </div>
@@ -255,6 +255,32 @@
 
                     <!-- ATM / Online Transaction ID -->
                     <template x-if="selectedPaymentMode === 'atm' || selectedPaymentMode === 'online'">
+                        <div class="card bg-primary text-white mb-4 animate__animated animate__fadeIn shadow">
+                            <div class="card-header fw-bold">Banking Details</div>
+                            <div class="card-body" style="white-space: pre-line">
+                                For Foreign Category Seats - MBBS/BDS
+                                HABIB BANK LTD – FOR MBBS/BDS Local Seats
+                                <strong>CMD ACCOUNT NO:</strong> 50007902906303
+                                <strong>ACCOUNT TITLE:</strong> SHIFA TAMEER-MILLAT UNIVERSITY
+                                <strong>BANK NAME:</strong> HBL
+
+                                <strong>Currency:</strong> USD
+
+                                <u>Intermediary - Name/Address (Field 56 D)</u>
+                                Mashreq Bank
+                                <strong>SWIFT CODE:</strong> MSHQUS33
+
+                                <u>Account with Institution (Field 57 D)</u>
+                                <strong>Account Number:</strong> 70120216
+                                <strong>Title:</strong> Al Baraka Bank (Pakistan) Ltd
+                                <strong>SWIFT:</strong> AIINPKKA
+
+                                <u>Beneficiary Customer (Field 59)</u>
+                                <strong>IBAN:</strong> PK52AIIN0000281073951036
+                                <strong>Title:</strong> SHIFA TAMEER-E-MILLAT UNIVERSITY
+                            </div>
+                        </div>
+
                         <div class="mb-4 animate__animated animate__fadeIn">
                             <label class="form-label fw-bold">Transaction ID/Reference</label>
                             <div class="input-group">
@@ -269,6 +295,8 @@
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
+
+
                     </template>
                 </div>
 

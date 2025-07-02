@@ -14,7 +14,7 @@ class PersonalProfileComponent extends Component
     public $termId;
     public $applicationNo;
     public $studentId;
-    
+    public $showPassportFields = false;
     // Personal Information
     public $photo;
     public $name;
@@ -103,6 +103,7 @@ public function mount($termId)
     
     // Get the authenticated user
     $user = Auth::user();
+    $this->showPassportFields = $user->nationality !== 'local';
     
     // Check if student record exists for current user
     $student = Student::where('user_id', $user->id)->first();
@@ -149,6 +150,7 @@ public function mount($termId)
         $this->permanentCountry = $student->permanent_country;
         $this->permanentAddress = $student->permanent_address;
         $this->sameAsMailing = $student->mailing_address === $student->permanent_address;
+        
     } else {
         // New application - pre-fill name and email from user
         $this->name = $user->name;
@@ -156,6 +158,10 @@ public function mount($termId)
         $this->cnic = $user->cnic; 
         $this->applicationNo = 'STMU-' . date('Y') . '-' . str_pad(Student::count() + 1, 5, '0', STR_PAD_LEFT);
     }
+}
+public function updatedNationality($value)
+{
+    $this->showPassportFields = $value === 'foreign';
 }
 
     public function updatedSameAsMailing($value)

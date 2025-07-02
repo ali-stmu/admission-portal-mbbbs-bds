@@ -140,11 +140,13 @@
                                     class="text-danger">*</span></label>
                             <div class="btn-group w-100" role="group">
                                 <input type="radio" class="btn-check" wire:model="nationality"
-                                    id="nationalityPakistani" value="pakistani" autocomplete="off" checked>
+                                    id="nationalityPakistani" value="pakistani" autocomplete="off"
+                                    {{ !$showPassportFields ? 'checked' : '' }}>
                                 <label class="btn btn-outline-primary" for="nationalityPakistani">Pakistani</label>
 
                                 <input type="radio" class="btn-check" wire:model="nationality"
-                                    id="nationalityForeign" value="foreign" autocomplete="off">
+                                    id="nationalityForeign" value="foreign" autocomplete="off"
+                                    {{ $showPassportFields ? 'checked' : '' }}>
                                 <label class="btn btn-outline-primary" for="nationalityForeign">Foreign</label>
                             </div>
                             @error('nationality')
@@ -170,7 +172,7 @@
                             @enderror
                         </div>
 
-                        @if ($nationality === 'foreign')
+                        @if ($showPassportFields)
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Passport Number</label>
                                 <div class="input-group">
