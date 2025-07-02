@@ -5,9 +5,11 @@
             Test Information
         </h4>
     </div>
+
     <div class="card-body p-4">
         <form wire:submit.prevent="save">
             <div class="row g-4">
+                <!-- Left Column -->
                 <div class="col-md-6">
                     <!-- Test Type -->
                     <div class="mb-4">
@@ -17,80 +19,64 @@
                         </label>
 
                         <div class="btn-group-vertical w-100" role="group">
-                            <!-- Local Heading -->
                             <template x-if="!isInternational">
                                 <h6 class="text-success fw-bold mb-2">Tests Available for Local Students</h6>
                             </template>
 
-                            <!-- STMU -->
                             <input type="radio" class="btn-check" name="testType" id="testTypeStmu"
                                 wire:model="testType" value="stmu">
                             <label class="btn btn-outline-primary text-start py-3" for="testTypeStmu">
-                                <i class="fas fa-university me-2"></i>
-                                <strong>STMU Entrance Test</strong>
+                                <i class="fas fa-university me-2"></i> <strong>STMU Entrance Test</strong>
                             </label>
 
-                            <!-- MDCAT -->
                             <input type="radio" class="btn-check" name="testType" id="testTypeMdcat"
                                 wire:model="testType" value="mdcat">
                             <label class="btn btn-outline-primary text-start py-3" for="testTypeMdcat">
-                                <i class="fas fa-flask me-2"></i>
-                                <strong>MDCAT</strong>
+                                <i class="fas fa-flask me-2"></i> <strong>MDCAT</strong>
                             </label>
 
-                            <!-- Foreign Heading -->
                             <template x-if="!isInternational">
                                 <h6 class="text-muted fw-bold mt-4 mb-2">Tests for Foreign Nationals Only</h6>
                             </template>
 
-                            <!-- SAT-II -->
                             <input type="radio" class="btn-check" name="testType" id="testTypeSat"
                                 wire:model="testType" value="sat-ii" :disabled="!isInternational">
                             <label class="btn btn-outline-primary text-start py-3" for="testTypeSat"
                                 :class="{ 'disabled': !isInternational }">
-                                <i class="fas fa-globe-americas me-2"></i>
-                                <strong>SAT-II</strong>
+                                <i class="fas fa-globe-americas me-2"></i> <strong>SAT-II</strong>
                             </label>
 
-                            <!-- Foreign MCAT -->
                             <input type="radio" class="btn-check" name="testType" id="testTypeForeign"
                                 wire:model="testType" value="foreign-mcat" :disabled="!isInternational">
                             <label class="btn btn-outline-primary text-start py-3" for="testTypeForeign"
                                 :class="{ 'disabled': !isInternational }">
-                                <i class="fas fa-passport me-2"></i>
-                                <strong>Foreign MCAT</strong>
+                                <i class="fas fa-passport me-2"></i> <strong>Foreign MCAT</strong>
                             </label>
 
-                            <!-- UCAT -->
                             <input type="radio" class="btn-check" name="testType" id="testTypeUcat"
                                 wire:model="testType" value="ucat" :disabled="!isInternational">
                             <label class="btn btn-outline-primary text-start py-3" for="testTypeUcat"
                                 :class="{ 'disabled': !isInternational }">
-                                <i class="fas fa-stethoscope me-2"></i>
-                                <strong>UCAT</strong>
+                                <i class="fas fa-stethoscope me-2"></i> <strong>UCAT</strong>
                             </label>
 
-                            <!-- Other -->
                             <input type="radio" class="btn-check" name="testType" id="testTypeOther"
                                 wire:model="testType" value="other" :disabled="!isInternational">
                             <label class="btn btn-outline-primary text-start py-3" for="testTypeOther"
                                 :class="{ 'disabled': !isInternational }">
-                                <i class="fas fa-question-circle me-2"></i>
-                                <strong>Other equivalent examination</strong>
+                                <i class="fas fa-question-circle me-2"></i> <strong>Other equivalent
+                                    examination</strong>
                             </label>
                         </div>
-
                         @error('testType')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <!-- Conditional Fields -->
+                    <!-- STMU Center -->
                     <div class="mb-4 animate__animated animate__fadeIn" x-show="testType === 'stmu'">
-                        <label class="form-label fw-bold">
-                            <i class="fas fa-map-marker-alt me-2 text-primary"></i>
-                            Test Center
-                        </label>
+                        <label class="form-label fw-bold"><i class="fas fa-map-marker-alt me-2 text-primary"></i> Test
+                            Center</label>
                         <select class="form-select @error('testCenter') is-invalid @enderror py-3"
                             wire:model="testCenter">
                             <option value="">Select Test Center</option>
@@ -101,18 +87,18 @@
                         @error('testCenter')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
+
                         <div class="alert alert-info mt-3">
                             <i class="fas fa-info-circle me-2"></i>
                             Note: In case any center fails to meet the minimum requirement of 50 participants,
-                            the test will be conducted at the nearest available center
+                            the test will be conducted at the nearest available center.
                         </div>
                     </div>
 
+                    <!-- Other Test Name -->
                     <div class="mb-4 animate__animated animate__fadeIn" x-show="testType === 'other'">
-                        <label class="form-label fw-bold">
-                            <i class="fas fa-pen-alt me-2 text-primary"></i>
-                            Test Name
-                        </label>
+                        <label class="form-label fw-bold"><i class="fas fa-pen-alt me-2 text-primary"></i> Test
+                            Name</label>
                         <input type="text" class="form-control @error('testName') is-invalid @enderror py-3"
                             wire:model="testName" placeholder="Enter test name">
                         @error('testName')
@@ -125,17 +111,45 @@
                 <div class="col-md-6">
                     <div x-show="testType !== 'stmu'" class="test-details-container bg-light p-4 rounded">
                         <h5 class="mb-4 text-primary">
-                            <i class="fas fa-file-signature me-2"></i>
-                            Test Results
+                            <i class="fas fa-file-signature me-2"></i> Test Results
                         </h5>
 
-                        <!-- Test Score -->
+                        <!-- Test Year -->
                         <div class="mb-4">
+                            <label class="form-label fw-bold">Test Year</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i
+                                        class="fas fa-calendar text-primary"></i></span>
+                                <input type="number" wire:model="testYear"
+                                    class="form-control @error('testYear') is-invalid @enderror py-3"
+                                    placeholder="Enter test year (e.g., 2024)" min="2000"
+                                    max="{{ date('Y') }}">
+                            </div>
+                            @error('testYear')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Result Status -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Result Status</label>
+                            <select wire:model="resultStatus"
+                                class="form-select @error('resultStatus') is-invalid @enderror py-3">
+                                <option value="">Select Status</option>
+                                <option value="declared">Declared</option>
+                                <option value="awaited">Awaited</option>
+                            </select>
+                            @error('resultStatus')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Test Score -->
+                        <div class="mb-4" x-show="$wire.resultStatus === 'declared'" x-transition>
                             <label class="form-label fw-bold">Test Score</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-white">
-                                    <i class="fas fa-percentage text-primary"></i>
-                                </span>
+                                <span class="input-group-text bg-white"><i
+                                        class="fas fa-percentage text-primary"></i></span>
                                 <input type="number" step="0.01"
                                     class="form-control @error('testScore') is-invalid @enderror py-3"
                                     wire:model="testScore" placeholder="Enter your score">
@@ -145,17 +159,15 @@
                             @enderror
                         </div>
 
-                        <!-- Test Document Upload -->
+                        <!-- Test Document -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Upload Test Result Document</label>
-                            <div class="file-upload-wrapper">
-                                <input type="file" class="form-control @error('testDocument') is-invalid @enderror"
-                                    wire:model="testDocument" accept=".pdf,.jpg,.jpeg,.png">
-                                <div class="file-upload-message p-3 text-center border rounded">
-                                    <i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i>
-                                    <div class="fw-bold">Click to upload or drag and drop</div>
-                                    <small class="text-muted">PDF, JPG or PNG (Max 2MB)</small>
-                                </div>
+                            <input type="file" class="form-control @error('testDocument') is-invalid @enderror"
+                                wire:model="testDocument" accept=".pdf,.jpg,.jpeg,.png">
+                            <div class="file-upload-message p-3 text-center border rounded mt-2">
+                                <i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i>
+                                <div class="fw-bold">Click to upload or drag and drop</div>
+                                <small class="text-muted">PDF, JPG or PNG (Max 2MB)</small>
                             </div>
                             @error('testDocument')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>

@@ -20,67 +20,67 @@ class TestInformationComponent extends Component
     public $testDocument;
     public $existingDocumentPath;
     public $isInternational = true;
+    public $testYear;
+    public $resultStatus = 'declared'; // default value
 
-    
     public $testCenters = [
-        'Islamabad',
-        'Rawalpindi',
-        'Karachi',
-        'Lahore',
-        'Peshawar',
-        'Quetta',
-        'Multan',
-        'Faisalabad'
+        'Islamabad', 'Rawalpindi', 'Karachi', 'Lahore',
+        'Peshawar', 'Quetta', 'Multan', 'Faisalabad'
     ];
 
-    protected $rules = [
-        'testType' => 'required|in:stmu,mdcat,sat-ii,foreign-mcat,ucat,other',
-        'testCenter' => 'required_if:testType,stmu|nullable|string|max:100',
-        'testName' => 'required_if:testType,other|nullable|string|max:255',
-        'testScore' => 'nullable|numeric|min:0|max:1000',
-        'testDocument' => 'required_if:testType,mdcat,sat-ii,foreign-mcat,ucat,other|nullable|file|mimes:pdf,jpg,png|max:2048',
-    ];
+    protected function rules()
+    {
+        $rules = [
+            'testType' => 'required|in:stmu,mdcat,sat-ii,foreign-mcat,ucat,other',
+            'testCenter' => 'required_if:testType,stmu|nullable|string|max:100',
+            'testName' => 'required_if:testType,other|nullable|string|max:255',
+            'testYear' => 'required|digits:4|integer|min:2000|max:' . date('Y'),
+            'resultStatus' => 'required|in:awaited,declared',
+            'testDocument' => 'required_if:testType,mdcat,sat-ii,foreign-mcat,ucat,other|nullable|file|mimes:pdf,jpg,png|max:2048',
+        ];
 
+        // If result is declared, then testScore is required
+        if ($this->resultStatus === 'declared') {
+            $rules['testScore'] = 'required|numeric|min:0|max:1000';
+        } else {
+            $rules['testScore'] = 'nullable|numeric|min:0|max:1000';
+        }
 
-public function mount($studentId)
-{
-    $this->studentId = $studentId;
-
-    // Get the currently authenticated user
-    $user = auth()->user();
-
-    // Check if the user's nationality is NOT 'local'
-    $this->isInternational = strtolower($user->nationality) !== 'local';
-
-    // Fetch existing test data for the student if available
-    $existingTest = TestInformation::where('student_id', $studentId)->first();
-
-    if ($existingTest) {
-        $this->testType = $existingTest->test_type;
-        $this->testCenter = $existingTest->test_center;
-        $this->testName = $existingTest->test_name;
-        $this->testScore = $existingTest->test_score;
-        $this->existingDocumentPath = $existingTest->test_document_path;
+        return $rules;
     }
-}
 
+    public function mount($studentId)
+    {
+        $this->studentId = $studentId;
 
+        $user = auth()->user();
+        $this->isInternational = strtolower($user->nationality) !== 'local';
+
+        $existingTest = TestInformation::where('student_id', $studentId)->first();
+
+        if ($existingTest) {
+            $this->testType = $existingTest->test_type;
+            $this->testCenter = $existingTest->test_center;
+            $this->testName = $existingTest->test_name;
+            $this->testScore = $existingTest->test_score;
+            $this->testYear = $existingTest->test_year;
+            $this->resultStatus = $existingTest->result_status ?? 'declared';
+            $this->existingDocumentPath = $existingTest->test_document_path;
+        }
+    }
 
     public function save()
     {
         $this->validate();
 
         $testDocumentPath = $this->existingDocumentPath;
-        
-        // Only process new file upload if a file was provided
+
         if ($this->testDocument) {
-            // Delete old file if it exists
             if ($this->existingDocumentPath && Storage::disk('public')->exists($this->existingDocumentPath)) {
                 Storage::disk('public')->delete($this->existingDocumentPath);
             }
             $testDocumentPath = $this->testDocument->store('test-documents', 'public');
         } elseif (empty($this->existingDocumentPath)) {
-            // If no existing document and no new document provided for types that require it
             $requiredTypes = ['mdcat', 'sat-ii', 'foreign-mcat', 'ucat', 'other'];
             if (in_array($this->testType, $requiredTypes)) {
                 $this->addError('testDocument', 'A document is required for this test type.');
@@ -88,7 +88,6 @@ public function mount($studentId)
             }
         }
 
-        // Update or create test information
         TestInformation::updateOrCreate(
             ['student_id' => $this->studentId],
             [
@@ -96,13 +95,13 @@ public function mount($studentId)
                 'test_center' => $this->testCenter,
                 'test_name' => $this->testName,
                 'test_score' => $this->testScore,
+                'test_year' => $this->testYear,
+                'result_status' => $this->resultStatus,
                 'test_document_path' => $testDocumentPath,
             ]
         );
 
         $this->dispatch('testInformationSaved', studentId: $this->studentId);
-        
-        // Reset the file input after successful save
         $this->reset('testDocument');
     }
 
@@ -111,10 +110,10 @@ public function mount($studentId)
         if ($this->existingDocumentPath && Storage::disk('public')->exists($this->existingDocumentPath)) {
             Storage::disk('public')->delete($this->existingDocumentPath);
         }
-        
+
         $this->existingDocumentPath = null;
         $this->testDocument = null;
-        
+
         TestInformation::where('student_id', $this->studentId)
             ->update(['test_document_path' => null]);
     }
