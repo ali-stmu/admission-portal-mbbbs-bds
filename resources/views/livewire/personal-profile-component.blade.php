@@ -253,7 +253,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Father's/Guardian's Mobile <span
+                    <label class="form-label fw-semibold">Father's/Guardian's Mobile Number <span
                             class="text-danger">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
@@ -266,7 +266,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Father's/Guardian's Email</label>
+                    <label class="form-label fw-semibold">Father's/Guardian's Email Address</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         <input type="email" class="form-control @error('fatherEmail') is-invalid @enderror"
@@ -278,7 +278,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Father's/Guardian's Mobile Profession</label>
+                    <label class="form-label fw-semibold">Father's/Guardian's Profession</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
                         <input type="text" class="form-control @error('fatherProfession') is-invalid @enderror"
@@ -290,7 +290,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Father's/Guardian's Mobile Company/Organization</label>
+                    <label class="form-label fw-semibold">Father's/Guardian's Company/Organization</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-building"></i></span>
                         <input type="text" class="form-control @error('fatherCompany') is-invalid @enderror"
@@ -300,6 +300,7 @@
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
                 </div>
+
             </div>
 
             <!-- Mailing Address Section -->
