@@ -5,14 +5,12 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\AcademicRecord;
-use Illuminate\Support\Facades\Storage;
 
 class AcademicRecordComponent extends Component
 {
     use WithFileUploads;
 
     public $studentId;
-
     public $matricRecords = [
         'school' => '',
         'board' => '',
@@ -21,6 +19,7 @@ class AcademicRecordComponent extends Component
         'maximum_marks' => null,
         'obtained_marks' => null,
         'percentage' => null,
+        'attachment' => null,
     ];
 
     public $intermediateRecords = [
@@ -31,6 +30,7 @@ class AcademicRecordComponent extends Component
         'maximum_marks' => null,
         'obtained_marks' => null,
         'percentage' => null,
+        'attachment' => null,
     ];
 
     public $matricAttachment;
@@ -43,6 +43,7 @@ class AcademicRecordComponent extends Component
             'matricRecords.board' => 'required|string|max:100',
             'matricRecords.year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'matricRecords.result_status' => 'required|in:declared,awaited',
+
             'intermediateRecords.school_college' => 'required|string|max:255',
             'intermediateRecords.board' => 'required|string|max:100',
             'intermediateRecords.year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
@@ -54,8 +55,11 @@ class AcademicRecordComponent extends Component
                 'matricRecords.maximum_marks' => 'required|integer|min:1',
                 'matricRecords.obtained_marks' => 'required|integer|min:0|lte:matricRecords.maximum_marks',
                 'matricRecords.percentage' => 'required|numeric|min:0|max:100',
-                'matricAttachment' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
             ]);
+
+            if (!$this->matricRecords['attachment'] && !$this->matricAttachment) {
+                $rules['matricAttachment'] = 'required|file|mimes:pdf,jpg,jpeg,png|max:2048';
+            }
         }
 
         if ($this->intermediateRecords['result_status'] === 'declared') {
@@ -63,8 +67,11 @@ class AcademicRecordComponent extends Component
                 'intermediateRecords.maximum_marks' => 'required|integer|min:1',
                 'intermediateRecords.obtained_marks' => 'required|integer|min:0|lte:intermediateRecords.maximum_marks',
                 'intermediateRecords.percentage' => 'required|numeric|min:0|max:100',
-                'intermediateAttachment' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
             ]);
+
+            if (!$this->intermediateRecords['attachment'] && !$this->intermediateAttachment) {
+                $rules['intermediateAttachment'] = 'required|file|mimes:pdf,jpg,jpeg,png|max:2048';
+            }
         }
 
         return $rules;
@@ -74,8 +81,13 @@ class AcademicRecordComponent extends Component
     {
         $this->studentId = $studentId;
 
-        $matricRecord = AcademicRecord::where('student_id', $studentId)->where('level', 'matric')->first();
-        $intermediateRecord = AcademicRecord::where('student_id', $studentId)->where('level', 'intermediate')->first();
+        $matricRecord = AcademicRecord::where('student_id', $studentId)
+            ->where('level', 'matric')
+            ->first();
+
+        $intermediateRecord = AcademicRecord::where('student_id', $studentId)
+            ->where('level', 'intermediate')
+            ->first();
 
         if ($matricRecord) {
             $this->matricRecords = [
@@ -86,6 +98,7 @@ class AcademicRecordComponent extends Component
                 'maximum_marks' => $matricRecord->maximum_marks,
                 'obtained_marks' => $matricRecord->obtained_marks,
                 'percentage' => $matricRecord->percentage,
+                'attachment' => $matricRecord->attachment,
             ];
         }
 
@@ -98,6 +111,7 @@ class AcademicRecordComponent extends Component
                 'maximum_marks' => $intermediateRecord->maximum_marks,
                 'obtained_marks' => $intermediateRecord->obtained_marks,
                 'percentage' => $intermediateRecord->percentage,
+                'attachment' => $intermediateRecord->attachment,
             ];
         }
     }
@@ -119,15 +133,14 @@ class AcademicRecordComponent extends Component
     {
         $this->validate();
 
-        $matricAttachmentPath = null;
-        $intermediateAttachmentPath = null;
-
-        if ($this->matricRecords['result_status'] === 'declared' && $this->matricAttachment) {
-            $matricAttachmentPath = $this->matricAttachment->store('attachments/matric', 'public');
+        if ($this->matricAttachment) {
+            $matricPath = $this->matricAttachment->store('attachments/matric', 'public');
+            $this->matricRecords['attachment'] = $matricPath;
         }
 
-        if ($this->intermediateRecords['result_status'] === 'declared' && $this->intermediateAttachment) {
-            $intermediateAttachmentPath = $this->intermediateAttachment->store('attachments/intermediate', 'public');
+        if ($this->intermediateAttachment) {
+            $intermediatePath = $this->intermediateAttachment->store('attachments/intermediate', 'public');
+            $this->intermediateRecords['attachment'] = $intermediatePath;
         }
 
         AcademicRecord::updateOrCreate(
@@ -143,7 +156,7 @@ class AcademicRecordComponent extends Component
                 'maximum_marks' => $this->matricRecords['result_status'] === 'declared' ? $this->matricRecords['maximum_marks'] : 0,
                 'obtained_marks' => $this->matricRecords['result_status'] === 'declared' ? $this->matricRecords['obtained_marks'] : 0,
                 'percentage' => $this->matricRecords['result_status'] === 'declared' ? $this->matricRecords['percentage'] : 0,
-                'attachment' => $matricAttachmentPath,
+                'attachment' => $this->matricRecords['result_status'] === 'declared' ? ($this->matricRecords['attachment'] ?? null) : null,
             ]
         );
 
@@ -160,7 +173,7 @@ class AcademicRecordComponent extends Component
                 'maximum_marks' => $this->intermediateRecords['result_status'] === 'declared' ? $this->intermediateRecords['maximum_marks'] : 0,
                 'obtained_marks' => $this->intermediateRecords['result_status'] === 'declared' ? $this->intermediateRecords['obtained_marks'] : 0,
                 'percentage' => $this->intermediateRecords['result_status'] === 'declared' ? $this->intermediateRecords['percentage'] : 0,
-                'attachment' => $intermediateAttachmentPath,
+                'attachment' => $this->intermediateRecords['result_status'] === 'declared' ? ($this->intermediateRecords['attachment'] ?? null) : null,
             ]
         );
 
