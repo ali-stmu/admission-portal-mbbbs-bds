@@ -18,7 +18,8 @@ class AcademicRecord extends Model
         'result_status',
         'maximum_marks',
         'obtained_marks',
-        'percentage'
+        'percentage',
+        'attachment'
     ];
 
     public function student()

@@ -114,6 +114,16 @@
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
+                        <!-- Attachment Upload -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Upload Matric Certificate</label>
+                            <input type="file" class="form-control @error('matricAttachment') is-invalid @enderror"
+                                wire:model="matricAttachment">
+                            @error('matricAttachment')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
 
                         <!-- Percentage -->
                         <div class="mb-3">
@@ -242,6 +252,17 @@
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
+                        <!-- Attachment Upload -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Upload Intermediate Certificate</label>
+                            <input type="file"
+                                class="form-control @error('intermediateAttachment') is-invalid @enderror"
+                                wire:model="intermediateAttachment">
+                            @error('intermediateAttachment')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
 
                         <!-- Percentage -->
                         <div class="mb-3">
