@@ -47,7 +47,7 @@
                             <input type="radio" class="btn-check" name="testType" id="testTypeSat"
                                 wire:model="testType" value="sat-ii" :disabled="!isInternational">
                             <label class="btn btn-outline-primary text-start py-3" for="testTypeSat"
-                                :class="!isInternational ? 'disabled' : ''">
+                                :class="{ 'disabled': !isInternational }">
                                 <i class="fas fa-globe-americas me-2"></i>
                                 <strong>SAT-II</strong>
                             </label>
@@ -56,7 +56,7 @@
                             <input type="radio" class="btn-check" name="testType" id="testTypeForeign"
                                 wire:model="testType" value="foreign-mcat" :disabled="!isInternational">
                             <label class="btn btn-outline-primary text-start py-3" for="testTypeForeign"
-                                :class="!isInternational ? 'disabled' : ''">
+                                :class="{ 'disabled': !isInternational }">
                                 <i class="fas fa-passport me-2"></i>
                                 <strong>Foreign MCAT</strong>
                             </label>
@@ -65,7 +65,7 @@
                             <input type="radio" class="btn-check" name="testType" id="testTypeUcat"
                                 wire:model="testType" value="ucat" :disabled="!isInternational">
                             <label class="btn btn-outline-primary text-start py-3" for="testTypeUcat"
-                                :class="!isInternational ? 'disabled' : ''">
+                                :class="{ 'disabled': !isInternational }">
                                 <i class="fas fa-stethoscope me-2"></i>
                                 <strong>UCAT</strong>
                             </label>
@@ -74,7 +74,7 @@
                             <input type="radio" class="btn-check" name="testType" id="testTypeOther"
                                 wire:model="testType" value="other" :disabled="!isInternational">
                             <label class="btn btn-outline-primary text-start py-3" for="testTypeOther"
-                                :class="!isInternational ? 'disabled' : ''">
+                                :class="{ 'disabled': !isInternational }">
                                 <i class="fas fa-question-circle me-2"></i>
                                 <strong>Other equivalent examination</strong>
                             </label>

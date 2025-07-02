@@ -19,6 +19,8 @@ class TestInformationComponent extends Component
     public $testScore;
     public $testDocument;
     public $existingDocumentPath;
+    public $isInternational = true;
+
     
     public $testCenters = [
         'Islamabad',
@@ -39,21 +41,30 @@ class TestInformationComponent extends Component
         'testDocument' => 'required_if:testType,mdcat,sat-ii,foreign-mcat,ucat,other|nullable|file|mimes:pdf,jpg,png|max:2048',
     ];
 
-    public function mount($studentId)
-    {
-        $this->studentId = $studentId;
-        
-        // Load existing test information if it exists
-        $existingTest = TestInformation::where('student_id', $studentId)->first();
-        
-        if ($existingTest) {
-            $this->testType = $existingTest->test_type;
-            $this->testCenter = $existingTest->test_center;
-            $this->testName = $existingTest->test_name;
-            $this->testScore = $existingTest->test_score;
-            $this->existingDocumentPath = $existingTest->test_document_path;
-        }
+
+public function mount($studentId)
+{
+    $this->studentId = $studentId;
+
+    // Get the currently authenticated user
+    $user = auth()->user();
+
+    // Check if the user's nationality is NOT 'local'
+    $this->isInternational = strtolower($user->nationality) !== 'local';
+
+    // Fetch existing test data for the student if available
+    $existingTest = TestInformation::where('student_id', $studentId)->first();
+
+    if ($existingTest) {
+        $this->testType = $existingTest->test_type;
+        $this->testCenter = $existingTest->test_center;
+        $this->testName = $existingTest->test_name;
+        $this->testScore = $existingTest->test_score;
+        $this->existingDocumentPath = $existingTest->test_document_path;
     }
+}
+
+
 
     public function save()
     {
