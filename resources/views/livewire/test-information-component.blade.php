@@ -88,10 +88,17 @@
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
 
-                        <div class="alert alert-info mt-3">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Note: In case any center fails to meet the minimum requirement of 50 participants,
-                            the test will be conducted at the nearest available center.
+                        <div class="alert alert-info bg-info-soft border-info mt-3">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-info-circle text-info me-3 fs-4"></i>
+                                <div>
+                                    <strong class="d-block text-light">Important Note</strong>
+                                    <span class="text-light">
+                                        In case any center fails to meet the minimum requirement of 50 participants,
+                                        the test will be conducted at the nearest available center.
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -186,7 +193,9 @@
 
                             <div class="alert alert-info mt-3">
                                 <i class="fas fa-info-circle me-2"></i>
-                                Important: Please ensure you've selected your preferred test center from the options.
+                                <span class="text-light"> Important: Please ensure you've selected your preferred test
+                                    center from the options.</span>
+
                             </div>
                         </div>
                     </div>

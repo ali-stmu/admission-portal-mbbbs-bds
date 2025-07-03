@@ -32,15 +32,22 @@ class TestInformationComponent extends Component
     {
         $rules = [
             'testType' => 'required|in:stmu,mdcat,sat-ii,foreign-mcat,ucat,other',
-            'testCenter' => 'required_if:testType,stmu|nullable|string|max:100',
-            'testName' => 'required_if:testType,other|nullable|string|max:255',
-            'testYear' => 'required|digits:4|integer|min:2000|max:' . date('Y'),
-            'resultStatus' => 'required|in:awaited,declared',
-            'testDocument' => 'required_if:testType,mdcat,sat-ii,foreign-mcat,ucat,other|nullable|file|mimes:pdf,jpg,png|max:2048',
         ];
 
-        // If result is declared, then testScore is required
-        if ($this->resultStatus === 'declared') {
+        // Only require test center for STMU
+        if ($this->testType === 'stmu') {
+            $rules['testCenter'] = 'required|string|max:100';
+        } else {
+            // For other test types
+            $rules['testCenter'] = 'nullable|string|max:100';
+            $rules['testName'] = 'required_if:testType,other|nullable|string|max:255';
+            $rules['testYear'] = 'required|digits:4|integer|min:2000|max:' . date('Y');
+            $rules['resultStatus'] = 'required|in:awaited,declared';
+            $rules['testDocument'] = 'required_if:testType,mdcat,sat-ii,foreign-mcat,ucat,other|nullable|file|mimes:pdf,jpg,png|max:2048';
+        }
+
+        // If result is declared (and not STMU), then testScore is required
+        if ($this->resultStatus === 'declared' && $this->testType !== 'stmu') {
             $rules['testScore'] = 'required|numeric|min:0|max:1000';
         } else {
             $rules['testScore'] = 'nullable|numeric|min:0|max:1000';
@@ -75,16 +82,19 @@ class TestInformationComponent extends Component
 
         $testDocumentPath = $this->existingDocumentPath;
 
-        if ($this->testDocument) {
-            if ($this->existingDocumentPath && Storage::disk('public')->exists($this->existingDocumentPath)) {
-                Storage::disk('public')->delete($this->existingDocumentPath);
-            }
-            $testDocumentPath = $this->testDocument->store('test-documents', 'public');
-        } elseif (empty($this->existingDocumentPath)) {
-            $requiredTypes = ['mdcat', 'sat-ii', 'foreign-mcat', 'ucat', 'other'];
-            if (in_array($this->testType, $requiredTypes)) {
-                $this->addError('testDocument', 'A document is required for this test type.');
-                return;
+        // Only handle document upload if not STMU
+        if ($this->testType !== 'stmu') {
+            if ($this->testDocument) {
+                if ($this->existingDocumentPath && Storage::disk('public')->exists($this->existingDocumentPath)) {
+                    Storage::disk('public')->delete($this->existingDocumentPath);
+                }
+                $testDocumentPath = $this->testDocument->store('test-documents', 'public');
+            } elseif (empty($this->existingDocumentPath)) {
+                $requiredTypes = ['mdcat', 'sat-ii', 'foreign-mcat', 'ucat', 'other'];
+                if (in_array($this->testType, $requiredTypes)) {
+                    $this->addError('testDocument', 'A document is required for this test type.');
+                    return;
+                }
             }
         }
 
@@ -94,10 +104,10 @@ class TestInformationComponent extends Component
                 'test_type' => $this->testType,
                 'test_center' => $this->testCenter,
                 'test_name' => $this->testName,
-                'test_score' => $this->testScore,
-                'test_year' => $this->testYear,
-                'result_status' => $this->resultStatus,
-                'test_document_path' => $testDocumentPath,
+                'test_score' => $this->testType === 'stmu' ? null : $this->testScore,
+                'test_year' => $this->testType === 'stmu' ? null : $this->testYear,
+                'result_status' => $this->testType === 'stmu' ? null : $this->resultStatus,
+                'test_document_path' => $this->testType === 'stmu' ? null : $testDocumentPath,
             ]
         );
 
