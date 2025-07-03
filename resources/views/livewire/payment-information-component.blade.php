@@ -10,7 +10,6 @@
         <div class="alert alert-info d-flex align-items-start">
             <i class="fas fa-info-circle fa-2x me-3 mt-1"></i>
             <div>
-                <h5 class="alert-heading mb-3">Fee Structure</h5>
                 <ul class="mb-0 list-unstyled">
                     <li class="mb-2 d-flex">
                         <span class="badge bg-primary rounded-pill me-3">1</span>
