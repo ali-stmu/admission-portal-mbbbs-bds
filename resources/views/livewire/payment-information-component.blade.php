@@ -257,26 +257,39 @@
                         <div class="card bg-primary text-white mb-4 animate__animated animate__fadeIn shadow">
                             <div class="card-header fw-bold">Banking Details</div>
                             <div class="card-body" style="white-space: pre-line">
-                                For Foreign Category Seats - MBBS/BDS
-                                HABIB BANK LTD – FOR MBBS/BDS Local Seats
-                                <strong>CMD ACCOUNT NO:</strong> 50007902906303
-                                <strong>ACCOUNT TITLE:</strong> SHIFA TAMEER-MILLAT UNIVERSITY
-                                <strong>BANK NAME:</strong> HBL
+                                @if ($isInternational)
+                                    <!-- International Student Banking Details (Al Baraka Bank) -->
+                                    <strong>For Foreign Category Seats - MBBS/BDS</strong>
+                                    <strong>Account Title:</strong> SHIFA TAMEER-E-MILLAT UNIVERSITY
+                                    <strong>Bank Name:</strong> Al Baraka Bank (Pakistan) Ltd
+                                    <strong>Currency:</strong> USD
 
-                                <strong>Currency:</strong> USD
+                                    <u>Intermediary - Name/Address (Field 56 D)</u>
+                                    Mashreq Bank
+                                    <strong>SWIFT CODE:</strong> MSHQUS33
 
-                                <u>Intermediary - Name/Address (Field 56 D)</u>
-                                Mashreq Bank
-                                <strong>SWIFT CODE:</strong> MSHQUS33
+                                    <u>Account with Institution (Field 57 D)</u>
+                                    <strong>Account Number:</strong> 70120216
+                                    <strong>Title:</strong> Al Baraka Bank (Pakistan) Ltd
+                                    <strong>SWIFT:</strong> AIINPKKA
 
-                                <u>Account with Institution (Field 57 D)</u>
-                                <strong>Account Number:</strong> 70120216
-                                <strong>Title:</strong> Al Baraka Bank (Pakistan) Ltd
-                                <strong>SWIFT:</strong> AIINPKKA
+                                    <u>Beneficiary Customer (Field 59)</u>
+                                    <strong>IBAN:</strong> PK52AIIN0000281073951036
+                                    <strong>Title:</strong> SHIFA TAMEER-E-MILLAT UNIVERSITY
+                                @else
+                                    <!-- Local Student Banking Details (HBL) -->
+                                    <strong>For Local Category Seats - MBBS/BDS</strong>
+                                    <strong>Account Title:</strong> SHIFA TAMEER-MILLAT UNIVERSITY
+                                    <strong>Bank Name:</strong> HABIB BANK LTD (HBL)
+                                    <strong>Account No:</strong> 50007902906303
+                                    <strong>Currency:</strong> PKR
 
-                                <u>Beneficiary Customer (Field 59)</u>
-                                <strong>IBAN:</strong> PK52AIIN0000281073951036
-                                <strong>Title:</strong> SHIFA TAMEER-E-MILLAT UNIVERSITY
+                                    <u>Payment Instructions:</u>
+                                    1. Visit any HBL branch
+                                    2. Fill out the deposit slip with the account details above
+                                    3. Pay the required amount (Rs. {{ $amount }})
+                                    4. Keep the payment receipt for your records
+                                @endif
                             </div>
                         </div>
 
@@ -294,8 +307,6 @@
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
-
-
                     </template>
                 </div>
 
