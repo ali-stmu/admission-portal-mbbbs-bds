@@ -1,126 +1,131 @@
-<section class="h-100-vh mb-8">
-    <div class="page-header align-items-start section-height-50 pt-5 pb-11 m-3 border-radius-lg"
-        style="background-image: url('../assets/img/curved-images/curved14.jpg');">
-        <span class="mask bg-gradient-dark opacity-6"></span>
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-5 text-center mx-auto">
-                    <h1 class="text-white mb-2 mt-5">{{ __('Welcome!') }}</h1>
-                    <p class="text-lead text-white">
-                        {{ __('Join STMU and enjoy our services') }}
-                    </p>
-                </div>
+<section class="min-vh-100 d-flex flex-column justify-content-center py-5">
+    <div class="container">
+        <!-- Welcome Header -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-6 text-center">
+                <h1 class="display-5 fw-bold text-gradient-primary mb-3">{{ __('Welcome!') }}</h1>
+                <p class="lead text-muted">
+                    {{ __('Join STMU and enjoy our services') }}
+                </p>
             </div>
         </div>
-    </div>
 
-    <div class="container">
-        <div class="row mt-lg-n10 mt-md-n11 mt-n10 justify-content-center">
-            <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
-                <div class="card z-index-0 shadow">
-                    <div class="card-header text-center pt-4">
-                        <h5>{{ __('Create your account') }}</h5>
+        <!-- Registration Card -->
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-7">
+                <div class="text-center mb-4">
+                    <img src="{{ asset('assets/img/ShifaLogo.png') }}" alt="University Logo" class="img-fluid"
+                        style="max-height: 130px;">
+                </div>
+                <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                    <div class="card-header bg-white py-4 text-center border-0">
+                        <h5 class="mb-0 fw-bold text-primary">{{ __('Create your account') }}</h5>
                     </div>
 
-                    <div class="card-body">
-                        <form wire:submit.prevent="register" x-data="{ nationality: '' }">
 
+                    <div class="card-body p-4">
+                        <form wire:submit.prevent="register" x-data="{ nationality: '' }">
                             <!-- Full Name -->
                             <div class="mb-3">
-                                <label for="name" class="form-label">{{ __('Full Name') }}</label>
+                                <label for="name"
+                                    class="form-label small fw-bold text-muted">{{ __('Full Name') }}</label>
                                 <div class="@error('name') border border-danger rounded-3 @enderror">
-                                    <input wire:model.live="name" id="name" type="text" class="form-control"
-                                        placeholder="Your name">
+                                    <input wire:model.live="name" id="name" type="text"
+                                        class="form-control form-control-lg rounded-3" placeholder="Your name">
                                 </div>
                                 @error('name')
-                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <!-- Email -->
                             <div class="mb-3">
-                                <label for="email" class="form-label">{{ __('Email') }}</label>
+                                <label for="email"
+                                    class="form-label small fw-bold text-muted">{{ __('Email') }}</label>
                                 <div class="@error('email') border border-danger rounded-3 @enderror">
-                                    <input wire:model.live="email" id="email" type="email" class="form-control"
-                                        placeholder="your@email.com">
+                                    <input wire:model.live="email" id="email" type="email"
+                                        class="form-control form-control-lg rounded-3" placeholder="your@email.com">
                                 </div>
                                 @error('email')
-                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <!-- Nationality -->
                             <div class="mb-3">
-                                <label for="nationality" class="form-label">{{ __('Category') }}</label>
+                                <label for="nationality"
+                                    class="form-label small fw-bold text-muted">{{ __('Category') }}</label>
                                 <select wire:model.live="nationality" x-model="nationality" id="nationality"
-                                    class="form-select">
+                                    class="form-select form-select-lg rounded-3">
                                     <option value="">{{ __('Select Category') }}</option>
                                     <option value="local">Local</option>
                                     <option value="foreign">Foreign</option>
-
                                 </select>
                                 @error('nationality')
-                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <!-- CNIC (Only if Local) -->
                             <div class="mb-3" x-show="nationality === 'local'" x-cloak>
-                                <label for="cnic" class="form-label">{{ __('CNIC') }}</label>
-                                <input wire:model.live="cnic" id="cnic" type="text" class="form-control"
-                                    placeholder="e.g., 35201-1234567-8">
+                                <label for="cnic"
+                                    class="form-label small fw-bold text-muted">{{ __('CNIC') }}</label>
+                                <input wire:model.live="cnic" id="cnic" type="text"
+                                    class="form-control form-control-lg rounded-3" placeholder="e.g., 35201-1234567-8">
                                 @error('cnic')
-                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Passport (Only if Foreign or Special Foreign) -->
-                            <div class="mb-3" x-show="nationality === 'foreign' || nationality === 'special_foreign'"
-                                x-cloak>
-                                <label for="passport" class="form-label">{{ __('Passport Number') }}</label>
-                                <input wire:model.live="cnic" id="passport" type="text" class="form-control"
-                                    placeholder="Passport No.">
+                            <!-- Passport (Only if Foreign) -->
+                            <div class="mb-3" x-show="nationality === 'foreign'" x-cloak>
+                                <label for="passport"
+                                    class="form-label small fw-bold text-muted">{{ __('Passport Number') }}</label>
+                                <input wire:model.live="cnic" id="passport" type="text"
+                                    class="form-control form-control-lg rounded-3" placeholder="Passport No.">
                                 @error('passport')
-                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <!-- Password -->
                             <div class="mb-3">
-                                <label for="password" class="form-label">{{ __('Password') }}</label>
+                                <label for="password"
+                                    class="form-label small fw-bold text-muted">{{ __('Password') }}</label>
                                 <div class="@error('password') border border-danger rounded-3 @enderror">
                                     <input wire:model.live="password" id="password" type="password"
-                                        class="form-control" placeholder="Password">
+                                        class="form-control form-control-lg rounded-3" placeholder="Password">
                                 </div>
                                 @error('password')
-                                    <div class="text-danger text-sm mt-1">{{ $message }}</div>
+                                    <div class="text-danger small mt-1">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <!-- Terms -->
-                            <div class="form-check form-check-info text-start mb-4">
+                            <div class="form-check mb-4">
                                 <input class="form-check-input" type="checkbox" id="termsCheck" required>
-                                <label class="form-check-label" for="termsCheck">
+                                <label class="form-check-label small text-muted" for="termsCheck">
                                     {{ __('I agree to the') }} <a href="#"
-                                        class="text-dark font-weight-bolder">{{ __('Terms and Conditions') }}</a>
+                                        class="text-primary fw-bold">{{ __('Terms and Conditions') }}</a>
                                 </label>
                             </div>
 
-                            <!-- Submit -->
-                            <div class="text-center">
-                                <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2 py-2">
+                            <!-- Submit Button -->
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg rounded-3 py-3 fw-bold">
                                     {{ __('Sign Up') }}
                                 </button>
                             </div>
 
-                            <!-- Already Registered -->
-                            <p class="text-sm mt-3 mb-0 text-center">
-                                {{ __('Already have an account?') }}
-                                <a href="{{ route('login') }}"
-                                    class="text-dark font-weight-bolder ms-1">{{ __('Sign In') }}</a>
-                            </p>
+                            <!-- Login Link -->
+                            <div class="text-center mt-3">
+                                <p class="small text-muted mb-0">
+                                    {{ __('Already have an account?') }}
+                                    <a href="{{ route('login') }}"
+                                        class="text-primary fw-bold">{{ __('Sign In') }}</a>
+                                </p>
+                            </div>
                         </form>
-
                     </div>
                 </div>
             </div>
