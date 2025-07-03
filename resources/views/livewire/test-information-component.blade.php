@@ -73,7 +73,7 @@
                         @enderror
                     </div>
 
-                    <!-- STMU Center -->
+                    <!-- STMU Center - Only shown when STMU is selected -->
                     <div class="mb-4 animate__animated animate__fadeIn" x-show="testType === 'stmu'">
                         <label class="form-label fw-bold"><i class="fas fa-map-marker-alt me-2 text-primary"></i> Test
                             Center</label>
@@ -95,7 +95,7 @@
                         </div>
                     </div>
 
-                    <!-- Other Test Name -->
+                    <!-- Other Test Name - Only shown when 'other' is selected -->
                     <div class="mb-4 animate__animated animate__fadeIn" x-show="testType === 'other'">
                         <label class="form-label fw-bold"><i class="fas fa-pen-alt me-2 text-primary"></i> Test
                             Name</label>
@@ -109,7 +109,9 @@
 
                 <!-- Right Column -->
                 <div class="col-md-6">
-                    <div x-show="testType !== 'stmu'" class="test-details-container bg-light p-4 rounded">
+                    <!-- Test Details Section - Shown for all except STMU -->
+                    <div x-show="testType && testType !== 'stmu'"
+                        class="test-details-container bg-light p-4 rounded h-100">
                         <h5 class="mb-4 text-primary">
                             <i class="fas fa-file-signature me-2"></i> Test Results
                         </h5>
@@ -175,13 +177,17 @@
                         </div>
                     </div>
 
-                    <!-- STMU Info Box -->
-                    <div x-show="testType === 'stmu'"
-                        class="test-info-card bg-light p-4 rounded h-100 d-flex align-items-center justify-content-center">
-                        <div class="text-center">
+                    <!-- STMU Info Box - Only shown when STMU is selected -->
+                    <div x-show="testType === 'stmu'" class="test-info-card bg-light p-4 rounded h-100">
+                        <div>
                             <i class="fas fa-calendar-alt fa-3x text-primary mb-3"></i>
                             <h5 class="text-primary">STMU Entrance Test</h5>
                             <p class="text-muted">Test center and date will be communicated after registration</p>
+
+                            <div class="alert alert-info mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Important: Please ensure you've selected your preferred test center from the options.
+                            </div>
                         </div>
                     </div>
                 </div>
