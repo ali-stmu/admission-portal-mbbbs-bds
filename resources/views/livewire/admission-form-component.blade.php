@@ -23,22 +23,22 @@
                                 <div
                                     class="step-label mt-2 {{ $currentStep >= $step ? 'text-primary fw-bold' : 'text-muted' }}">
                                     @if ($step == 1)
-                                        Term
+                                        Welcome
                                     @endif
                                     @if ($step == 2)
-                                        Profile
+                                        Profile Information
                                     @endif
                                     @if ($step == 3)
-                                        Academic
+                                        Academic Information
                                     @endif
                                     @if ($step == 4)
-                                        Tests
+                                        Tests Details
                                     @endif
                                     @if ($step == 5)
                                         Payment
                                     @endif
                                     @if ($step == 6)
-                                        Complete
+                                        Application Preview
                                     @endif
                                 </div>
                             </div>

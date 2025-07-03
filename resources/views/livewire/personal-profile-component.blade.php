@@ -238,7 +238,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">CNIC Copy</label>
+                            <label class="form-label fw-semibold">CNIC/NICOP/Valid Iqama/PR Copy</label>
 
                             {{-- File input --}}
                             <input type="file" class="form-control @error('cnicCopy') is-invalid @enderror"

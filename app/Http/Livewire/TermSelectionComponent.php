@@ -11,10 +11,15 @@ class TermSelectionComponent extends Component
 {
     public $terms;
     public $selectedTerm;
-public $hasSubmittedApplication = false;
- public function mount()
+    public $hasSubmittedApplication = false;
+    public function mount()
     {
         $this->terms = Term::where('is_active', true)->get();
+        
+        // Set the first term as selected by default if terms exist
+        if ($this->terms->isNotEmpty()) {
+            $this->selectedTerm = $this->terms->first()->id;
+        }
         
         // Check if user already has a submitted application
         if (Auth::check()) {
