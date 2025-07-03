@@ -24,13 +24,19 @@
                             <div class="profile-picture-preview mb-3 rounded-circle overflow-hidden border border-3 border-light shadow-sm"
                                 style="width: 150px; height: 150px; background-color: #f8f9fa;">
                                 @if ($photo)
-                                    <img src="{{ $photo->temporaryUrl() }}" class="w-100 h-100 object-fit-cover">
-                                @else
-                                    <div
-                                        class="w-100 h-100 d-flex align-items-center justify-content-center text-muted">
-                                        <i class="fas fa-user fa-3x"></i>
-                                    </div>
+                                    @if (is_object($photo))
+                                        <img src="{{ $photo->temporaryUrl() }}" class="w-100 h-100 object-fit-cover">
+                                    @elseif (is_string($photo))
+                                        <img src="{{ asset('storage/' . $photo) }}"
+                                            class="w-100 h-100 object-fit-cover">
+                                    @else
+                                        <div
+                                            class="w-100 h-100 d-flex align-items-center justify-content-center text-muted">
+                                            <i class="fas fa-user fa-3x"></i>
+                                        </div>
+                                    @endif
                                 @endif
+
                             </div>
                             <input type="file" class="form-control visually-hidden" id="photoUpload"
                                 wire:model="photo" accept="image/*">
@@ -155,7 +161,7 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Province <span class="text-danger">*</span></label>
+                            <label class="form-label fw-semibold">Province </label>
                             <select class="form-select @error('province') is-invalid @enderror" wire:model="province"
                                 required>
                                 <option value="" selected disabled>Select Province</option>
@@ -188,13 +194,35 @@
 
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Passport Copy</label>
+
+                                {{-- File input --}}
                                 <input type="file" class="form-control @error('passportCopy') is-invalid @enderror"
                                     wire:model="passportCopy">
+
+                                {{-- Error --}}
                                 @error('passportCopy')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+
+                                {{-- File Preview or Download --}}
+                                @if ($passportCopy)
+                                    @if (is_object($passportCopy))
+                                        <p class="mt-2">
+
+                                        </p>
+                                    @elseif (is_string($passportCopy))
+                                        <p class="mt-2">
+                                            <a href="{{ asset('storage/' . $passportCopy) }}" target="_blank"
+                                                class="btn btn-sm btn-outline-warning">
+                                                View Existing Passport
+                                            </a>
+                                        </p>
+                                    @endif
+                                @endif
+
                                 <small class="text-muted">Max 2MB • PDF/JPG/PNG</small>
                             </div>
+
                         @endif
 
                         <div class="col-md-6">
@@ -210,14 +238,36 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">CNIC Copy <span class="text-danger">*</span></label>
+                            <label class="form-label fw-semibold">CNIC Copy</label>
+
+                            {{-- File input --}}
                             <input type="file" class="form-control @error('cnicCopy') is-invalid @enderror"
-                                wire:model="cnicCopy" required>
+                                wire:model="cnicCopy">
+
+                            {{-- Error --}}
                             @error('cnicCopy')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
+
+                            {{-- File Preview or Download --}}
+                            @if ($cnicCopy)
+                                @if (is_object($cnicCopy))
+                                    <p class="mt-2">
+
+                                    </p>
+                                @elseif (is_string($cnicCopy))
+                                    <p class="mt-2">
+                                        <a href="{{ asset('storage/' . $cnicCopy) }}" target="_blank"
+                                            class="btn btn-sm btn-outline-success">
+                                            View Existing CNIC
+                                        </a>
+                                    </p>
+                                @endif
+                            @endif
+
                             <small class="text-muted">Max 2MB • PDF/JPG/PNG</small>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -243,7 +293,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Father's NIC <span class="text-danger">*</span></label>
+                    <label class="form-label fw-semibold">Father's NIC </label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                         <input type="text" class="form-control @error('fatherNic') is-invalid @enderror"
@@ -314,7 +364,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">House No <span class="text-danger">*</span></label>
+                    <label class="form-label fw-semibold">House No </span></label>
                     <input type="text" class="form-control @error('mailingHouseNo') is-invalid @enderror"
                         wire:model="mailingHouseNo" required>
                     @error('mailingHouseNo')
@@ -332,7 +382,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Sector/Area <span class="text-danger">*</span></label>
+                    <label class="form-label fw-semibold">Sector/Area </label>
                     <input type="text" class="form-control @error('mailingSector') is-invalid @enderror"
                         wire:model="mailingSector" required>
                     @error('mailingSector')
@@ -341,7 +391,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">Tehsil <span class="text-danger">*</span></label>
+                    <label class="form-label fw-semibold">Tehsil</label>
                     <input type="text" class="form-control @error('mailingTehsil') is-invalid @enderror"
                         wire:model="mailingTehsil" required>
                     @error('mailingTehsil')
@@ -387,7 +437,7 @@
 
                 @if (!$sameAsMailing)
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold">House No <span class="text-danger">*</span></label>
+                        <label class="form-label fw-semibold">House No</label>
                         <input type="text" class="form-control @error('permanentHouseNo') is-invalid @enderror"
                             wire:model="permanentHouseNo" required>
                         @error('permanentHouseNo')
@@ -396,7 +446,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold">Street <span class="text-danger">*</span></label>
+                        <label class="form-label fw-semibold">Street</label>
                         <input type="text" class="form-control @error('permanentStreet') is-invalid @enderror"
                             wire:model="permanentStreet" required>
                         @error('permanentStreet')
@@ -405,7 +455,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold">Sector/Area <span class="text-danger">*</span></label>
+                        <label class="form-label fw-semibold">Sector/Area</label>
                         <input type="text" class="form-control @error('permanentSector') is-invalid @enderror"
                             wire:model="permanentSector" required>
                         @error('permanentSector')
@@ -414,7 +464,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold">Tehsil <span class="text-danger">*</span></label>
+                        <label class="form-label fw-semibold">Tehsil</label>
                         <input type="text" class="form-control @error('permanentTehsil') is-invalid @enderror"
                             wire:model="permanentTehsil" required>
                         @error('permanentTehsil')
@@ -423,7 +473,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold">City <span class="text-danger">*</span></label>
+                        <label class="form-label fw-semibold">City</label>
                         <input type="text" class="form-control @error('permanentCity') is-invalid @enderror"
                             wire:model="permanentCity" required>
                         @error('permanentCity')
@@ -432,7 +482,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label fw-semibold">Country <span class="text-danger">*</span></label>
+                        <label class="form-label fw-semibold">Country</label>
                         <input type="text" class="form-control @error('permanentCountry') is-invalid @enderror"
                             wire:model="permanentCountry" required>
                         @error('permanentCountry')
