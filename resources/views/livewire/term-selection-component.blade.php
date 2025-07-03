@@ -45,8 +45,8 @@
                 <div class="row g-3">
                     @foreach ($terms as $term)
                         @php
-                            $startDate = \Carbon\Carbon::parse($term->start_date)->format('M j, Y');
-                            $endDate = \Carbon\Carbon::parse($term->end_date)->format('M j, Y');
+                            $startDate = \Carbon\Carbon::parse($term->start_date ?? '--')->format('M j, Y');
+                            $endDate = \Carbon\Carbon::parse($term->end_date ?? '--')->format('M j, Y');
                         @endphp
                         <div class="col-md-6">
                             <div class="card term-card h-100 border-0 shadow-sm">
@@ -64,10 +64,10 @@
                                     <div class="mb-2">
                                         <span class="badge bg-light text-dark">{{ $term->session }}</span>
                                     </div>
-                                    <div class="text-muted mb-3">
+                                    {{-- <div class="text-muted mb-3">
                                         <i class="far fa-calendar-alt me-2"></i>
                                         {{ $startDate }} - {{ $endDate }}
-                                    </div>
+                                    </div> --}}
                                     @if ($term->description)
                                         <div class="mt-auto">
                                             <p class="small text-muted mb-0">{{ $term->description }}</p>

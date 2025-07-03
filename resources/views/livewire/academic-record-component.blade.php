@@ -116,7 +116,8 @@
                         </div>
                         <!-- Attachment Upload -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Upload Matric Certificate</label>
+                            <label class="form-label fw-bold">Upload Matric/O Level Equivalent Certificate</label>
+
                             <input type="file" class="form-control @error('matricAttachment') is-invalid @enderror"
                                 wire:model="matricAttachment">
                             @error('matricAttachment')
@@ -254,7 +255,8 @@
                         </div>
                         <!-- Attachment Upload -->
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Upload Intermediate Certificate</label>
+                            <label class="form-label fw-bold">Upload Intermediate (HSSC/A-Level Equivalent)
+                                Certificate</label>
                             <input type="file"
                                 class="form-control @error('intermediateAttachment') is-invalid @enderror"
                                 wire:model="intermediateAttachment">
