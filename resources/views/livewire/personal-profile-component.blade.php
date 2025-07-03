@@ -359,7 +359,7 @@
             <div class="row g-4 mb-5">
                 <div class="col-12">
                     <h5 class="fw-bold text-primary mb-4 d-flex align-items-center">
-                        <i class="fas fa-envelope me-2"></i> Mailing Address
+                        <i class="fas fa-envelope me-2"></i> Current Mailing Address
                     </h5>
                 </div>
 

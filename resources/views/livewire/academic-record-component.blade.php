@@ -49,7 +49,7 @@
 
                     <!-- Year -->
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Year</label>
+                        <label class="form-label fw-bold">Year of Examination</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                             <input type="number" class="form-control @error('matricRecords.year') is-invalid @enderror"
@@ -185,7 +185,7 @@
 
                     <!-- Year -->
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Year</label>
+                        <label class="form-label fw-bold">Year of Examination</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-calendar"></i></span>
                             <input type="number"

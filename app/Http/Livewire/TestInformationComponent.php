@@ -25,7 +25,7 @@ class TestInformationComponent extends Component
 
     public $testCenters = [
         'Islamabad', 'Rawalpindi', 'Karachi', 'Lahore',
-        'Peshawar', 'Quetta', 'Multan', 'Faisalabad'
+        'Peshawar', 'Quetta', 'Multan', 'Faisalabad' , 'AJK' , 'Gilgit'
     ];
 
     protected function rules()
