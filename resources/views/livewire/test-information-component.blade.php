@@ -36,8 +36,15 @@
                             </label>
 
                             <template x-if="!isInternational">
-                                <h6 class="text-muted fw-bold mt-4 mb-2">Tests for Foreign Nationals Only</h6>
+                                <h6 class="text-muted fw-bold mt-4 mb-2">Tests for Foreign Nationals</h6>
                             </template>
+
+                            <input type="radio" class="btn-check" name="testType" id="testTypeForeignSpecial"
+                                wire:model="testType" value="foreign-special" :disabled="!isInternational">
+                            <label class="btn btn-outline-success text-start py-3" for="testTypeForeignSpecial"
+                                :class="{ 'disabled': !isInternational }">
+                                <i class="fas fa-star me-2"></i> <strong>Foreign Special (No Test Required)</strong>
+                            </label>
 
                             <input type="radio" class="btn-check" name="testType" id="testTypeSat"
                                 wire:model="testType" value="sat-ii" :disabled="!isInternational">
@@ -116,8 +123,8 @@
 
                 <!-- Right Column -->
                 <div class="col-md-6">
-                    <!-- Test Details Section - Shown for all except STMU -->
-                    <div x-show="testType && testType !== 'stmu'"
+                    <!-- Test Details Section - Shown for all except STMU and Foreign Special -->
+                    <div x-show="testType && testType !== 'stmu' && testType !== 'foreign-special'"
                         class="test-details-container bg-light p-4 rounded h-100">
                         <h5 class="mb-4 text-primary">
                             <i class="fas fa-file-signature me-2"></i> Test Results
@@ -195,7 +202,23 @@
                                 <i class="fas fa-info-circle me-2"></i>
                                 <span class="text-light"> Important: Please ensure you've selected your preferred test
                                     center from the options.</span>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- Foreign Special Info Box - Only shown when Foreign Special is selected -->
+                    <div x-show="testType === 'foreign-special'"
+                        class="test-info-card bg-success-soft p-4 rounded h-100">
+                        <div>
+                            <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                            <h5 class="text-success">Foreign Special Admission</h5>
+                            <p class="text-muted">No test requirements for this admission category.</p>
+                            <p class="text-muted">You can proceed to the next step without providing any test
+                                information.</p>
+
+                            <div class="alert alert-success mt-3">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <span>Your application will be processed under the Foreign Special category.</span>
                             </div>
                         </div>
                     </div>

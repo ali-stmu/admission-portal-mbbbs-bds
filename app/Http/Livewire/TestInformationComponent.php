@@ -31,13 +31,15 @@ class TestInformationComponent extends Component
     protected function rules()
     {
         $rules = [
-            'testType' => 'required|in:stmu,mdcat,sat-ii,foreign-mcat,ucat,other',
+            'testType' => 'required|in:stmu,mdcat,sat-ii,foreign-mcat,ucat,other,foreign-special',
         ];
 
         // Only require test center for STMU
         if ($this->testType === 'stmu') {
             $rules['testCenter'] = 'required|string|max:100';
-        } else {
+        } 
+        // No requirements for foreign-special
+        elseif ($this->testType !== 'foreign-special') {
             // For other test types
             $rules['testCenter'] = 'nullable|string|max:100';
             $rules['testName'] = 'required_if:testType,other|nullable|string|max:255';
@@ -46,8 +48,8 @@ class TestInformationComponent extends Component
             $rules['testDocument'] = 'required_if:testType,mdcat,sat-ii,foreign-mcat,ucat,other|nullable|file|mimes:pdf,jpg,png|max:2048';
         }
 
-        // If result is declared (and not STMU), then testScore is required
-        if ($this->resultStatus === 'declared' && $this->testType !== 'stmu') {
+        // If result is declared (and not STMU or foreign-special), then testScore is required
+        if ($this->resultStatus === 'declared' && !in_array($this->testType, ['stmu', 'foreign-special'])) {
             $rules['testScore'] = 'required|numeric|min:0|max:1000';
         } else {
             $rules['testScore'] = 'nullable|numeric|min:0|max:1000';
@@ -82,8 +84,8 @@ class TestInformationComponent extends Component
 
         $testDocumentPath = $this->existingDocumentPath;
 
-        // Only handle document upload if not STMU
-        if ($this->testType !== 'stmu') {
+        // Only handle document upload if not STMU or foreign-special
+        if (!in_array($this->testType, ['stmu', 'foreign-special'])) {
             if ($this->testDocument) {
                 if ($this->existingDocumentPath && Storage::disk('public')->exists($this->existingDocumentPath)) {
                     Storage::disk('public')->delete($this->existingDocumentPath);
@@ -102,12 +104,12 @@ class TestInformationComponent extends Component
             ['student_id' => $this->studentId],
             [
                 'test_type' => $this->testType,
-                'test_center' => $this->testCenter,
-                'test_name' => $this->testName,
-                'test_score' => $this->testType === 'stmu' ? null : $this->testScore,
-                'test_year' => $this->testType === 'stmu' ? null : $this->testYear,
-                'result_status' => $this->testType === 'stmu' ? null : $this->resultStatus,
-                'test_document_path' => $this->testType === 'stmu' ? null : $testDocumentPath,
+                'test_center' => $this->testType === 'foreign-special' ? null : $this->testCenter,
+                'test_name' => $this->testType === 'foreign-special' ? null : $this->testName,
+                'test_score' => in_array($this->testType, ['stmu', 'foreign-special']) ? null : $this->testScore,
+                'test_year' => in_array($this->testType, ['stmu', 'foreign-special']) ? null : $this->testYear,
+                'result_status' => in_array($this->testType, ['stmu', 'foreign-special']) ? null : $this->resultStatus,
+                'test_document_path' => in_array($this->testType, ['stmu', 'foreign-special']) ? null : $testDocumentPath,
             ]
         );
 
