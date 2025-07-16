@@ -16,7 +16,8 @@ use App\Http\Livewire\Rtl;
 
 use App\Http\Livewire\LaravelExamples\UserProfile;
 use App\Http\Livewire\LaravelExamples\UserManagement;
-
+use App\Http\Livewire\Students\Index;
+use App\Http\Livewire\Students\Edit;
 use Illuminate\Http\Request;
 
 /*
@@ -54,6 +55,8 @@ Route::middleware(['auth', 'role:admin,student'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/billing', Billing::class)->name('billing');
     Route::get('/laravel-user-management', UserManagement::class)->name('user-management');
+    Route::get('/students', Index::class)->name('students.index');
+    Route::get('/students/{student}/edit', Edit::class)->name('students.edit');
 });
 
 // Student-only routes
