@@ -23,7 +23,9 @@ class PaymentInformation extends Model
         'payment_proof_path',
         'transaction_id',
         'payment_details',
-        'is_international'
+        'is_international',
+        'payment_verified',
+        'discard_remarks'
     ];
 
     protected $casts = [
