@@ -173,7 +173,7 @@
                         @enderror
                     </div>
                     <!-- Amount Payable -->
-                    <div class="mb-4">
+                    {{-- <div class="mb-4">
                         <label class="form-label fw-bold">
                             <i class="fas fa-money-bill-wave me-2 text-primary"></i>
                             Amount Payable
@@ -199,7 +199,7 @@
                         @error('amount')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <!-- Payment Mode -->
                     <div class="mb-4">
@@ -241,11 +241,13 @@
                         <button type="button" class="btn btn-primary w-100 py-3" wire:click="downloadChallan">
                             <i class="fas fa-download me-2"></i> Download Challan Form
                         </button>
-                        <button type="button" class="btn btn-outline-primary w-100 py-3"
-                            wire:click="downloadPkrChallan">
-                            <i class="fas fa-download me-2"></i> Download PKR Challan
-                            ({{ number_format(100 * $exchangeRate) }})
-                        </button>
+                        @if ($isInternational)
+                            <button type="button" class="btn btn-outline-primary w-100 py-3"
+                                wire:click="downloadPkrChallan">
+                                <i class="fas fa-download me-2"></i> Download PKR Challan
+                                ({{ number_format(100 * $exchangeRate) }})
+                            </button>
+                        @endif
                         <div class="alert alert-info mt-3">
                             <i class="fas fa-info-circle me-2"></i>
                             Please download the challan, pay at the bank, and upload the receipt below

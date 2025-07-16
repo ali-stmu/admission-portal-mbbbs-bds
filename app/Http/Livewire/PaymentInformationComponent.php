@@ -28,11 +28,9 @@ class PaymentInformationComponent extends Component
     public $isInternational = false;
     public $exchangeRate = 280;
 
-    protected $rules = [
-        'program' => 'required_if:isInternational,false|in:mbbs,bds,both',
-        'localProgram' => 'required_if:isInternational,true|in:mbbs,bds,both',
-        'intlProgram' => 'required_if:isInternational,true|in:intl_mbbs,intl_bds,intl_both',
-        'specialProgram' => 'required_if:isInternational,true|in:special_mbbs,special_bds,special_both',
+    protected function rules()
+{
+    $rules = [
         'amount' => 'required|numeric|min:0',
         'paymentMode' => 'required|in:voucher,atm,online,foreign',
         'paymentDate' => 'required|date',
@@ -41,20 +39,35 @@ class PaymentInformationComponent extends Component
         'paymentDetails' => 'nullable|string|max:500',
     ];
 
-    public function mount($studentId)
-    {
-        $this->studentId = $studentId;
-        $this->paymentDate = now()->format('Y-m-d');
-        
-        $user = auth()->user();
-        $this->isInternational = $user && $user->nationality !== 'local';
-        
-        if ($this->isInternational) {
-            $this->amount = 100; // Fixed $100 for international students
-        } else {
-            $this->updatedProgram($this->program);
-        }
+    if ($this->isInternational) {
+        $rules['localProgram'] = 'required|in:mbbs,bds,both';
+        $rules['intlProgram'] = 'required|in:intl_mbbs,intl_bds,intl_both';
+        $rules['specialProgram'] = 'required|in:special_mbbs,special_bds,special_both';
+    } else {
+        $rules['program'] = 'required|in:mbbs,bds,both';
     }
+
+    return $rules;
+}
+public function mount($studentId)
+{
+    $this->studentId = $studentId;
+    $this->paymentDate = now()->format('Y-m-d');
+    
+    $user = auth()->user();
+    $this->isInternational = $user && $user->nationality !== 'local';
+    
+    if ($this->isInternational) {
+        $this->amount = 100; // Fixed $100 for international students
+        // Initialize international program fields
+        $this->localProgram = 'mbbs';
+        $this->intlProgram = 'intl_mbbs';
+        $this->specialProgram = 'special_mbbs';
+    } else {
+        $this->program = 'mbbs'; // Default for local students
+        $this->updatedProgram($this->program);
+    }
+}
 
     public function updatedProgram($value)
     {
@@ -324,17 +337,13 @@ public function save()
     $this->validate();
 
     // Prepare program data
-    if ($this->isInternational) {
-        $programData = [
+    $programValue = $this->isInternational 
+        ? json_encode([
             'local' => $this->localProgram,
             'international' => $this->intlProgram,
             'special' => $this->specialProgram
-        ];
-        $programValue = json_encode($programData); // Encode as JSON string
-        $this->amount = 100;
-    } else {
-        $programValue = $this->program; // For local students, just store the single program value
-    }
+        ])
+        : $this->program;
 
     // Prepare filename with program info
     $originalName = pathinfo($this->paymentProof->getClientOriginalName(), PATHINFO_FILENAME);
@@ -349,20 +358,25 @@ public function save()
     $paymentProofPath = $this->paymentProof->storeAs('payment-proofs', $filename, 'public');
 
     // Create payment record
-    PaymentInformation::create([
+    $paymentData = [
         'student_id' => $this->studentId,
-        'program' => $programValue, // Use the prepared value
-        'local_program' => $this->isInternational ? $this->localProgram : null,
-        'intl_program' => $this->isInternational ? $this->intlProgram : null,
-        'special_program' => $this->isInternational ? $this->specialProgram : null,
+        'program' => $programValue,
         'amount' => $this->amount,
         'payment_mode' => $this->paymentMode,
         'payment_date' => $this->paymentDate,
         'payment_proof_path' => $paymentProofPath,
         'transaction_id' => $this->transactionId,
         'payment_details' => $this->paymentDetails,
-        //'is_international' => $this->isInternational,
-    ]);
+    ];
+
+    // Only include these fields for international students
+    if ($this->isInternational) {
+        $paymentData['local_program'] = $this->localProgram;
+        $paymentData['intl_program'] = $this->intlProgram;
+        $paymentData['special_program'] = $this->specialProgram;
+    }
+
+    PaymentInformation::create($paymentData);
 
     // Mark the student application as submitted
     $student = Student::find($this->studentId);

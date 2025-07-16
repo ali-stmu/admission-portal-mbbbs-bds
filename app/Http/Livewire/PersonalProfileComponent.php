@@ -29,7 +29,7 @@ class PersonalProfileComponent extends Component
     public $domicile;
     public $email;
     public $nationality = 'pakistani';
-    public $province;
+    public $province = 'Punjab'; 
     
     // Father's Information
     public $fatherName;
