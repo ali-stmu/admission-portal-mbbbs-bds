@@ -1,11 +1,55 @@
 <div class="container mt-4">
     <h3>Student Management</h3>
 
-    <input type="text" wire:model.debounce.300ms="search" class="form-control mb-3"
-        placeholder="Search by name, CNIC, or application no">
+    <div class="input-group mb-3">
+        <input type="text" wire:model="search" class="form-control"
+            placeholder="Search by name, CNIC, or application no">
+        <div class="input-group-append">
+            <button wire:click="performSearch" class="btn btn-primary">Search</button>
+            <button wire:click="clearSearch" class="btn btn-outline-secondary">Clear</button>
+        </div>
+    </div>
     <div class="d-flex justify-content-end mb-3">
         <button wire:click="downloadExcel" class="btn btn-success">Download Excel</button>
     </div>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label for="program">Filter by Local Program:</label>
+            <select wire:model.lazy="programFilter" class="form-control" id="program">
+                <option value="">All Local Programs</option>
+                <option value="MBBS">MBBS</option>
+                <option value="BDS">BDS</option>
+                <option value="both">both</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label for="intlProgram">Filter by Foreign Program:</label>
+            <select wire:model.lazy="intlProgramFilter" class="form-control" id="intlProgram">
+                <option value="">All Foreign Programs</option>
+                <option value="MBBS">Foreign MBBS</option>
+                <option value="BDS">Foreign BDS</option>
+                <option value="both">Foreign both</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label for="specialProgram">Filter by Special Program:</label>
+            <select wire:model.lazy="specialProgramFilter" class="form-control" id="specialProgram">
+                <option value="">All Special Programs</option>
+                <option value="MBBS">Special Foreign MBBS</option>
+                <option value="BDS">Special Foreign BDS</option>
+                <option value="both">Special Foreign both</option>
+            </select>
+        </div>
+    </div>
+    Current filters:
+    <strong>{{ $programFilter ? 'Local: ' . $programFilter : '' }}</strong>
+    <strong>{{ $intlProgramFilter ? ' | International: ' . $intlProgramFilter : '' }}</strong>
+    <strong>{{ $specialProgramFilter ? ' | Special: ' . $specialProgramFilter : '' }}</strong>
+    </p>
+
 
     <table class="table table-bordered">
         <thead class="thead-dark">

@@ -19,6 +19,10 @@ class Index extends Component
     public $search = '';
     public $perPage = 10;
     public $payment, $showPaymentModal = false, $showDiscardForm = false, $discardRemarks = '';
+    public $programFilter = '';
+    public $intlProgramFilter = '';
+    public $specialProgramFilter = '';
+    public $searchPerformed = false;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -26,19 +30,72 @@ class Index extends Component
     {
         $this->resetPage();
     }
-
-    public function render()
+ public function performSearch()
     {
-        $students = Student::where('name', 'like', '%' . $this->search . '%')
-            ->orWhere('application_no', 'like', '%' . $this->search . '%')
-            ->orWhere('cnic', 'like', '%' . $this->search . '%')
-            ->orderBy('id', 'desc')
-            ->paginate($this->perPage);
+        $this->searchPerformed = true;
+        $this->resetPage();
+    }
+
+    public function clearSearch()
+    {
+        $this->search = '';
+        $this->searchPerformed = false;
+        $this->resetPage();
+    }
+public function render()
+    {
+        $studentsQuery = Student::query();
+
+        // Apply search only if search was performed and search term exists
+        if ($this->searchPerformed && !empty($this->search)) {
+            $studentsQuery->where(function($query) {
+                $query->where('name', 'like', '%' . $this->search . '%')
+                      ->orWhere('application_no', 'like', '%' . $this->search . '%')
+                      ->orWhere('cnic', 'like', '%' . $this->search . '%');
+            });
+        }
+
+        // Apply program filters
+        if (!empty($this->programFilter)) {
+            $studentsQuery->whereHas('paymentInformation', function ($query) {
+                $query->where('program', $this->programFilter)
+                    ->orWhere('local_program', $this->programFilter);
+            });
+        }
+
+        if (!empty($this->intlProgramFilter)) {
+            $studentsQuery->whereHas('paymentInformation', function ($query) {
+                $query->where('intl_program', 'intl_' . strtolower($this->intlProgramFilter));
+            });
+        }
+
+        if (!empty($this->specialProgramFilter)) {
+            $studentsQuery->whereHas('paymentInformation', function ($query) {
+                $query->where('special_program', 'special_' . strtolower($this->specialProgramFilter));
+            });
+        }
+
+        $students = $studentsQuery->orderBy('id', 'desc')->paginate($this->perPage);
 
         return view('livewire.students.index', [
             'students' => $students
         ]);
     }
+
+public function updatedProgramFilter()
+{
+    $this->resetPage();
+}
+public function updatedIntlProgramFilter()
+{
+    $this->resetPage();
+}
+
+public function updatedSpecialProgramFilter()
+{
+    $this->resetPage();
+}
+
     public function viewPayment($studentId)
 {
     $this->payment = PaymentInformation::where('student_id', $studentId)->first();
