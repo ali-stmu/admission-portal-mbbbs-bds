@@ -3,6 +3,9 @@
 
     <input type="text" wire:model.debounce.300ms="search" class="form-control mb-3"
         placeholder="Search by name, CNIC, or application no">
+    <div class="d-flex justify-content-end mb-3">
+        <button wire:click="downloadExcel" class="btn btn-success">Download Excel</button>
+    </div>
 
     <table class="table table-bordered">
         <thead class="thead-dark">

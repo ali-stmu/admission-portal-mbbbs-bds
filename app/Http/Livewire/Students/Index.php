@@ -9,6 +9,7 @@ use App\Models\PaymentInformation;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PaymentVerifiedMail;
 use App\Mail\PaymentDiscardedMail;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 
 class Index extends Component
@@ -59,6 +60,45 @@ public function verifyPayment($paymentId)
 
     $this->showPaymentModal = false;
     session()->flash('message', 'Payment verified and email sent to applicant.');
+}
+public function downloadExcel(): StreamedResponse
+{
+    $students = Student::with('paymentInformation')->get();
+
+    $headers = [
+        'Content-Type' => 'text/csv',
+        'Content-Disposition' => 'attachment; filename="students.xlsx"',
+    ];
+
+    return response()->stream(function () use ($students) {
+        $handle = fopen('php://output', 'w');
+
+        // Excel Header Row
+        fputcsv($handle, [
+            'Applicant Name',
+            'CNIC Number',
+            'Father Name',
+            'Application ID',
+            'Passport Picture URL',
+            'Primary Contact',
+            'Secondary Contact',
+        ]);
+
+        // Data Rows
+        foreach ($students as $student) {
+            fputcsv($handle, [
+                $student->name,
+                $student->cnic,
+                $student->father_name,
+                $student->application_no,
+                $student->photo_path ? asset('storage/' . $student->photo_path) : 'N/A',
+                $student->mobile,
+                $student->father_mobile,
+            ]);
+        }
+
+        fclose($handle);
+    }, 200, $headers);
 }
 
 public function discardPayment($paymentId)
