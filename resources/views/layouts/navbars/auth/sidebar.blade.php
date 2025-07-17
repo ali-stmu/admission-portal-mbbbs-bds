@@ -23,7 +23,7 @@
                     <span class="nav-link-text ms-1">User Profile</span>
                 </a>
             </li>
-
+            {{-- 
             @if (auth()->user()->role === 'admin')
                 <li class="nav-item pb-2">
                     <a class="nav-link {{ Route::currentRouteName() == 'user-management' ? 'active' : '' }}"
@@ -35,7 +35,7 @@
                         <span class="nav-link-text ms-1">User Management</span>
                     </a>
                 </li>
-            @endif
+            @endif --}}
             @if (auth()->user()->role === 'admin')
                 <li class="nav-item">
                     <a class="nav-link {{ Route::currentRouteName() == 'students.index' ? 'active' : '' }}"
@@ -63,7 +63,7 @@
                 </li>
             @endif
 
-            @if (auth()->user()->role === 'admin')
+            {{-- @if (auth()->user()->role === 'admin')
                 <li class="nav-item">
                     <a class="nav-link {{ Route::currentRouteName() == 'billing' ? 'active' : '' }}"
                         href="{{ route('billing') }}">
@@ -74,7 +74,7 @@
                         <span class="nav-link-text ms-1">Billing</span>
                     </a>
                 </li>
-            @endif
+            @endif --}}
 
 
 

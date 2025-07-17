@@ -157,6 +157,44 @@ public function downloadExcel(): StreamedResponse
         fclose($handle);
     }, 200, $headers);
 }
+public function getProgramOptionsProperty()
+{
+    $options = [
+        'local' => [
+            '' => 'All Local Programs',
+            'BDS' => 'BDS',
+            'both' => 'both'
+        ],
+        'intl' => [
+            '' => 'All Foreign Programs',
+            'BDS' => 'Foreign BDS',
+            'both' => 'Foreign both'
+        ],
+        'special' => [
+            '' => 'All Special Programs',
+            'BDS' => 'Special Foreign BDS',
+            'both' => 'Special Foreign both'
+        ]
+    ];
+    
+    $userEmail = auth()->user()->email;
+    
+    // Remove BDS options if user is adminscm@stmu.edu.pk
+    if ($userEmail === 'adminscm@stmu.edu.pk') {
+        unset($options['local']['BDS']);
+        unset($options['intl']['BDS']);
+        unset($options['special']['BDS']);
+    }
+    
+    // Add MBBS options if user is not adminscd@stmu.edu.pk
+    if ($userEmail !== 'adminscd@stmu.edu.pk') {
+        $options['local']['MBBS'] = 'MBBS';
+        $options['intl']['MBBS'] = 'Foreign MBBS';
+        $options['special']['MBBS'] = 'Special Foreign MBBS';
+    }
+    
+    return $options;
+}
 
 public function discardPayment($paymentId)
 {

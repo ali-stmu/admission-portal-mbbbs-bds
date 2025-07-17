@@ -17,30 +17,27 @@
         <div class="col-md-4">
             <label for="program">Filter by Local Program:</label>
             <select wire:model.lazy="programFilter" class="form-control" id="program">
-                <option value="">All Local Programs</option>
-                <option value="MBBS">MBBS</option>
-                <option value="BDS">BDS</option>
-                <option value="both">both</option>
+                @foreach ($this->programOptions['local'] as $value => $label)
+                    <option value="{{ $value }}">{{ $label }}</option>
+                @endforeach
             </select>
         </div>
 
         <div class="col-md-4">
             <label for="intlProgram">Filter by Foreign Program:</label>
             <select wire:model.lazy="intlProgramFilter" class="form-control" id="intlProgram">
-                <option value="">All Foreign Programs</option>
-                <option value="MBBS">Foreign MBBS</option>
-                <option value="BDS">Foreign BDS</option>
-                <option value="both">Foreign both</option>
+                @foreach ($this->programOptions['intl'] as $value => $label)
+                    <option value="{{ $value }}">{{ $label }}</option>
+                @endforeach
             </select>
         </div>
 
         <div class="col-md-4">
             <label for="specialProgram">Filter by Special Program:</label>
             <select wire:model.lazy="specialProgramFilter" class="form-control" id="specialProgram">
-                <option value="">All Special Programs</option>
-                <option value="MBBS">Special Foreign MBBS</option>
-                <option value="BDS">Special Foreign BDS</option>
-                <option value="both">Special Foreign both</option>
+                @foreach ($this->programOptions['special'] as $value => $label)
+                    <option value="{{ $value }}">{{ $label }}</option>
+                @endforeach
             </select>
         </div>
     </div>
