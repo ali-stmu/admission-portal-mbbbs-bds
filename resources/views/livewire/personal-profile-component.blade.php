@@ -153,7 +153,7 @@
                                 <input type="radio" class="btn-check" wire:model="nationality"
                                     id="nationalityForeign" value="foreign" autocomplete="off"
                                     {{ $showPassportFields ? 'checked' : '' }}>
-                                <label class="btn btn-outline-primary" for="nationalityForeign">Foreign</label>
+                                <label class="btn btn-outline-primary" for="nationalityForeign">Foreign / Dual</label>
                             </div>
                             @error('nationality')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -181,6 +181,7 @@
                         @if ($showPassportFields)
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Passport Number</label>
+                                <p class="text-primary text-xs">If you hold a Pakistani passport, please provide valid proof of foreign residency.</p>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-passport"></i></span>
                                     <input type="text"
@@ -214,7 +215,7 @@
                                         <p class="mt-2">
                                             <a href="{{ asset('storage/' . $passportCopy) }}" target="_blank"
                                                 class="btn btn-sm btn-outline-warning">
-                                                View Existing Passport
+                                                Attachment
                                             </a>
                                         </p>
                                     @endif
@@ -226,7 +227,7 @@
                         @endif
 
                         <div class="col-md-6">
-                            <label class="form-label fw-semibold">Domicile </label>
+                            <label class="form-label fw-semibold">Domicile (if applicable) </label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                                 <input type="text" class="form-control @error('domicile') is-invalid @enderror"
@@ -259,7 +260,7 @@
                                     <p class="mt-2">
                                         <a href="{{ asset('storage/' . $cnicCopy) }}" target="_blank"
                                             class="btn btn-sm btn-outline-success">
-                                            View Existing CNIC
+                                            Attachment
                                         </a>
                                     </p>
                                 @endif
@@ -293,7 +294,7 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Father's NIC </label>
+                    <label class="form-label fw-semibold">Father's CNIC </label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                         <input type="text" class="form-control @error('fatherNic') is-invalid @enderror"

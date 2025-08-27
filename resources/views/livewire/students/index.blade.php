@@ -81,14 +81,26 @@
                     <td>
                         @if ($student->paymentInformation)
                             @if ($student->paymentInformation->payment_verified)
-                                <span class="badge-success">Verified</span>
+                                <span
+                                    style="background-color: #28a745; color: white; padding: 4px 8px; border-radius: 4px; font-size: 90%;">
+                                    Verified
+                                </span>
                             @else
-                                <span class="badge-warning">Not Verified</span>
+                                <span
+                                    style="background-color: #ffc107; color: #212529; padding: 4px 8px; border-radius: 4px; font-size: 90%;">
+                                    Not Verified
+                                </span>
                             @endif
                         @else
-                            <span class="text-muted">N/A</span>
+                            <span
+                                style="background-color: #6c757d; color: white; padding: 4px 8px; border-radius: 4px; font-size: 90%;">
+                                N/A
+                            </span>
                         @endif
                     </td>
+
+
+
 
                     <td>
                         <a href="{{ route('students.edit', $student->id) }}" class="btn btn-sm btn-primary">Edit</a>

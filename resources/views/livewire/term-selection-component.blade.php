@@ -26,10 +26,10 @@
     </style>
 
     <div class="card-header bg-primary text-white rounded-top">
-        <h4 class="mb-0">Select Admission Term</h4>
+        <h4 class="mb-0">Guidelines</h4>
     </div>
     <div class="text-end mb-3 me-3">
-        <a href="{{ asset('assets/img/booklet.pdf') }}" target="_blank" class="btn btn-outline-primary btn-sm">
+        <a href="{{ asset('assets/img/Admission Information -Booklet Session 2025 2026.pdf') }}" target="_blank" class="btn btn-outline-primary btn-sm">
             <i class="fas fa-file-pdf me-1"></i> View Admission Booklet
         </a>
     </div>
@@ -40,7 +40,7 @@
             </div>
         @else
             <div class="mb-4">
-                <p class="lead text-muted">Select your preferred admission term:</p>
+                <!--<p class="lead text-muted">Select your preferred admission term:</p>-->
 
                 <div class="row g-3">
                     @foreach ($terms as $term)
@@ -58,7 +58,7 @@
                                                 class="form-check-input">
                                         </div>
                                         <label for="term_{{ $term->id }}" class="form-check-label ms-3">
-                                            <h5 class="mb-0 text-primary">{{ $term->name }}</h5>
+                                            <h5 class="mb-0 text-primary">Session: 2025-2026</h5>
                                         </label>
                                     </div>
                                     <div class="mb-2">
@@ -69,9 +69,9 @@
                                         {{ $startDate }} - {{ $endDate }}
                                     </div> --}}
                                     @if ($term->description)
-                                        <div class="mt-auto">
+                                        {{--<div class="mt-auto">
                                             <p class="small text-muted mb-0">{{ $term->description }}</p>
-                                        </div>
+                                        </div>--}}
                                     @endif
                                 </div>
                             </div>
@@ -82,6 +82,25 @@
                 @error('selectedTerm')
                     <div class="invalid-feedback d-block mt-2">{{ $message }}</div>
                 @enderror
+            </div>
+            
+            <div class="mt-4">
+                <h5 class="text-primary">Important Instructions:</h5>
+                <ul class="">
+                    <li>Please enter the information requested into the appropriate section on the form.</li>
+                    <li>Attach your passport-size colored photograph with a white background
+                        <ul>
+                            <li>File size and format: 1 MB and JPEG format.</li>
+                            <li>The photo should show a clear front view; the full face of the person.</li>
+                        </ul>
+                    </li>
+                    <li>Press the Save button at the end of the form. Failure to click on the Save button will result in an incomplete application form.</li>
+                    <li>Preview the information you entered for accuracy.</li>
+                    <li>For local category seats, both the STMU Entrance Test and the PMDC-MDCAT are compulsory.</li>
+                    <li>Applicants will be able to update or add their test score information on the portal once the results are officially announced.</li>
+                    <li>Please ensure to attach the scanned copy of the original result with information added. Any result without documentary evidence will not be entertained.</li>
+                    <li>Local applicants are eligible to apply only under the local category, while foreign nationals may apply under all available categories, provided they fulfill the specific requirements for each category.</li>
+                </ul>
             </div>
 
             <div class="d-flex justify-content-end mt-4">
@@ -98,6 +117,9 @@
                     You have already submitted an application. Editing is not allowed after submission.
                 </div>
             @endif
+
+            <!-- Additional Instructions -->
+
         @endif
     </div>
 </div>

@@ -15,12 +15,12 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold d-block mb-3">
                             <i class="fas fa-tasks me-2 text-primary"></i>
-                            Type of Test
+                            For local category seats, both the STMU Entrance Test and the PMDC-MDCAT are compulsory.
                         </label>
 
                         <div class="btn-group-vertical w-100" role="group">
                             <template x-if="!isInternational">
-                                <h6 class="text-success fw-bold mb-2">Tests Available for Local Students</h6>
+                                <h6 class="text-success fw-bold mb-2">Tests Available for Local Category</h6>
                             </template>
 
                             <input type="radio" class="btn-check" name="testType" id="testTypeStmu"
@@ -81,33 +81,7 @@
                     </div>
 
                     <!-- STMU Center - Only shown when STMU is selected -->
-                    <div class="mb-4 animate__animated animate__fadeIn" x-show="testType === 'stmu'">
-                        <label class="form-label fw-bold"><i class="fas fa-map-marker-alt me-2 text-primary"></i> Test
-                            Center</label>
-                        <select class="form-select @error('testCenter') is-invalid @enderror py-3"
-                            wire:model="testCenter">
-                            <option value="">Select Test Center</option>
-                            @foreach ($testCenters as $center)
-                                <option value="{{ $center }}">{{ $center }}</option>
-                            @endforeach
-                        </select>
-                        @error('testCenter')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-
-                        <div class="alert alert-info bg-info-soft border-info mt-3">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-info-circle text-info me-3 fs-4"></i>
-                                <div>
-                                    <strong class="d-block text-light">Important Note</strong>
-                                    <span class="text-light">
-                                        In case any center fails to meet the minimum requirement of 50 participants,
-                                        the test will be conducted at the nearest available center.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
 
                     <!-- Other Test Name - Only shown when 'other' is selected -->
                     <div class="mb-4 animate__animated animate__fadeIn" x-show="testType === 'other'">
@@ -196,12 +170,42 @@
                         <div>
                             <i class="fas fa-calendar-alt fa-3x text-primary mb-3"></i>
                             <h5 class="text-primary">STMU Entrance Test</h5>
-                            <p class="text-muted">Test center and date will be communicated after registration</p>
+                            <!--<p class="text-muted">Test center and date will be communicated after registration</p>-->
 
                             <div class="alert alert-info mt-3">
                                 <i class="fas fa-info-circle me-2"></i>
                                 <span class="text-light"> Important: Please ensure you've selected your preferred test
                                     center from the options.</span>
+                            </div>
+                        </div>
+                        
+                        <!--Placed here-->
+                        
+                            <div class="mb-4 animate__animated animate__fadeIn" x-show="testType === 'stmu'">
+                            <label class="form-label fw-bold"><i class="fas fa-map-marker-alt me-2 text-primary"></i> Test
+                                Center</label>
+                            <select class="form-select @error('testCenter') is-invalid @enderror py-3"
+                                wire:model="testCenter">
+                                <option value="">Select Test Center</option>
+                                @foreach ($testCenters as $center)
+                                    <option value="{{ $center }}">{{ $center }}</option>
+                                @endforeach
+                            </select>
+                            @error('testCenter')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+    
+                            <div class="alert alert-info bg-info-soft border-info mt-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-info-circle text-info me-3 fs-4"></i>
+                                    <div>
+                                        <strong class="d-block text-light">Important Note</strong>
+                                        <span class="text-light">
+                                            In case any center fails to meet the minimum requirement of 50 participants,
+                                            the test will be conducted at the nearest available center.
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

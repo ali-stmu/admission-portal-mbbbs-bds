@@ -12,6 +12,7 @@
                     <!-- Card Header - Simplified -->
                     <div class="card-header bg-white py-3 text-center border-0">
                         <h3 class="fw-bold text-primary mb-1">{{ __('Welcome to STMU') }}</h3>
+
                         <p class="text-muted small mb-0">{{ __('Sign in to your account') }}</p>
                     </div>
 
@@ -66,7 +67,23 @@
                             </div>
                         </form>
                     </div>
-
+                        <ul class="mb-2">
+    <li>
+        <a href="https://scm-admission.stmu.edu.pk/assets/img/Admission Information -Booklet Session 2025 2026.pdf" target="_blank">
+            Admission Guidelines (MBBS)
+        </a>
+    </li>
+        <li>
+        <a href="https://scm-admission.stmu.edu.pk/assets/img/BDS Admission Booklet 2025-26 Shifa College of Dentistry_ July 2025.pdf" target="_blank">
+            Admission Guidelines (BDS)
+        </a>
+    </li>
+    <li>
+        <a href="https://scm-admission.stmu.edu.pk/assets/img/Subject Contents & Sample Paper - STMU ENTRANCE TEST for MBBS & BDS.pdf" target="_blank">
+           Subject Contents & Sample Paper - STMU ENTRANCE TEST for MBBS & BDS
+        </a>
+    </li>
+</ul>
                     <!-- Card Footer -->
                     <div class="card-footer bg-white text-center pt-0 pb-4 border-0">
                         <p class="small text-muted mb-0">

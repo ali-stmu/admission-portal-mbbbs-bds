@@ -45,7 +45,7 @@ class TestInformationComponent extends Component
             $rules['testName'] = 'required_if:testType,other|nullable|string|max:255';
             $rules['testYear'] = 'required|digits:4|integer|min:2000|max:' . date('Y');
             $rules['resultStatus'] = 'required|in:awaited,declared';
-            $rules['testDocument'] = 'required_if:testType,mdcat,sat-ii,foreign-mcat,ucat,other|nullable|file|mimes:pdf,jpg,png|max:2048';
+            $rules['testDocument'] = 'required_if:testType,sat-ii,foreign-mcat,ucat,other|nullable|file|mimes:pdf,jpg,png|max:2048';
         }
 
         // If result is declared (and not STMU or foreign-special), then testScore is required
@@ -92,7 +92,7 @@ class TestInformationComponent extends Component
                 }
                 $testDocumentPath = $this->testDocument->store('test-documents', 'public');
             } elseif (empty($this->existingDocumentPath)) {
-                $requiredTypes = ['mdcat', 'sat-ii', 'foreign-mcat', 'ucat', 'other'];
+                $requiredTypes = ['sat-ii', 'foreign-mcat', 'ucat', 'other'];
                 if (in_array($this->testType, $requiredTypes)) {
                     $this->addError('testDocument', 'A document is required for this test type.');
                     return;

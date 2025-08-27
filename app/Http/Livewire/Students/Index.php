@@ -43,44 +43,55 @@ class Index extends Component
         $this->resetPage();
     }
 public function render()
-    {
-        $studentsQuery = Student::query();
+{
+    $studentsQuery = Student::query()->with('paymentInformation');
 
-        // Apply search only if search was performed and search term exists
-        if ($this->searchPerformed && !empty($this->search)) {
-            $studentsQuery->where(function($query) {
-                $query->where('name', 'like', '%' . $this->search . '%')
-                      ->orWhere('application_no', 'like', '%' . $this->search . '%')
-                      ->orWhere('cnic', 'like', '%' . $this->search . '%');
-            });
-        }
-
-        // Apply program filters
-        if (!empty($this->programFilter)) {
-            $studentsQuery->whereHas('paymentInformation', function ($query) {
-                $query->where('program', $this->programFilter)
-                    ->orWhere('local_program', $this->programFilter);
-            });
-        }
-
-        if (!empty($this->intlProgramFilter)) {
-            $studentsQuery->whereHas('paymentInformation', function ($query) {
-                $query->where('intl_program', 'intl_' . strtolower($this->intlProgramFilter));
-            });
-        }
-
-        if (!empty($this->specialProgramFilter)) {
-            $studentsQuery->whereHas('paymentInformation', function ($query) {
-                $query->where('special_program', 'special_' . strtolower($this->specialProgramFilter));
-            });
-        }
-
-        $students = $studentsQuery->orderBy('id', 'desc')->paginate($this->perPage);
-
-        return view('livewire.students.index', [
-            'students' => $students
-        ]);
+    // Apply search only if search was performed and search term exists
+    if ($this->searchPerformed && !empty($this->search)) {
+        $studentsQuery->where(function($query) {
+            $query->where('name', 'like', '%' . $this->search . '%')
+                  ->orWhere('application_no', 'like', '%' . $this->search . '%')
+                  ->orWhere('cnic', 'like', '%' . $this->search . '%');
+        });
     }
+
+    // Apply program filters
+    if (!empty($this->programFilter)) {
+        $studentsQuery->whereHas('paymentInformation', function ($query) {
+            $query->where('program', $this->programFilter)
+                  ->orWhere('local_program', $this->programFilter);
+        });
+    }
+
+    if (!empty($this->intlProgramFilter)) {
+        $studentsQuery->whereHas('paymentInformation', function ($query) {
+            $query->where('intl_program', 'intl_' . strtolower($this->intlProgramFilter));
+        });
+    }
+
+    if (!empty($this->specialProgramFilter)) {
+        $studentsQuery->whereHas('paymentInformation', function ($query) {
+            $query->where('special_program', 'special_' . strtolower($this->specialProgramFilter));
+        });
+    }
+
+    // 🔹 Order: Not Verified first, then Verified, then by newest student
+    $students = $studentsQuery
+        ->leftJoin('payment_informations', 'students.id', '=', 'payment_informations.student_id')
+        ->select('students.*') // avoid duplicate columns
+        ->orderByRaw('
+            CASE 
+                WHEN payment_informations.payment_verified = 0 THEN 0 
+                ELSE 1 
+            END ASC
+        ')
+        ->orderBy('students.id', 'desc')
+        ->paginate($this->perPage);
+
+    return view('livewire.students.index', [
+        'students' => $students
+    ]);
+}
 
 public function updatedProgramFilter()
 {

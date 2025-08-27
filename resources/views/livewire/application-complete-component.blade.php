@@ -16,12 +16,12 @@
                         <h5 class="mb-0">Application Summary</h5>
                     </div>
                     <div class="card-body">
-                        <p><strong>Term:</strong> {{ $student->term->name }} - {{ $student->term->session }}</p>
+                        <p><strong>Term:</strong> {{ $student->term->session }}</p>
                         <p><strong>Applicant Name:</strong> {{ $student->name }}</p>
                         <p><strong>CNIC:</strong> {{ $student->cnic }}</p>
                         <p><strong>Mobile:</strong> {{ $student->mobile }}</p>
                         <p><strong>Email:</strong> {{ $student->email }}</p>
-                        <p><strong>Program:</strong> {{ ucfirst($student->paymentInformation->program) }}</p>
+                        <p><strong>Program:</strong> {{ strToUpper($student->paymentInformation->program) }}</p>
                         <p><strong>Application Fee:</strong> Rs.
                             {{ number_format($student->paymentInformation->amount, 2) }}</p>
                     </div>
@@ -58,8 +58,7 @@
 
         <div class="alert alert-warning">
             <h5 class="alert-heading">Important Note</h5>
-            <p class="mb-0">Edits to the application form are not allowed after submission. If you need to make any
-                changes, please contact the admissions office.</p>
+            <p class="mb-0">Applicants will be able to update their test score information on the portal once their results are officially announced</p>
         </div>
     </div>
 </div>

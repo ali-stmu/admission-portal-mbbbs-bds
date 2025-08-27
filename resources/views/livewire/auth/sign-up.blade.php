@@ -58,8 +58,8 @@
                                 <select wire:model.live="nationality" x-model="nationality" id="nationality"
                                     class="form-select form-select-lg rounded-3">
                                     <option value="">{{ __('Select Category') }}</option>
-                                    <option value="local">Local</option>
-                                    <option value="foreign">Foreign</option>
+                                    <option value="local">Local (Only)</option>
+                                    <option value="foreign">Foreign (please select this option if you're applying under both the foreign and local categories)</option>
                                 </select>
                                 @error('nationality')
                                     <div class="text-danger small mt-1">{{ $message }}</div>
@@ -102,13 +102,19 @@
                             </div>
 
                             <!-- Terms -->
-                            <div class="form-check mb-4">
+                            <!--    <div class="form-check mb-4">
                                 <input class="form-check-input" type="checkbox" id="termsCheck" required>
                                 <label class="form-check-label small text-muted" for="termsCheck">
                                     {{ __('I agree to the') }} <a href="#"
                                         class="text-primary fw-bold">{{ __('Terms and Conditions') }}</a>
                                 </label>
-                            </div>
+                            </div> -->
+                         <div class="form-check mb-4 d-none">
+    <input class="form-check-input" type="checkbox" id="termsCheck" checked required>
+    <label class="form-check-label small text-muted" for="termsCheck">
+        {{ __('I agree to the') }} <a href="#" class="text-primary fw-bold">{{ __('Terms and Conditions') }}</a>
+    </label>
+</div>
 
                             <!-- Submit Button -->
                             <div class="d-grid">

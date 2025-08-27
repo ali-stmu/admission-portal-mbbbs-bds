@@ -126,8 +126,14 @@
                             Shifa Tameer-e-Millat University
                             {{ $data['collegeName'] }}
                             (Deposit Slip Dept. Copy)</td>
-                        <td class="bank-logo"><img style="max-width: 60px; height: auto;" src="{{ $data['bankLogo'] }}"
-                                alt="Bank Logo"></td>
+                        @if ($data['isInternational'])
+                            <td class="bank-logo"><img style="max-width: 60px; height: auto;" src="{{ asset('assets/img/2560px-Al_Baraka_logo.png') }}"
+                                    alt="Bank Logo"></td>
+                            @else
+                            
+                            <td class="bank-logo"><img style="max-width: 60px; height: auto; margin-left:5px" src="{{ asset('assets/img/hbl-logo.png') }}"
+                                    alt="Bank Logo"></td>
+                        @endif
                     </tr>
                     <tr>
                         <td><b>Ch./Receipt/Slip No:</b></td>
@@ -329,8 +335,13 @@
                             Shifa Tameer-e-Millat University
                             {{ $data['collegeName'] }}
                             (Deposit Slip Student Copy)</td>
-                        <td class="bank-logo"><img style="max-width: 60px; height: auto;" src="{{ $data['bankLogo'] }}"
-                                alt="Bank Logo"></td>
+                        @if ($data['isInternational'])
+                            <td class="bank-logo"><img style="max-width: 60px; height: auto;" src="{{ asset('assets/img/2560px-Al_Baraka_logo.png') }}"
+                                    alt="Bank Logo"></td>
+                            @else
+                            <td class="bank-logo"><img style="max-width: 60px; height: auto; margin-left:5px" src="{{ asset('assets/img/hbl-logo.png') }}"
+                                    alt="Bank Logo"></td>
+                        @endif
                     </tr>
                     <tr>
                         <td> <b>Ch./Receipt/Slip No:</b></td>
@@ -532,8 +543,13 @@
                             Shifa Tameer-e-Millat University
                             {{ $data['collegeName'] }}
                             (Deposit Slip Bank Copy)</td>
-                        <td class="bank-logo"><img style="max-width: 60px; height: auto;"
-                                src="{{ $data['bankLogo'] }}" alt="Bank Logo"></td>
+                        @if ($data['isInternational'])
+                            <td class="bank-logo"><img style="max-width: 60px; height: auto;" src="{{ asset('assets/img/2560px-Al_Baraka_logo.png') }}"
+                                    alt="Bank Logo"></td>
+                            @else
+                            <td class="bank-logo"><img style="max-width: 60px; height: auto; margin-left:5px" src="{{ asset('assets/img/hbl-logo.png') }}"
+                                    alt="Bank Logo"></td>
+                        @endif
                     </tr>
                     <tr>
                         <td> <b>Ch./Receipt/Slip No:</b></td>

@@ -40,9 +40,9 @@ class PaymentInformationComponent extends Component
     ];
 
     if ($this->isInternational) {
-        $rules['localProgram'] = 'required|in:mbbs,bds,both';
-        $rules['intlProgram'] = 'required|in:intl_mbbs,intl_bds,intl_both';
-        $rules['specialProgram'] = 'required|in:special_mbbs,special_bds,special_both';
+        $rules['localProgram'] = 'required';
+        $rules['intlProgram'] = 'required';
+        $rules['specialProgram'] = 'required';
     } else {
         $rules['program'] = 'required|in:mbbs,bds,both';
     }
@@ -104,7 +104,7 @@ $bankLogo = $this->getEncodedImage($bankLogoPath);
             'collegeName' => $this->cleanString('Shifa College of Medicine'),
             'voucherID' => 'STMU-' . time(),
             'date' => now()->format('d-m-Y'),
-            'dueDate' => \Carbon\Carbon::create(2025, 7, 28)->format('d-m-Y'),
+            'dueDate' => \Carbon\Carbon::create(2025, 9, 01)->format('d-m-Y'),
             'AccountTitle' => $this->cleanString('Shifa Tameer-e-Millat University'),
             'bankAccountNumber' => $this->isInternational ? '70120216' : '50007902906303',
             'totalAmount' => $amount,
@@ -158,7 +158,7 @@ $bankLogo = $this->getEncodedImage($bankLogoPath);
             'collegeName' => $this->cleanString('Shifa College of Medicine'),
             'voucherID' => 'STMU-' . time(),
             'date' => now()->format('d-m-Y'),
-            'dueDate' => \Carbon\Carbon::create(2025, 7, 28)->format('d-m-Y'),
+            'dueDate' => \Carbon\Carbon::create(2025, 9, 01)->format('d-m-Y'),
             'AccountTitle' => $this->cleanString('Shifa Tameer-e-Millat University'),
             'bankAccountNumber' => '50007902906303',
             'totalAmount' => $amount,
@@ -193,6 +193,7 @@ $bankLogo = $this->getEncodedImage($bankLogoPath);
                 'mbbs' => 'Local MBBS',
                 'bds' => 'Local BDS',
                 'both' => 'Local MBBS & BDS',
+                // 'na' => 'N/A',
                 default => '',
             };
             
@@ -200,6 +201,7 @@ $bankLogo = $this->getEncodedImage($bankLogoPath);
                 'intl_mbbs' => 'International MBBS',
                 'intl_bds' => 'International BDS',
                 'intl_both' => 'International MBBS & BDS',
+                // 'na' => 'N/A',
                 default => '',
             };
             
@@ -207,6 +209,7 @@ $bankLogo = $this->getEncodedImage($bankLogoPath);
                 'special_mbbs' => 'Special MBBS',
                 'special_bds' => 'Special BDS',
                 'special_both' => 'Special MBBS & BDS',
+                // 'na' => 'N/A',
                 default => '',
             };
             

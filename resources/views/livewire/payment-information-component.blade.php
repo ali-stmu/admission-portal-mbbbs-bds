@@ -10,20 +10,9 @@
         <div class="alert alert-info d-flex align-items-start">
             <i class="fas fa-info-circle fa-2x me-3 mt-1"></i>
             <div>
-                <ul class="mb-0 list-unstyled">
-                    <li class="mb-2 d-flex">
-                        <span class="badge bg-primary rounded-pill me-3">1</span>
-                        <span>Rs. 6,000 for applying to a single program (MBBS or BDS)</span>
-                    </li>
-                    <li class="mb-2 d-flex">
-                        <span class="badge bg-primary rounded-pill me-3">2</span>
-                        <span>Rs. 8,000 for applying to both programs (MBBS and BDS)</span>
-                    </li>
-                    <li class="d-flex">
-                        <span class="badge bg-primary rounded-pill me-3">3</span>
-                        <span>One-time application fee of USD 100 for international students</span>
-                    </li>
-                </ul>
+                <p class="text-xs text-white">
+                    An application fee of Rs. 6,000 will be charged for applying to a single program (either MBBS or BDS). Candidates who wish to apply for both programs must pay Rs. 8,000. Foreign applicants are required to pay an application fee of USD 100 (or its equivalent in PKR). Please note that the application fee is non-refundable under any circumstances. Applicants are strongly advised to verify their eligibility before submitting an application.
+                </p>
             </div>
         </div>
 
@@ -43,7 +32,7 @@
                         @if ($isInternational)
                             <!-- International Student Options (all 9 options) -->
                             <div class="mb-4">
-                                <h6 class="fw-bold text-muted mb-3">Local Programs (select one)</h6>
+                                <h6 class="fw-bold text-muted mb-3">Local Category (please select one)</h6>
                                 <div class="btn-group-vertical w-100" role="group">
                                     <input type="radio" class="btn-check" name="localProgram" id="localMbbs"
                                         wire:model="localProgram" value="mbbs">
@@ -65,11 +54,19 @@
                                         <i class="fas fa-clipboard-list me-2"></i>
                                         <strong>Local Both MBBS & BDS</strong>
                                     </label>
+                                    
+                                    <!--Did here-->
+                                    <input type="radio" class="btn-check" name="localProgram" id="na1"
+                                        wire:model="localProgram" value="na">
+                                    <label class="btn btn-outline-primary text-start py-3" for="na1">
+                                        <i class="fas fa-clipboard-list me-2"></i>
+                                        <strong>N/A</strong>
+                                    </label>
                                 </div>
                             </div>
 
                             <div class="mb-4">
-                                <h6 class="fw-bold text-muted mb-3">FOREIGN Programs (select one)</h6>
+                                <h6 class="fw-bold text-muted mb-3">FOREIGN Category (please select one)</h6>
                                 <div class="btn-group-vertical w-100" role="group">
                                     <input type="radio" class="btn-check" name="intlProgram" id="intlMbbs"
                                         wire:model="intlProgram" value="intl_mbbs">
@@ -91,11 +88,19 @@
                                         <i class="fas fa-clipboard-list me-2"></i>
                                         <strong>FOREIGN Both MBBS & BDS</strong>
                                     </label>
+                                    
+                                    <!--Did here-->
+                                    <input type="radio" class="btn-check" name="intlProgram" id="na2"
+                                        wire:model="intlProgram" value="na">
+                                    <label class="btn btn-outline-primary text-start py-3" for="na2">
+                                        <i class="fas fa-clipboard-list me-2"></i>
+                                        <strong>N/A</strong>
+                                    </label>
                                 </div>
                             </div>
 
                             <div class="mb-4">
-                                <h6 class="fw-bold text-muted mb-3">Special Programs (select one)</h6>
+                                <h6 class="fw-bold text-muted mb-3">Special Foreign Category (please select one) - Only for Foreign Passport Holders</h6>
                                 <div class="btn-group-vertical w-100" role="group">
                                     <input type="radio" class="btn-check" name="specialProgram" id="specialMbbs"
                                         wire:model="specialProgram" value="special_mbbs">
@@ -116,6 +121,13 @@
                                     <label class="btn btn-outline-primary text-start py-3" for="specialBoth">
                                         <i class="fas fa-clipboard-list me-2"></i>
                                         <strong>Special FOREIGN Both MBBS & BDS</strong>
+                                    </label>
+                                    
+                                    <input type="radio" class="btn-check" name="specialProgram" id="na3"
+                                        wire:model="specialProgram" value="na">
+                                    <label class="btn btn-outline-primary text-start py-3" for="na3">
+                                        <i class="fas fa-clipboard-list me-2"></i>
+                                        <strong>N/A</strong>
                                     </label>
                                 </div>
                             </div>
@@ -239,7 +251,7 @@
                     <!-- Voucher Section -->
                     <div class="mb-4 animate__animated animate__fadeIn" x-show="selectedPaymentMode === 'voucher'">
                         <button type="button" class="btn btn-primary w-100 py-3" wire:click="downloadChallan">
-                            <i class="fas fa-download me-2"></i> Download Challan Form
+                            <i class="fas fa-download me-2"></i> Download @if($isInternational) USD @endif Challan Form
                         </button>
                         @if ($isInternational)
                             <button type="button" class="btn btn-outline-primary w-100 py-3"
@@ -351,6 +363,13 @@
                             @error('paymentProof')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
+                        </div>
+
+                        <!-- Important Note -->
+                        <div class="alert alert-warning mt-4" role="alert" style="font-size: 0.95rem;">
+                            <i class="fas fa-info-circle me-1"></i>
+                            <strong>Note:</strong> Before submitting, please ensure you have selected the respective
+                            program for which you submitted your fee.
                         </div>
                     </div>
                 </div>

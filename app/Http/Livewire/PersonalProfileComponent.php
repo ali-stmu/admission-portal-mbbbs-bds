@@ -116,15 +116,15 @@ class PersonalProfileComponent extends Component
     public function mount($termId)
     {
         $this->termId = $termId;
-
+    
         $user = Auth::user();
         $this->showPassportFields = $user->nationality !== 'local';
-
+    
         // Always try to load the student record for this user and term
         $student = Student::where('user_id', $user->id)
                          ->where('term_id', $termId)
                          ->first();
-
+    
         if ($student) {
             $this->studentId = $student->id;
             $this->applicationNo = $student->application_no;
@@ -138,7 +138,7 @@ class PersonalProfileComponent extends Component
             $this->email = $student->email;
             $this->nationality = $student->nationality;
             $this->province = $student->province;
-
+    
             // Father's info
             $this->fatherName = $student->father_name;
             $this->fatherNic = $student->father_nic;
@@ -148,7 +148,7 @@ class PersonalProfileComponent extends Component
             $this->fatherMobile = $student->father_mobile;
             $this->fatherResPhone = $student->father_res_phone;
             $this->fatherOfficePhone = $student->father_office_phone;
-
+    
             // Addresses
             $this->mailingHouseNo = $student->mailing_house_no;
             $this->mailingStreet = $student->mailing_street;
@@ -157,7 +157,7 @@ class PersonalProfileComponent extends Component
             $this->mailingCity = $student->mailing_city;
             $this->mailingCountry = $student->mailing_country;
             $this->mailingAddress = $student->mailing_address;
-
+    
             $this->permanentHouseNo = $student->permanent_house_no;
             $this->permanentStreet = $student->permanent_street;
             $this->permanentSector = $student->permanent_sector;
@@ -166,7 +166,7 @@ class PersonalProfileComponent extends Component
             $this->permanentCountry = $student->permanent_country;
             $this->permanentAddress = $student->permanent_address;
             $this->sameAsMailing = $student->mailing_address === $student->permanent_address;
-
+    
             // Previously uploaded attachments
             $this->photo = $student->photo_path;
             $this->cnicCopy = $student->cnic_copy_path;
@@ -176,7 +176,17 @@ class PersonalProfileComponent extends Component
             $this->name = $user->name;
             $this->email = $user->email;
             $this->cnic = $user->cnic;
-            $this->applicationNo = 'STMU-' . date('Y') . '-' . str_pad(Student::count() + 1, 5, '0', STR_PAD_LEFT);
+            
+            // Determine application number based on registration date
+            $cutoffDate = '2025-07-16';
+            
+            if ($user->created_at->lt($cutoffDate)) {
+                // For users registered before July 16, 2025 - format: 10410 (user_id + 10000)
+                $this->applicationNo = 'STMU-' . date('Y') . '-' . $user->id + 10000;
+            } else {
+                // For users registered on or after July 16, 2025 - format: STMU-YEAR-00001
+                $this->applicationNo = 'STMU-' . date('Y') . '-' . str_pad($user->id, 5, '0', STR_PAD_LEFT);
+            }
         }
     }
 
