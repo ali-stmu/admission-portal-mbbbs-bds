@@ -135,6 +135,12 @@
                         <p><strong>Transaction ID:</strong> {{ $payment->transaction_id }}</p>
                         <p><strong>Payment Date:</strong> {{ $payment->payment_date }}</p>
                         <p><strong>Payment Details:</strong> {{ $payment->payment_details }}</p>
+                           @if ($payment->discard_remarks && $payment->payment_verified == 0)
+                            <div class="alert alert-danger mt-2 text-white">
+                                <strong>Discarded:</strong> {{ $payment->discard_remarks }}
+                            </div>
+                        @endif
+
                         @if ($payment->payment_proof_path)
                             <p><strong>Payment Proof:</strong></p>
                             @php
@@ -154,14 +160,20 @@
                                 </a>
                             @endif
                         @endif
-
+                     
 
                         <div class="mt-3">
-                            <button wire:click="verifyPayment({{ $payment->id }})" class="btn btn-success">Verify
-                                Payment</button>
-                            <button wire:click="$set('showDiscardForm', true)" class="btn btn-danger">Discard
-                                Payment</button>
+                            <button wire:click="verifyPayment({{ $payment->id }})" class="btn btn-success"
+                                @if ($payment->discard_remarks && $payment->payment_verified == 0) disabled @endif>
+                                Verify Payment
+                            </button>
+
+                            <button wire:click="$set('showDiscardForm', true)" class="btn btn-danger"
+                                @if ($payment->discard_remarks && $payment->payment_verified == 0) disabled @endif>
+                                Discard Payment
+                            </button>
                         </div>
+
 
                         @if ($showDiscardForm)
                             <div class="form-group mt-2">

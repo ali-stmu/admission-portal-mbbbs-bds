@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\PaymentVerifiedMail;
 use App\Mail\PaymentDiscardedMail;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\Log; // Import the Facade
+
 
 
 class Index extends Component
@@ -131,42 +133,116 @@ public function verifyPayment($paymentId)
 }
 public function downloadExcel(): StreamedResponse
 {
-    $students = Student::with('paymentInformation')->get();
+    $userEmail = auth()->user()->email; // get logged-in email
+
+    // Decide which programs to include based on email
+    $allowedPrograms = [];
+    if ($userEmail === 'adminscm@stmu.edu.pk') {
+        $allowedPrograms = ['both', 'mbbs'];
+    } elseif ($userEmail === 'adminscd@stmu.edu.pk') {
+        $allowedPrograms = ['both', 'scd'];
+    } else {
+        // default: allow all
+        $allowedPrograms = ['both', 'mbbs', 'bds', 'scd'];
+    }
+
+    // Fetch students with payment info + test info
+    $students = Student::with(['paymentInformation', 'testInformation'])->get();
+
+    // Filter students
+    $filteredStudents = $students->filter(function ($student) use ($allowedPrograms) {
+        $paymentInfo = $student->paymentInformation;
+
+        if (!$paymentInfo || $paymentInfo->payment_verified != 1) {
+            return false;
+        }
+
+        $program = $paymentInfo->program ?? null;
+        if (!$program) {
+            return false;
+        }
+
+        // If plain string program
+        if (is_string($program) && !$this->isJson($program)) {
+            return in_array(strtolower($program), $allowedPrograms);
+        }
+
+        // If JSON string program
+        if (is_string($program) && $this->isJson($program)) {
+            $decoded = json_decode($program, true);
+            return isset($decoded['local']) && in_array(strtolower($decoded['local']), $allowedPrograms);
+        }
+
+        return false;
+    });
 
     $headers = [
         'Content-Type' => 'text/csv',
-        'Content-Disposition' => 'attachment; filename="students.xlsx"',
+        'Content-Disposition' => 'attachment; filename="students.csv"',
     ];
 
-    return response()->stream(function () use ($students) {
+    return response()->stream(function () use ($filteredStudents) {
         $handle = fopen('php://output', 'w');
 
         // Excel Header Row
         fputcsv($handle, [
-            'Applicant Name',
+            'Application ID / Unique ID',
+            'Applicant’s Name',
             'CNIC Number',
-            'Father Name',
-            'Application ID',
-            'Passport Picture URL',
-            'Primary Contact',
-            'Secondary Contact',
+            'Email Address',
+            'Gender',
+            'Father’s Name',
+            'Passport Sized Picture (Image URL)',
+            'Desired Discipline (MBBS / BDS / Both)',
+            'Selected City - Test Center',
+            'Applicant’s Primary Contact Number',
+            'Applicant’s Secondary Contact Number',
+            'Current Postal Address',
         ]);
 
         // Data Rows
-        foreach ($students as $student) {
+        foreach ($filteredStudents as $student) {
+            $program = $student->paymentInformation->program ?? null;
+            $category = 'N/A';
+
+            if ($program) {
+                if (is_string($program) && !$this->isJson($program)) {
+                    $category = strtolower($program);
+                } elseif (is_string($program) && $this->isJson($program)) {
+                    $decoded = json_decode($program, true);
+                    if (isset($decoded['local'])) {
+                        $category = $program;
+                    }
+                }
+            }
+
             fputcsv($handle, [
+                $student->application_no,
                 $student->name,
                 $student->cnic,
+                $student->email,
+                $student->gender,
                 $student->father_name,
-                $student->application_no,
                 $student->photo_path ? asset('storage/' . $student->photo_path) : 'N/A',
+                $category,
+                $student->testInformation->test_center ?? 'N/A',
                 $student->mobile,
                 $student->father_mobile,
+                $student->mailing_address ?? 'N/A',
             ]);
         }
 
         fclose($handle);
     }, 200, $headers);
+}
+
+
+
+
+private function isJson($string): bool
+{
+    json_decode($string);
+    return (json_last_error() === JSON_ERROR_NONE);
 }
 public function getProgramOptionsProperty()
 {
