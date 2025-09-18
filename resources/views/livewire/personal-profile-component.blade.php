@@ -73,7 +73,7 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                                 <input type="text" class="form-control @error('cnic') is-invalid @enderror"
-                                    wire:model="cnic" placeholder="XXXXX-XXXXXXX-X" required
+                                    wire:model="cnic" placeholder="XXXXX-XXXXXXX-X" required disabled
                                     {{ $studentId ? '' : 'readonly' }}> <!-- Only readonly for new records -->
                             </div>
                             @error('cnic')
@@ -87,7 +87,7 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
                                 <input type="date" class="form-control @error('dob') is-invalid @enderror"
-                                    wire:model="dob" required>
+                                    wire:model="dob" required disabled>
                             </div>
                             @error('dob')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -98,17 +98,17 @@
                             <label class="form-label fw-semibold">Gender <span class="text-danger">*</span></label>
                             <div class="btn-group w-100" role="group">
                                 <input type="radio" class="btn-check" wire:model="gender" id="genderMale"
-                                    value="male" autocomplete="off">
+                                    value="male" autocomplete="off" disabled>
                                 <label class="btn btn-outline-primary" for="genderMale"><i class="fas fa-male me-1"></i>
                                     Male</label>
 
                                 <input type="radio" class="btn-check" wire:model="gender" id="genderFemale"
-                                    value="female" autocomplete="off">
+                                    value="female" autocomplete="off" disabled>
                                 <label class="btn btn-outline-primary" for="genderFemale"><i
                                         class="fas fa-female me-1"></i> Female</label>
 
                                 <input type="radio" class="btn-check" wire:model="gender" id="genderOther"
-                                    value="other" autocomplete="off">
+                                    value="other" autocomplete="off" disabled>
                                 <label class="btn btn-outline-primary" for="genderOther">Other</label>
                             </div>
                             @error('gender')
@@ -122,7 +122,7 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
                                 <input type="text" class="form-control @error('mobile') is-invalid @enderror"
-                                    wire:model="mobile" placeholder="03001234567" required>
+                                    wire:model="mobile" placeholder="03001234567" required disabled>
                             </div>
                             @error('mobile')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -145,13 +145,13 @@
                             <label class="form-label fw-semibold">Nationality <span
                                     class="text-danger">*</span></label>
                             <div class="btn-group w-100" role="group">
-                                <input type="radio" class="btn-check" wire:model="nationality"
+                                <input type="radio" class="btn-check" wire:model="nationality" disabled
                                     id="nationalityPakistani" value="pakistani" autocomplete="off"
                                     {{ !$showPassportFields ? 'checked' : '' }}>
                                 <label class="btn btn-outline-primary" for="nationalityPakistani">Pakistani</label>
 
                                 <input type="radio" class="btn-check" wire:model="nationality"
-                                    id="nationalityForeign" value="foreign" autocomplete="off"
+                                    id="nationalityForeign" value="foreign" autocomplete="off" disabled
                                     {{ $showPassportFields ? 'checked' : '' }}>
                                 <label class="btn btn-outline-primary" for="nationalityForeign">Foreign / Dual</label>
                             </div>
@@ -163,7 +163,7 @@
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Province </label>
                             <select class="form-select @error('province') is-invalid @enderror" wire:model="province"
-                                required>
+                                disabled required>
                                 <option value="" selected disabled>Select Province</option>
                                 <option value="Punjab">Punjab</option>
                                 <option value="Sindh">Sindh</option>
@@ -181,7 +181,8 @@
                         @if ($showPassportFields)
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold">Passport Number</label>
-                                <p class="text-primary text-xs">If you hold a Pakistani passport, please provide valid proof of foreign residency.</p>
+                                <p class="text-primary text-xs">If you hold a Pakistani passport, please provide valid
+                                    proof of foreign residency.</p>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-passport"></i></span>
                                     <input type="text"
@@ -231,7 +232,7 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                                 <input type="text" class="form-control @error('domicile') is-invalid @enderror"
-                                    wire:model="domicile" required>
+                                    wire:model="domicile" required disabled>
                             </div>
                             @error('domicile')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -243,7 +244,7 @@
 
                             {{-- File input --}}
                             <input type="file" class="form-control @error('cnicCopy') is-invalid @enderror"
-                                wire:model="cnicCopy">
+                                wire:model="cnicCopy" disabled>
 
                             {{-- Error --}}
                             @error('cnicCopy')
@@ -286,7 +287,7 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                         <input type="text" class="form-control @error('fatherName') is-invalid @enderror"
-                            wire:model="fatherName" required>
+                            wire:model="fatherName" required disabled>
                     </div>
                     @error('fatherName')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -298,7 +299,7 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                         <input type="text" class="form-control @error('fatherNic') is-invalid @enderror"
-                            wire:model="fatherNic" required>
+                            wire:model="fatherNic" required disabled>
                     </div>
                     @error('fatherNic')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -311,7 +312,7 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-mobile-alt"></i></span>
                         <input type="text" class="form-control @error('fatherMobile') is-invalid @enderror"
-                            wire:model="fatherMobile" required>
+                            wire:model="fatherMobile" required disabled>
                     </div>
                     @error('fatherMobile')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -323,7 +324,7 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         <input type="email" class="form-control @error('fatherEmail') is-invalid @enderror"
-                            wire:model="fatherEmail">
+                            wire:model="fatherEmail" disabled>
                     </div>
                     @error('fatherEmail')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -335,7 +336,7 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
                         <input type="text" class="form-control @error('fatherProfession') is-invalid @enderror"
-                            wire:model="fatherProfession">
+                            wire:model="fatherProfession" disabled>
                     </div>
                     @error('fatherProfession')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -347,7 +348,7 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-building"></i></span>
                         <input type="text" class="form-control @error('fatherCompany') is-invalid @enderror"
-                            wire:model="fatherCompany">
+                            wire:model="fatherCompany" disabled>
                     </div>
                     @error('fatherCompany')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -367,7 +368,7 @@
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">House No </span></label>
                     <input type="text" class="form-control @error('mailingHouseNo') is-invalid @enderror"
-                        wire:model="mailingHouseNo" required>
+                        wire:model="mailingHouseNo" required disabled>
                     @error('mailingHouseNo')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
@@ -376,7 +377,7 @@
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">Street <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('mailingStreet') is-invalid @enderror"
-                        wire:model="mailingStreet" required>
+                        wire:model="mailingStreet" required disabled>
                     @error('mailingStreet')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
@@ -385,7 +386,7 @@
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">Sector/Area </label>
                     <input type="text" class="form-control @error('mailingSector') is-invalid @enderror"
-                        wire:model="mailingSector" required>
+                        wire:model="mailingSector" required disabled>
                     @error('mailingSector')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
@@ -394,7 +395,7 @@
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">Tehsil</label>
                     <input type="text" class="form-control @error('mailingTehsil') is-invalid @enderror"
-                        wire:model="mailingTehsil" required>
+                        wire:model="mailingTehsil" required disabled>
                     @error('mailingTehsil')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
@@ -403,7 +404,7 @@
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">City <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('mailingCity') is-invalid @enderror"
-                        wire:model="mailingCity" required>
+                        wire:model="mailingCity" required disabled>
                     @error('mailingCity')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
@@ -412,7 +413,7 @@
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">Country <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('mailingCountry') is-invalid @enderror"
-                        wire:model="mailingCountry" required>
+                        wire:model="mailingCountry" required disabled>
                     @error('mailingCountry')
                         <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
@@ -428,7 +429,7 @@
                         </h5>
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="sameAsMailing"
-                                wire:model="sameAsMailing" style="width: 3em; height: 1.5em;">
+                                wire:model="sameAsMailing" style="width: 3em; height: 1.5em;" disabled>
                             <label class="form-check-label fw-semibold" for="sameAsMailing">Same as Mailing
                                 Address</label>
                         </div>
@@ -440,7 +441,7 @@
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">House No</label>
                         <input type="text" class="form-control @error('permanentHouseNo') is-invalid @enderror"
-                            wire:model="permanentHouseNo" required>
+                            wire:model="permanentHouseNo" required disabled>
                         @error('permanentHouseNo')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -449,7 +450,7 @@
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Street</label>
                         <input type="text" class="form-control @error('permanentStreet') is-invalid @enderror"
-                            wire:model="permanentStreet" required>
+                            wire:model="permanentStreet" required disabled>
                         @error('permanentStreet')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -458,7 +459,7 @@
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Sector/Area</label>
                         <input type="text" class="form-control @error('permanentSector') is-invalid @enderror"
-                            wire:model="permanentSector" required>
+                            wire:model="permanentSector" required disabled>
                         @error('permanentSector')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -467,7 +468,7 @@
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Tehsil</label>
                         <input type="text" class="form-control @error('permanentTehsil') is-invalid @enderror"
-                            wire:model="permanentTehsil" required>
+                            wire:model="permanentTehsil" required disabled>
                         @error('permanentTehsil')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -476,7 +477,7 @@
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">City</label>
                         <input type="text" class="form-control @error('permanentCity') is-invalid @enderror"
-                            wire:model="permanentCity" required>
+                            wire:model="permanentCity" required disabled>
                         @error('permanentCity')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
@@ -485,7 +486,7 @@
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Country</label>
                         <input type="text" class="form-control @error('permanentCountry') is-invalid @enderror"
-                            wire:model="permanentCountry" required>
+                            wire:model="permanentCountry" required disabled>
                         @error('permanentCountry')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror

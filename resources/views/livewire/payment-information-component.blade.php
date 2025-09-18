@@ -11,7 +11,11 @@
             <i class="fas fa-info-circle fa-2x me-3 mt-1"></i>
             <div>
                 <p class="text-xs text-white">
-                    An application fee of Rs. 6,000 will be charged for applying to a single program (either MBBS or BDS). Candidates who wish to apply for both programs must pay Rs. 8,000. Foreign applicants are required to pay an application fee of USD 100 (or its equivalent in PKR). Please note that the application fee is non-refundable under any circumstances. Applicants are strongly advised to verify their eligibility before submitting an application.
+                    An application fee of Rs. 6,000 will be charged for applying to a single program (either MBBS or
+                    BDS). Candidates who wish to apply for both programs must pay Rs. 8,000. Foreign applicants are
+                    required to pay an application fee of USD 100 (or its equivalent in PKR). Please note that the
+                    application fee is non-refundable under any circumstances. Applicants are strongly advised to verify
+                    their eligibility before submitting an application.
                 </p>
             </div>
         </div>
@@ -35,29 +39,29 @@
                                 <h6 class="fw-bold text-muted mb-3">Local Category (please select one)</h6>
                                 <div class="btn-group-vertical w-100" role="group">
                                     <input type="radio" class="btn-check" name="localProgram" id="localMbbs"
-                                        wire:model="localProgram" value="mbbs">
+                                        wire:model="localProgram" value="mbbs" disabled>
                                     <label class="btn btn-outline-primary text-start py-3" for="localMbbs">
                                         <i class="fas fa-user-md me-2"></i>
                                         <strong>Local MBBS</strong>
                                     </label>
 
                                     <input type="radio" class="btn-check" name="localProgram" id="localBds"
-                                        wire:model="localProgram" value="bds">
+                                        wire:model="localProgram" value="bds" disabled>
                                     <label class="btn btn-outline-primary text-start py-3" for="localBds">
                                         <i class="fas fa-tooth me-2"></i>
                                         <strong>Local BDS</strong>
                                     </label>
 
                                     <input type="radio" class="btn-check" name="localProgram" id="localBoth"
-                                        wire:model="localProgram" value="both">
+                                        wire:model="localProgram" value="both" disabled>
                                     <label class="btn btn-outline-primary text-start py-3" for="localBoth">
                                         <i class="fas fa-clipboard-list me-2"></i>
                                         <strong>Local Both MBBS & BDS</strong>
                                     </label>
-                                    
+
                                     <!--Did here-->
                                     <input type="radio" class="btn-check" name="localProgram" id="na1"
-                                        wire:model="localProgram" value="na">
+                                        wire:model="localProgram" value="na" disabled>
                                     <label class="btn btn-outline-primary text-start py-3" for="na1">
                                         <i class="fas fa-clipboard-list me-2"></i>
                                         <strong>N/A</strong>
@@ -69,29 +73,29 @@
                                 <h6 class="fw-bold text-muted mb-3">FOREIGN Category (please select one)</h6>
                                 <div class="btn-group-vertical w-100" role="group">
                                     <input type="radio" class="btn-check" name="intlProgram" id="intlMbbs"
-                                        wire:model="intlProgram" value="intl_mbbs">
+                                        wire:model="intlProgram" value="intl_mbbs" disabled>
                                     <label class="btn btn-outline-primary text-start py-3" for="intlMbbs">
                                         <i class="fas fa-user-md me-2"></i>
                                         <strong>FOREIGN MBBS</strong>
                                     </label>
 
                                     <input type="radio" class="btn-check" name="intlProgram" id="intlBds"
-                                        wire:model="intlProgram" value="intl_bds">
+                                        wire:model="intlProgram" value="intl_bds" disabled>
                                     <label class="btn btn-outline-primary text-start py-3" for="intlBds">
                                         <i class="fas fa-tooth me-2"></i>
                                         <strong>FOREIGN BDS</strong>
                                     </label>
 
                                     <input type="radio" class="btn-check" name="intlProgram" id="intlBoth"
-                                        wire:model="intlProgram" value="intl_both">
+                                        wire:model="intlProgram" value="intl_both" disabled>
                                     <label class="btn btn-outline-primary text-start py-3" for="intlBoth">
                                         <i class="fas fa-clipboard-list me-2"></i>
                                         <strong>FOREIGN Both MBBS & BDS</strong>
                                     </label>
-                                    
+
                                     <!--Did here-->
                                     <input type="radio" class="btn-check" name="intlProgram" id="na2"
-                                        wire:model="intlProgram" value="na">
+                                        wire:model="intlProgram" value="na" disabled>
                                     <label class="btn btn-outline-primary text-start py-3" for="na2">
                                         <i class="fas fa-clipboard-list me-2"></i>
                                         <strong>N/A</strong>
@@ -100,31 +104,32 @@
                             </div>
 
                             <div class="mb-4">
-                                <h6 class="fw-bold text-muted mb-3">Special Foreign Category (please select one) - Only for Foreign Passport Holders</h6>
+                                <h6 class="fw-bold text-muted mb-3">Special Foreign Category (please select one) - Only
+                                    for Foreign Passport Holders</h6>
                                 <div class="btn-group-vertical w-100" role="group">
                                     <input type="radio" class="btn-check" name="specialProgram" id="specialMbbs"
-                                        wire:model="specialProgram" value="special_mbbs">
+                                        wire:model="specialProgram" value="special_mbbs" disabled>
                                     <label class="btn btn-outline-primary text-start py-3" for="specialMbbs">
                                         <i class="fas fa-user-md me-2"></i>
                                         <strong>Special FOREIGN MBBS</strong>
                                     </label>
 
                                     <input type="radio" class="btn-check" name="specialProgram" id="specialBds"
-                                        wire:model="specialProgram" value="special_bds">
+                                        wire:model="specialProgram" value="special_bds" disabled>
                                     <label class="btn btn-outline-primary text-start py-3" for="specialBds">
                                         <i class="fas fa-tooth me-2"></i>
                                         <strong>Special FOREIGN BDS</strong>
                                     </label>
 
                                     <input type="radio" class="btn-check" name="specialProgram" id="specialBoth"
-                                        wire:model="specialProgram" value="special_both">
+                                        wire:model="specialProgram" value="special_both" disabled>
                                     <label class="btn btn-outline-primary text-start py-3" for="specialBoth">
                                         <i class="fas fa-clipboard-list me-2"></i>
                                         <strong>Special FOREIGN Both MBBS & BDS</strong>
                                     </label>
-                                    
+
                                     <input type="radio" class="btn-check" name="specialProgram" id="na3"
-                                        wire:model="specialProgram" value="na">
+                                        wire:model="specialProgram" value="na" disabled>
                                     <label class="btn btn-outline-primary text-start py-3" for="na3">
                                         <i class="fas fa-clipboard-list me-2"></i>
                                         <strong>N/A</strong>
@@ -140,7 +145,7 @@
                             <!-- Local Student Options (only 3 options) -->
                             <div class="btn-group-vertical w-100" role="group">
                                 <input type="radio" class="btn-check" name="program" id="programMbbs"
-                                    wire:model="program" value="mbbs">
+                                    wire:model="program" value="mbbs" disabled>
                                 <label class="btn btn-outline-primary text-start py-3" for="programMbbs">
                                     <i class="fas fa-user-md me-2"></i>
                                     <strong>MBBS Only</strong>
@@ -150,7 +155,7 @@
                                 </label>
 
                                 <input type="radio" class="btn-check" name="program" id="programBds"
-                                    wire:model="program" value="bds">
+                                    wire:model="program" value="bds" disabled>
                                 <label class="btn btn-outline-primary text-start py-3" for="programBds">
                                     <i class="fas fa-tooth me-2"></i>
                                     <strong>BDS Only</strong>
@@ -160,7 +165,7 @@
                                 </label>
 
                                 <input type="radio" class="btn-check" name="program" id="programBoth"
-                                    wire:model="program" value="both">
+                                    wire:model="program" value="both" disabled>
                                 <label class="btn btn-outline-primary text-start py-3" for="programBoth">
                                     <i class="fas fa-clipboard-list me-2"></i>
                                     <strong>Both MBBS & BDS</strong>
@@ -222,7 +227,7 @@
                         <div class="row g-2">
                             <div class="col-6">
                                 <input type="radio" class="btn-check" name="paymentMode" id="paymentVoucher"
-                                    wire:model="paymentMode" value="voucher"
+                                    wire:model="paymentMode" value="voucher" disabled
                                     @click="selectedPaymentMode = 'voucher'">
                                 <label class="btn btn-outline-primary w-100 py-3" for="paymentVoucher">
                                     <i class="fas fa-file-invoice me-2"></i> Voucher
@@ -230,7 +235,8 @@
                             </div>
                             <div class="col-6">
                                 <input type="radio" class="btn-check" name="paymentMode" id="paymentAtm"
-                                    wire:model="paymentMode" value="atm" @click="selectedPaymentMode = 'atm'">
+                                    wire:model="paymentMode" value="atm" disabled
+                                    @click="selectedPaymentMode = 'atm'">
                                 <label class="btn btn-outline-primary w-100 py-3" for="paymentAtm">
                                     <i class="fas fa-money-check-alt me-2"></i> ATM/Online
                                 </label>
@@ -250,11 +256,14 @@
 
                     <!-- Voucher Section -->
                     <div class="mb-4 animate__animated animate__fadeIn" x-show="selectedPaymentMode === 'voucher'">
-                        <button type="button" class="btn btn-primary w-100 py-3" wire:click="downloadChallan">
-                            <i class="fas fa-download me-2"></i> Download @if($isInternational) USD @endif Challan Form
+                        <button type="button" disabled class="btn btn-primary w-100 py-3"
+                            wire:click="downloadChallan">
+                            <i class="fas fa-download me-2"></i> Download @if ($isInternational)
+                                USD
+                            @endif Challan Form
                         </button>
                         @if ($isInternational)
-                            <button type="button" class="btn btn-outline-primary w-100 py-3"
+                            <button disabled type="button" class="btn btn-outline-primary w-100 py-3"
                                 wire:click="downloadPkrChallan">
                                 <i class="fas fa-download me-2"></i> Download PKR Challan
                                 ({{ number_format(100 * $exchangeRate) }})
@@ -341,7 +350,7 @@
                                 </span>
                                 <input type="date"
                                     class="form-control @error('paymentDate') is-invalid @enderror py-3"
-                                    wire:model="paymentDate">
+                                    wire:model="paymentDate" disabled>
                             </div>
                             @error('paymentDate')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -353,7 +362,7 @@
                             <label class="form-label fw-bold">Upload Payment Proof</label>
                             <div class="file-upload-wrapper">
                                 <input type="file" class="form-control @error('paymentProof') is-invalid @enderror"
-                                    wire:model="paymentProof" accept=".pdf,.jpg,.jpeg,.png">
+                                    disabled wire:model="paymentProof" accept=".pdf,.jpg,.jpeg,.png">
                                 <div class="file-upload-message p-3 text-center border rounded">
                                     <i class="fas fa-cloud-upload-alt fa-2x text-muted mb-2"></i>
                                     <div class="fw-bold">Click to upload payment receipt</div>
